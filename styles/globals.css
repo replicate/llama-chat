@@ -1,0 +1,26 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+input {
+  @apply border;
+  @apply border-solid;
+  @apply border-gray-300;
+  /* @apply rounded-md; */
+  @apply px-4;
+  @apply py-2;
+}
+
+.border-hairline {
+  @apply border border-black border-opacity-10;
+}
+
+.button {
+  @apply bg-black text-white rounded-r-md inline-block px-5 py-3;
+}
+
+.image-wrapper {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  position: relative;
+}
