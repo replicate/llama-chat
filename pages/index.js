@@ -1,6 +1,5 @@
 import { useState } from "react";
 import Head from "next/head";
-import Image from "next/image";
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
@@ -59,10 +58,9 @@ Assistant:`,
           type="text"
           className="flex-grow"
           name="prompt"
-          placeholder="Enter a prompt to display an image"
         />
         <button className="button" type="submit">
-          Go!
+          Send
         </button>
       </form>
 
