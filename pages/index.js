@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import Head from "next/head";
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -70,7 +70,12 @@ Assistant:`,
         <>
           {prediction.output && (
             <div className="image-wrapper mt-5">
-              <p>{prediction.output}</p>
+              {prediction.output.join("").split("\n").map((text, index) => (
+                <Fragment key={index}>
+                  {text}
+                  <br />
+                </Fragment>
+              ))}
             </div>
           )}
           <p className="py-3 text-sm opacity-50">status: {prediction.status}</p>
