@@ -16,7 +16,8 @@ export default function Home() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        prompt: e.target.prompt.value,
+        prompt: `User: ${e.target.prompt.value}
+Assistant:`,
       }),
     });
     let prediction = await response.json();
@@ -45,14 +46,12 @@ export default function Home() {
   return (
     <div className="container max-w-2xl mx-auto p-5">
       <Head>
-        <title>Replicate + Next.js</title>
+        <title>Llama Chat</title>
       </Head>
 
       <h1 className="py-6 text-center font-bold text-2xl">
-        Dream something with{" "}
-        <a href="https://replicate.com/stability-ai/stable-diffusion">
-          Stable Diffusion
-        </a>
+        Chat with a{" "}
+        <a href="https://replicate.com/a16z-infra/llama13b-v2-chat">Llama</a>
       </h1>
 
       <form className="w-full flex" onSubmit={handleSubmit}>
@@ -73,12 +72,7 @@ export default function Home() {
         <>
           {prediction.output && (
             <div className="image-wrapper mt-5">
-              <Image
-                fill
-                src={prediction.output[prediction.output.length - 1]}
-                alt="output"
-                sizes="100vw"
-              />
+              <p>{prediction.output}</p>
             </div>
           )}
           <p className="py-3 text-sm opacity-50">status: {prediction.status}</p>
