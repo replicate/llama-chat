@@ -59,14 +59,16 @@ Assistant:`,
 
       {error && <div>{error}</div>}
 
-      {prediction && (
-        <>
-          {prediction.output && (
-            <Message message={prediction.output} isUser={false} />
-          )}
-          <p className="py-3 text-sm opacity-50">status: {prediction.status}</p>
-        </>
-      )}
+      <div className="pb-24">
+        {prediction && (
+          <>
+            {prediction.output && (
+              <Message message={prediction.output} isUser={false} />
+            )}
+            <p className="py-3 text-sm opacity-50">status: {prediction.status}</p>
+          </>
+        )}
+      </div>
     </div>
   );
 }
