@@ -62,7 +62,7 @@ Assistant:`,
       {prediction && (
         <>
           {prediction.output && (
-            <Message message={prediction.output} />
+            <Message message={prediction.output} isUser={false} />
           )}
           <p className="py-3 text-sm opacity-50">status: {prediction.status}</p>
         </>
