@@ -1,21 +1,38 @@
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import Head from "next/head";
+import ChatForm from "./components/ChatForm";
+import Message from "./components/Message";
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 export default function Home() {
+  const [messages, setMessages] = useState([]);
   const [prediction, setPrediction] = useState(null);
   const [error, setError] = useState(null);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async (userMessage) => {
+    const messageHistory = [...messages, {
+      text: userMessage,
+      isUser: true
+    }]
+
+    setMessages(messageHistory);
+
+    const messageHistoryPrompt = messageHistory.map((message) => {
+      if (message.isUser) {
+        return `User: ${message.text}`;
+      } else {
+        return `Assistant: ${message.text}`;
+      }
+    }).join("\n");
+
     const response = await fetch("/api/predictions", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        prompt: `User: ${e.target.prompt.value}
+        prompt: `${messageHistoryPrompt}
 Assistant:`,
       }),
     });
@@ -42,6 +59,16 @@ Assistant:`,
     }
   };
 
+  useEffect(() => {
+    if (prediction?.status === "succeeded") {
+      setMessages([...messages, {
+        text: prediction.output.join(""),
+        isUser: false
+      }]);
+      setPrediction(null);
+    }
+  }, [prediction]);
+
   return (
     <div className="container max-w-2xl mx-auto p-5">
       <Head>
@@ -53,34 +80,25 @@ Assistant:`,
         <a href="https://replicate.com/a16z-infra/llama13b-v2-chat">Llama</a>
       </h1>
 
-      <form className="w-full flex" onSubmit={handleSubmit}>
-        <input
-          type="text"
-          className="flex-grow"
-          name="prompt"
-        />
-        <button className="button" type="submit">
-          Send
-        </button>
-      </form>
+      <ChatForm onSubmit={handleSubmit} />
 
       {error && <div>{error}</div>}
 
-      {prediction && (
-        <>
-          {prediction.output && (
-            <div className="image-wrapper mt-5">
-              {prediction.output.join("").split("\n").map((text, index) => (
-                <Fragment key={index}>
-                  {text}
-                  <br />
-                </Fragment>
-              ))}
-            </div>
-          )}
-          <p className="py-3 text-sm opacity-50">status: {prediction.status}</p>
-        </>
-      )}
+      <div className="pb-24">
+        {messages.map((message, index) => (
+          <Fragment key={index}>
+            <Message message={message.text} isUser={message.isUser} />
+          </Fragment>
+        ))}
+        {prediction && (
+          <>
+            {prediction.output && (
+              <Message message={prediction.output} isUser={false} />
+            )}
+            <p className="py-3 text-sm opacity-50">status: {prediction.status}</p>
+          </>
+        )}
+      </div>
     </div>
   );
 }
