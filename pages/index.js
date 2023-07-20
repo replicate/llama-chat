@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import Head from "next/head";
 import ChatForm from "./components/ChatForm";
 import Message from "./components/Message";
@@ -6,18 +6,25 @@ import Message from "./components/Message";
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 export default function Home() {
+  const [messages, setMessages] = useState([]);
   const [prediction, setPrediction] = useState(null);
   const [error, setError] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const userMessage = e.target.prompt.value;
+    setMessages([...messages, {
+      text: userMessage,
+      isUser: true
+    }]);
+
     const response = await fetch("/api/predictions", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        prompt: `User: ${e.target.prompt.value}
+        prompt: `User: ${userMessage}
 Assistant:`,
       }),
     });
@@ -44,6 +51,16 @@ Assistant:`,
     }
   };
 
+  useEffect(() => {
+    if (prediction?.status === "succeeded") {
+      setMessages([...messages, {
+        text: prediction.output.join(""),
+        isUser: false
+      }]);
+      setPrediction(null);
+    }
+  }, [prediction]);
+
   return (
     <div className="container max-w-2xl mx-auto p-5">
       <Head>
@@ -60,6 +77,11 @@ Assistant:`,
       {error && <div>{error}</div>}
 
       <div className="pb-24">
+        {messages.map((message, index) => (
+          <Fragment key={index}>
+            <Message message={message.text} isUser={message.isUser} />
+          </Fragment>
+        ))}
         {prediction && (
           <>
             {prediction.output && (
