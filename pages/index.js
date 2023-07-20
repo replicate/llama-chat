@@ -10,10 +10,7 @@ export default function Home() {
   const [prediction, setPrediction] = useState(null);
   const [error, setError] = useState(null);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const userMessage = e.target.prompt.value;
-
+  const handleSubmit = async (userMessage) => {
     const messageHistory = [...messages, {
       text: userMessage,
       isUser: true
