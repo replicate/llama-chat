@@ -13,10 +13,21 @@ export default function Home() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const userMessage = e.target.prompt.value;
-    setMessages([...messages, {
+
+    const messageHistory = [...messages, {
       text: userMessage,
       isUser: true
-    }]);
+    }]
+
+    setMessages(messageHistory);
+
+    const messageHistoryPrompt = messageHistory.map((message) => {
+      if (message.isUser) {
+        return `User: ${message.text}`;
+      } else {
+        return `Assistant: ${message.text}`;
+      }
+    }).join("\n");
 
     const response = await fetch("/api/predictions", {
       method: "POST",
@@ -24,7 +35,7 @@ export default function Home() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        prompt: `User: ${userMessage}
+        prompt: `${messageHistoryPrompt}
 Assistant:`,
       }),
     });
