@@ -1,6 +1,7 @@
 import { Fragment, useState } from "react";
 import Head from "next/head";
 import ChatForm from "./components/ChatForm";
+import Message from "./components/Message";
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
@@ -61,14 +62,7 @@ Assistant:`,
       {prediction && (
         <>
           {prediction.output && (
-            <div className="image-wrapper mt-5">
-              {prediction.output.join("").split("\n").map((text, index) => (
-                <Fragment key={index}>
-                  {text}
-                  <br />
-                </Fragment>
-              ))}
-            </div>
+            <Message message={prediction.output} />
           )}
           <p className="py-3 text-sm opacity-50">status: {prediction.status}</p>
         </>
