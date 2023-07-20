@@ -1,5 +1,6 @@
 import { Fragment, useState } from "react";
 import Head from "next/head";
+import ChatForm from "./components/ChatForm";
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
@@ -53,16 +54,7 @@ Assistant:`,
         <a href="https://replicate.com/a16z-infra/llama13b-v2-chat">Llama</a>
       </h1>
 
-      <form className="w-full flex" onSubmit={handleSubmit}>
-        <input
-          type="text"
-          className="flex-grow"
-          name="prompt"
-        />
-        <button className="button" type="submit">
-          Send
-        </button>
-      </form>
+      <ChatForm onSubmit={handleSubmit} />
 
       {error && <div>{error}</div>}
 
