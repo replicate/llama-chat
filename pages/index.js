@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState } from "react";
+import { useEffect, useRef, useReducer, useState } from "react";
 import Head from "next/head";
 import ChatForm from "./components/ChatForm";
 import Message from "./components/Message";
@@ -6,14 +6,33 @@ import Message from "./components/Message";
 export default function Home() {
   const [messages, setMessages] = useState([]);
   const [prediction, setPrediction] = useState(null);
-  const [streamingChunks, setStreamingChunks] = useState([]);
+  const [eventSource, setEventSource] = useState(null);
+
+  const [currentMessage, dispatchCurrentMessage] = useReducer((state, action) => {
+    switch (action.type) {
+      case 'append':
+        return { ...state, buffer: state.buffer + action.payload };
+      case 'display':
+        return { ...state, displayed: state.displayed + state.buffer[state.displayed.length] };
+      case 'reset':
+        return { buffer: '', displayed: '' };
+      default:
+        throw new Error();
+    }
+  }, { buffer: '', displayed: '' });
+  const intervalRef = useRef(null);
+
   const [error, setError] = useState(null);
 
   const handleSubmit = async (userMessage) => {
+    if (eventSource) {
+      eventSource.close();
+    }
+
     const messageHistory = messages;
-    if (streamingChunks.length > 0) {
+    if (currentMessage.buffer.length > 0) {
       messageHistory.push({
-        text: streamingChunks.join(""),
+        text: currentMessage.buffer,
         isUser: false
       });
     }
@@ -21,7 +40,6 @@ export default function Home() {
       text: userMessage,
       isUser: true
     });
-
     setMessages(messageHistory);
 
     const messageHistoryPrompt = messageHistory.map((message) => {
@@ -43,38 +61,51 @@ Assistant:`,
       }),
     });
 
-    console.log({ response });
     const prediction = await response.json();
     if (response.status !== 201) {
       setError(prediction.detail);
       return;
     }
     setPrediction(prediction);
-
-    setStreamingChunks([]);
-
-    const eventSource = new EventSource(prediction.urls.stream);
-    eventSource.addEventListener("open", (e) => {
-      console.log("open", e);
-    });
-    eventSource.addEventListener("message", (e) => {
-      console.log("message", e);
-      setStreamingChunks(m => [...m, e.data]);
-    });
-    eventSource.addEventListener("error", (e) => {
-      eventSource.close();
-    });
   };
 
   useEffect(() => {
-    if (prediction?.status === "succeeded") {
-      setMessages(m => [...m, {
-        text: prediction.output.join(""),
-        isUser: false
-      }]);
-      setPrediction(null);
+    if (!prediction?.urls?.stream) {
+      return;
     }
+
+    const source = new EventSource(prediction.urls.stream);
+    source.addEventListener("message", (e) => {
+      console.log("message", e);
+      dispatchCurrentMessage({ type: 'append', payload: e.data });
+    });
+    source.addEventListener("error", (e) => {
+      source.close();
+      setError(e);
+    });
+    setEventSource(source);
+
+    dispatchCurrentMessage({ type: 'reset' });
+
+    return () => {
+      source.close();
+      clearInterval(intervalRef.current);
+    };
   }, [prediction]);
+
+  useEffect(() => {
+    intervalRef.current = setInterval(() => {
+      if (currentMessage.displayed.length < currentMessage.buffer.length) {
+        dispatchCurrentMessage({ type: 'display' });
+      } else {
+        clearInterval(intervalRef.current);
+      }
+    }, 30);
+
+    return () => {
+      clearInterval(intervalRef.current);
+    };
+  }, [currentMessage.buffer, currentMessage.displayed.length]);
 
   return (
     <div className="container max-w-2xl mx-auto p-5">
@@ -93,15 +124,10 @@ Assistant:`,
 
       <div className="pb-24">
         {messages.map((message, index) => (
-          <Fragment key={index}>
-            <Message message={message.text} isUser={message.isUser} />
-          </Fragment>
+          <Message key={`message-${index}`} message={message.text} isUser={message.isUser} />
         ))}
-        {prediction && streamingChunks && (
-          <>
-            <Message message={streamingChunks} isUser={false} />
-            {/* <p className="py-3 text-sm opacity-50">status: {prediction.status}</p> */}
-          </>
+        {currentMessage.displayed && currentMessage.displayed.length > 0 && (
+          <Message message={currentMessage.displayed} isUser={false} />
         )}
       </div>
     </div>
