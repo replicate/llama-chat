@@ -3,18 +3,24 @@ import Head from "next/head";
 import ChatForm from "./components/ChatForm";
 import Message from "./components/Message";
 
-const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
-
 export default function Home() {
   const [messages, setMessages] = useState([]);
   const [prediction, setPrediction] = useState(null);
+  const [streamingChunks, setStreamingChunks] = useState([]);
   const [error, setError] = useState(null);
 
   const handleSubmit = async (userMessage) => {
-    const messageHistory = [...messages, {
+    const messageHistory = messages;
+    if (streamingChunks.length > 0) {
+      messageHistory.push({
+        text: streamingChunks.join(""),
+        isUser: false
+      });
+    }
+    messageHistory.push({
       text: userMessage,
       isUser: true
-    }]
+    });
 
     setMessages(messageHistory);
 
@@ -36,32 +42,33 @@ export default function Home() {
 Assistant:`,
       }),
     });
-    let prediction = await response.json();
+
+    console.log({ response });
+    const prediction = await response.json();
     if (response.status !== 201) {
       setError(prediction.detail);
       return;
     }
     setPrediction(prediction);
 
-    while (
-      prediction.status !== "succeeded" &&
-      prediction.status !== "failed"
-    ) {
-      await sleep(1000);
-      const response = await fetch("/api/predictions/" + prediction.id);
-      prediction = await response.json();
-      if (response.status !== 200) {
-        setError(prediction.detail);
-        return;
-      }
-      console.log({ prediction });
-      setPrediction(prediction);
-    }
+    setStreamingChunks([]);
+
+    const eventSource = new EventSource(prediction.urls.stream);
+    eventSource.addEventListener("open", (e) => {
+      console.log("open", e);
+    });
+    eventSource.addEventListener("message", (e) => {
+      console.log("message", e);
+      setStreamingChunks(m => [...m, e.data]);
+    });
+    eventSource.addEventListener("error", (e) => {
+      eventSource.close();
+    });
   };
 
   useEffect(() => {
     if (prediction?.status === "succeeded") {
-      setMessages([...messages, {
+      setMessages(m => [...m, {
         text: prediction.output.join(""),
         isUser: false
       }]);
@@ -90,12 +97,10 @@ Assistant:`,
             <Message message={message.text} isUser={message.isUser} />
           </Fragment>
         ))}
-        {prediction && (
+        {prediction && streamingChunks && (
           <>
-            {prediction.output && (
-              <Message message={prediction.output} isUser={false} />
-            )}
-            <p className="py-3 text-sm opacity-50">status: {prediction.status}</p>
+            <Message message={streamingChunks} isUser={false} />
+            {/* <p className="py-3 text-sm opacity-50">status: {prediction.status}</p> */}
           </>
         )}
       </div>

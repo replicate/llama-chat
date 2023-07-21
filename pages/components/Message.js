@@ -6,13 +6,15 @@ const Message = ({ message, isUser }) => {
     containerClass = "mt-5 bg-green-200 p-5 rounded-lg";
   }
 
+  console.log({ message });
+
   if (Array.isArray(message)) {
-    message = message.join("")
+    message = message.join("");
   }
 
   return (
     <div className={containerClass}>
-      {message.split("\n").map((text, index) => (
+      {message && message.split("\n").map((text, index) => (
         <Fragment key={index}>
           {text}
           <br />
