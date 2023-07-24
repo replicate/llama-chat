@@ -75,8 +75,8 @@ Assistant:`,
     }
 
     const source = new EventSource(prediction.urls.stream);
-    source.addEventListener("message", (e) => {
-      console.log("message", e);
+    source.addEventListener("output", (e) => {
+      console.log("output", e);
       dispatchCurrentMessage({ type: 'append', payload: e.data });
     });
     source.addEventListener("error", (e) => {
