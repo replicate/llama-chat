@@ -3,13 +3,14 @@ import Head from "next/head";
 import ChatForm from "./components/ChatForm";
 import Message from "./components/Message";
 import SlideOver from "./components/SlideOver";
+import EmptyState from "./components/EmptyState";
 import { Cog6ToothIcon } from "@heroicons/react/20/solid";
 
 export default function Home() {
   const [messages, setMessages] = useState([]);
   const [prediction, setPrediction] = useState(null);
   const [eventSource, setEventSource] = useState(null);
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   const [systemPrompt, setSystemPrompt] = useState(
     "You are a friendly assistant."
   );
@@ -132,51 +133,62 @@ Assistant:`,
   }, [currentMessage.buffer, currentMessage.displayed.length]);
 
   return (
-    <div className="container font-serif max-w-2xl mx-auto p-5">
+    <div className="font-serif">
       <Head>
         <title>Llama Chat</title>
       </Head>
-
-      <h1 className="pt-6 text-center font-bold text-2xl">
-        Chat with a{" "}
-        <a href="https://replicate.com/a16z-infra/llama13b-v2-chat">Llama</a>
-      </h1>
-
-      <div className="absolute top-4 right-4">
+      <nav class="flex w-full justify-end p-3">
+        <a
+          className="rounded-md mr-3 inline-flex items-center bg-white px-3 py-2 text-sm font-semibold text-gray-700 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+          href="https://replicate.com/a16z-infra/llama13b-v2-chat?utm_source=project&utm_campaign=llamachat"
+        >
+          Run Llama Yourself
+        </a>
         <button
           type="button"
-          className="rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+          className="rounded-md inline-flex items-center bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
           onClick={() => setOpen(true)}
         >
           <Cog6ToothIcon
             className="h-5 w-5 text-gray-500 group-hover:text-gray-900"
             aria-hidden="true"
-          />
+          />{" "}
         </button>
-      </div>
+      </nav>
 
-      <SlideOver
-        open={open}
-        setOpen={setOpen}
-        systemPrompt={systemPrompt}
-        handleSubmit={handleSettingsSubmit}
-      />
+      <div className="max-w-2xl pb-5 mx-auto">
+        <h1 className="text-center font-bold text-2xl">
+          Chat with a{" "}
+          <a href="https://replicate.com/a16z-infra/llama13b-v2-chat?utm_source=project&utm_compaign=llamachat">
+            Llama
+          </a>
+        </h1>
 
-      <ChatForm onSubmit={handleSubmit} />
+        <EmptyState />
 
-      {error && <div>{error}</div>}
+        <SlideOver
+          open={open}
+          setOpen={setOpen}
+          systemPrompt={systemPrompt}
+          handleSubmit={handleSettingsSubmit}
+        />
 
-      <div className="pb-24">
-        {messages.map((message, index) => (
-          <Message
-            key={`message-${index}`}
-            message={message.text}
-            isUser={message.isUser}
-          />
-        ))}
-        {currentMessage.displayed && currentMessage.displayed.length > 0 && (
-          <Message message={currentMessage.displayed} isUser={false} />
-        )}
+        <ChatForm onSubmit={handleSubmit} />
+
+        {error && <div>{error}</div>}
+
+        <div className="pb-24">
+          {messages.map((message, index) => (
+            <Message
+              key={`message-${index}`}
+              message={message.text}
+              isUser={message.isUser}
+            />
+          ))}
+          {currentMessage.displayed && currentMessage.displayed.length > 0 && (
+            <Message message={currentMessage.displayed} isUser={false} />
+          )}
+        </div>
       </div>
     </div>
   );

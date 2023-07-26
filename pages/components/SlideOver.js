@@ -82,20 +82,6 @@ export default function SlideOver({
                               </div>
                             </div>
                           </div>
-                          <div className="pb-6 pt-4">
-                            <div className="flex text-sm">
-                              <a
-                                href="#"
-                                className="group inline-flex items-center font-medium text-gray-600 hover:text-gray-900"
-                              >
-                                <LinkIcon
-                                  className="h-5 w-5 text-gray-500 group-hover:text-gray-900"
-                                  aria-hidden="true"
-                                />
-                                <span className="ml-2">Run Llama yourself</span>
-                              </a>
-                            </div>
-                          </div>
                         </div>
                       </div>
                     </div>
