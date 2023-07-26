@@ -20,35 +20,12 @@ export default function Home() {
   const [eventSource, setEventSource] = useState(null);
   const [open, setOpen] = useState(false);
   const [systemPrompt, setSystemPrompt] = useState(
-    "You are a friendly assistant."
-  );
-  const [loading, setLoading] = useState(false);
+    `You are a helpful, respectful and honest assistant. Always answer as helpfully as possible, while being safe. Your answers should not include any harmful, unethical, racist, sexist, toxic, dangerous, or illegal content. Please ensure that your responses are socially unbiased and positive in nature.
 
-  const [currentMessage, dispatchCurrentMessage] = useReducer(
-    (state, action) => {
-      switch (action.type) {
-        case "append":
-          bottomRef.current.scrollIntoView({ behavior: "smooth" });
-          //   return { ...state, buffer: state.buffer + action.payload };
-          return {
-            ...state,
-            displayed: state.displayed + action.payload,
-            buffer: state.buffer + action.payload,
-          };
-        case "display":
-          bottomRef.current.scrollIntoView({ behavior: "smooth" });
-          return {
-            ...state,
-            displayed: state.displayed + state.buffer[state.displayed.length],
-          };
-        case "reset":
-          return { buffer: "", displayed: "" };
-        default:
-          throw new Error();
-      }
-    },
-    { buffer: "", displayed: "" }
+    If a question does not make any sense, or is not factually coherent, explain why instead of answering something not correct. If you don\'t know the answer to a question, please don\'t share false information.`
   );
+
+  const [currentMessage, setCurrentMessage] = useState("");
   const intervalRef = useRef(null);
 
   const [error, setError] = useState(null);
@@ -69,9 +46,9 @@ export default function Home() {
     }
 
     const messageHistory = [...messages];
-    if (currentMessage.buffer.length > 0) {
+    if (currentMessage.length > 0) {
       messageHistory.push({
-        text: currentMessage.buffer,
+        text: currentMessage,
         isUser: false,
       });
     }
@@ -112,8 +89,6 @@ export default function Home() {
 
     setMessages(messageHistory);
 
-    console.log(systemPrompt);
-
     const response = await fetch("/api/predictions", {
       method: "POST",
       headers: {
@@ -140,51 +115,50 @@ Assistant:`,
       return;
     }
 
+    setCurrentMessage("");
+
     const source = new EventSource(prediction.urls.stream);
     source.addEventListener("output", (e) => {
       console.log("output", e);
-      dispatchCurrentMessage({ type: "append", payload: e.data });
+      setCurrentMessage((m) => m + e.data);
     });
     source.addEventListener("error", (e) => {
+      console.log("error", e);
       source.close();
       setError(e.message);
     });
+    source.addEventListener("done", (e) => {
+      console.log("done", e);
+      source.close();
+    });
     setEventSource(source);
-
-    dispatchCurrentMessage({ type: "reset" });
 
     return () => {
       source.close();
-      clearInterval(intervalRef.current);
     };
   }, [prediction]);
 
   useEffect(() => {
-    if (messages.length > 0) {
+    if (messages?.length > 0 || currentMessage?.length > 0) {
       bottomRef.current.scrollIntoView({ behavior: "smooth" });
     }
-  }, [messages, prediction]);
-
-  useEffect(() => {
-    intervalRef.current = setInterval(() => {
-      if (currentMessage.displayed.length < currentMessage.buffer.length) {
-        dispatchCurrentMessage({ type: "display" });
-      } else {
-        clearInterval(intervalRef.current);
-      }
-    }, 5);
-
-    return () => {
-      clearInterval(intervalRef.current);
-    };
-  }, [currentMessage.buffer, currentMessage.displayed.length]);
+  }, [messages, currentMessage]);
 
   return (
-    <div className="font-serif">
+    <>
       <Head>
         <title>Llama Chat</title>
+
+        <meta property="og:image" content="/og.png" />
+        <meta property="og:description" content="Chat with Llama 2" />
+        <meta property="twitter:image" content="/og.png" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <link
+          rel="icon"
+          href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🦙</text></svg>"
+        />
       </Head>
-      <nav class="flex w-full justify-end p-3">
+      <nav className="flex w-full justify-end p-3">
         <a
           className="rounded-md mr-3 inline-flex items-center bg-white px-3 py-2 text-sm font-semibold text-gray-700 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
           href="https://replicate.com/a16z-infra/llama13b-v2-chat?utm_source=project&utm_campaign=llamachat"
@@ -203,15 +177,13 @@ Assistant:`,
         </button>
       </nav>
 
-      <div className="max-w-2xl pb-5 mx-auto">
+      <main className="max-w-2xl pb-5 mx-auto">
         <h1 className="text-center font-bold text-2xl">
           Chat with a{" "}
           <a href="https://replicate.com/a16z-infra/llama13b-v2-chat?utm_source=project&utm_compaign=llamachat">
             Llama
           </a>
         </h1>
-
-        {/* {messages.length == 0 && <EmptyState setPrompt={setPrompt} />} */}
 
         <SlideOver
           open={open}
@@ -228,7 +200,7 @@ Assistant:`,
 
         {error && <div>{error}</div>}
 
-        <div className="pb-24">
+        <article className="pb-24">
           {messages.map((message, index) => (
             <Message
               key={`message-${index}`}
@@ -237,13 +209,12 @@ Assistant:`,
             />
           ))}
           {loading && <LoadingChatLine />}
-
-          {currentMessage.displayed && currentMessage.displayed.length > 0 && (
-            <Message message={currentMessage.displayed} isUser={false} />
+          {currentMessage && currentMessage.length > 0 && (
+            <Message message={currentMessage} isUser={false} />
           )}
           <div ref={bottomRef} />
-        </div>
-      </div>
-    </div>
+        </article>
+      </main>
+    </>
   );
 }
