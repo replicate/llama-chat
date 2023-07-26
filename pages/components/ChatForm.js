@@ -14,6 +14,7 @@ const ChatForm = ({ prompt, setPrompt, onSubmit }) => {
             <input
               onChange={(e) => setPrompt(e.target.value)}
               type="text"
+              placeholder="Send a message"
               required="true"
               className="flex-grow rounded-l-md focus:outline-none outline-none focus:ring-0 focus:ring-offset-0"
               name="prompt"

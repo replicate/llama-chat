@@ -55,53 +55,15 @@ const items = [
 
 export default function EmptyState({ setPrompt }) {
   return (
-    <div className="mt-12">
-      <h2 className="text-base font-semibold leading-6 text-gray-900">
-        Welcome to Chat with a Llama.
-      </h2>
-      <p className="mt-1 text-base text-gray-500">
+    <div className="mt-12 text-center text-gray-500">
+      <p className="mt-1 text-gray-500 text-xl">
         This is an{" "}
         <a className="underline" href="https://github.com/replicate/llama-chat">
           open source app
         </a>{" "}
         for chatting with Llama 2. You can customize Llama&apos;s personality by
-        clicking on the settings button on the top right. Enter text in the
-        chatbox, or start a conversation:
+        clicking on the settings button on the top right. Say something!
       </p>
-
-      <ul
-        role="list"
-        className="mt-6 divide-y divide-gray-200 border-b border-t border-gray-200"
-      >
-        {items.map((item, itemIdx) => (
-          <button
-            className="text-left"
-            key={itemIdx}
-            onClick={() => setPrompt(item.description)}
-          >
-            <div className="group relative flex items-start space-x-3 py-4">
-              <div className="flex-shrink-0">
-                <span className="text-4xl mr-3">{item.emoji}</span>
-              </div>
-              <div className="min-w-0 flex-1">
-                <div className="text-sm font-medium text-gray-900">
-                  <a href={item.href}>
-                    <span className="absolute inset-0" aria-hidden="true" />
-                    {item.name}
-                  </a>
-                </div>
-                <p className="text-sm text-gray-500">{item.description}</p>
-              </div>
-              <div className="flex-shrink-0 self-center">
-                <ChevronRightIcon
-                  className="h-5 w-5 text-gray-400 group-hover:text-gray-500"
-                  aria-hidden="true"
-                />
-              </div>
-            </div>
-          </button>
-        ))}
-      </ul>
     </div>
   );
 }

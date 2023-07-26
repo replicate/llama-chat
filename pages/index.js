@@ -201,7 +201,7 @@ Assistant:`,
           </a>
         </h1>
 
-        {messages.length == 0 && <EmptyState setPrompt={setPrompt} />}
+        {/* {messages.length == 0 && <EmptyState setPrompt={setPrompt} />} */}
 
         <SlideOver
           open={open}
