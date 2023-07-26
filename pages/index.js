@@ -11,7 +11,7 @@ export default function Home() {
   const [currentMessage, dispatchCurrentMessage] = useReducer((state, action) => {
     switch (action.type) {
       case 'append':
-        return { ...state, buffer: state.buffer + action.payload };
+        return { ...state, displayed: state.displayed + action.payload, buffer: state.buffer + action.payload };
       case 'display':
         return { ...state, displayed: state.displayed + state.buffer[state.displayed.length] };
       case 'reset':
@@ -100,7 +100,7 @@ Assistant:`,
       } else {
         clearInterval(intervalRef.current);
       }
-    }, 30);
+    }, 5);
 
     return () => {
       clearInterval(intervalRef.current);
