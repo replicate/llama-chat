@@ -7,12 +7,16 @@ export default function Home() {
   const [messages, setMessages] = useState([]);
   const [prediction, setPrediction] = useState(null);
   const [eventSource, setEventSource] = useState(null);
+  const [systemPrompt, setSystemPrompt] = useState(
+    "You are a friendly assistant."
+  );
 
   const [currentMessage, dispatchCurrentMessage] = useReducer(
     (state, action) => {
       switch (action.type) {
         case "append":
           return { ...state, buffer: state.buffer + action.payload };
+
         case "display":
           return {
             ...state,
