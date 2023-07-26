@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+  @apply font-serif;
+}
+
 input {
   @apply border;
   @apply border-solid;
