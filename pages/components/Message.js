@@ -1,4 +1,5 @@
 const Message = ({ message, isUser }) => {
+
   console.log({ message });
 
   if (Array.isArray(message)) {

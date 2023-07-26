@@ -36,11 +36,9 @@ For detailed instructions on how to create and use this template, see [replicate
 
 <img src="https://user-images.githubusercontent.com/2289/208017930-a39ca4d5-2410-4049-bce0-20718480c73b.png" alt="app screenshot">
 
-
 TODO
 
-- probably want some sort of logic to truncate the message history (so we're not sending a prompt that's too long — we don't want an error there)
-- - the way we're doing message history isn't ideal, but that's complex and can be figured out later
+- [x] probably want some sort of logic to truncate the message history (so we're not sending a prompt that's too long — we don't want an error there)
 - [x] fix the runtime error
 - [ ] auto-scrolldown on last message
 - [ ] UI touchups

@@ -6,7 +6,12 @@ import SlideOver from "./components/SlideOver";
 import EmptyState from "./components/EmptyState";
 import { Cog6ToothIcon } from "@heroicons/react/20/solid";
 
+function approximateTokenCount(text) {
+  return Math.ceil(text.length * 0.4);
+}
+
 export default function Home() {
+  const MAX_TOKENS = 4096;
   const [prompt, setPrompt] = useState("");
   const [messages, setMessages] = useState([]);
   const [prediction, setPrediction] = useState(null);
@@ -21,7 +26,6 @@ export default function Home() {
       switch (action.type) {
         case "append":
           return { ...state, buffer: state.buffer + action.payload };
-
         case "display":
           return {
             ...state,
@@ -46,11 +50,13 @@ export default function Home() {
   };
 
   const handleSubmit = async (userMessage) => {
+    const SNIP = "<!-- snip -->";
+
     if (eventSource) {
       eventSource.close();
     }
 
-    const messageHistory = messages;
+    const messageHistory = [...messages];
     if (currentMessage.buffer.length > 0) {
       messageHistory.push({
         text: currentMessage.buffer,
@@ -61,17 +67,32 @@ export default function Home() {
       text: userMessage,
       isUser: true,
     });
-    setMessages(messageHistory);
 
-    const messageHistoryPrompt = messageHistory
-      .map((message) => {
-        if (message.isUser) {
-          return `User: ${message.text}`;
-        } else {
-          return `Assistant: ${message.text}`;
-        }
-      })
-      .join("\n");
+    const generatePrompt = (messages) => {
+      return messages.map(message => (message.isUser ? `User: ${message.text}` : `Assistant: ${message.text}`)).join("\n");
+    };
+
+    // Generate initial prompt and calculate tokens
+    let prompt = `${generatePrompt(messageHistory)}\nAssistant: `;
+
+    // Check if we exceed max tokens and truncate the message history if so.
+    while (approximateTokenCount(prompt) > MAX_TOKENS) {
+      if (messageHistory.length < 3) {
+        setError(
+          "Your message is too long. Please try again with a shorter message."
+        );
+
+        return;
+      }
+
+      // Remove the third message from history, keeping the original exchange.
+      messageHistory.splice(1, 2);
+
+      // Recreate the prompt
+      prompt = `${SNIP}\n${generatePrompt(messageHistory)}\nAssistant: `;
+    }
+
+    setMessages(messageHistory);
 
     console.log(systemPrompt);
 
@@ -84,6 +105,7 @@ export default function Home() {
         prompt: `${messageHistoryPrompt}
 Assistant:`,
         systemPrompt: systemPrompt,
+
       }),
     });
 
