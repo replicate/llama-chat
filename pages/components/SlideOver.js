@@ -14,7 +14,7 @@ export default function SlideOver({
   handleSubmit,
 }) {
   return (
-    <Transition.Root show={open} as={Fragment}>
+    <Transition.Root show={open ? true : false} as={Fragment}>
       <Dialog as="div" className="relative font-serif z-10" onClose={setOpen}>
         <div className="fixed inset-0" />
 

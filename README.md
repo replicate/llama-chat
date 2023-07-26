@@ -41,8 +41,7 @@ TODO
 - [x] probably want some sort of logic to truncate the message history (so we're not sending a prompt that's too long — we don't want an error there)
 - [x] fix the runtime error
 - [ ] auto-scrolldown on last message
-- [ ] UI touchups
-- System prompts
-- add a select for the llama model (double check that they all have streaming)
+- [x] UI touchups
+- [x] System prompts
 - stats on bottom
 - report that prompts email to team
