@@ -27,6 +27,7 @@ export default function Home() {
       switch (action.type) {
         case "append":
           bottomRef.current.scrollIntoView({ behavior: "smooth" });
+          //   return { ...state, buffer: state.buffer + action.payload };
           return {
             ...state,
             displayed: state.displayed + action.payload,
