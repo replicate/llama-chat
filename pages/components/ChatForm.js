@@ -13,11 +13,11 @@ const ChatForm = ({ onSubmit }) => {
             <input
               type="text"
               required="true"
-              className="flex-grow rounded-l-md focus:outline-none outline-none"
+              className="flex-grow rounded-l-md focus:outline-none outline-none focus:ring-0 focus:ring-offset-0"
               name="prompt"
             />
             <button className="button" type="submit">
-              Send
+              Chat
             </button>
           </form>
         </div>

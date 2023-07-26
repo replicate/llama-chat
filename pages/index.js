@@ -3,12 +3,16 @@ import Head from "next/head";
 import ChatForm from "./components/ChatForm";
 import Message from "./components/Message";
 import SlideOver from "./components/SlideOver";
+import { Cog6ToothIcon } from "@heroicons/react/20/solid";
 
 export default function Home() {
   const [messages, setMessages] = useState([]);
   const [prediction, setPrediction] = useState(null);
   const [eventSource, setEventSource] = useState(null);
   const [open, setOpen] = useState(true);
+  const [systemPrompt, setSystemPrompt] = useState(
+    "You are a friendly assistant."
+  );
 
   const [currentMessage, dispatchCurrentMessage] = useReducer(
     (state, action) => {
@@ -32,6 +36,12 @@ export default function Home() {
   const intervalRef = useRef(null);
 
   const [error, setError] = useState(null);
+
+  const handleSettingsSubmit = async (event) => {
+    event.preventDefault();
+    setOpen(false);
+    setSystemPrompt(event.target.systemPrompt.value);
+  };
 
   const handleSubmit = async (userMessage) => {
     if (eventSource) {
@@ -61,6 +71,8 @@ export default function Home() {
       })
       .join("\n");
 
+    console.log(systemPrompt);
+
     const response = await fetch("/api/predictions", {
       method: "POST",
       headers: {
@@ -69,6 +81,7 @@ export default function Home() {
       body: JSON.stringify({
         prompt: `${messageHistoryPrompt}
 Assistant:`,
+        systemPrompt: systemPrompt,
       }),
     });
 
@@ -129,7 +142,25 @@ Assistant:`,
         <a href="https://replicate.com/a16z-infra/llama13b-v2-chat">Llama</a>
       </h1>
 
-      <SlideOver open={open} setOpen={setOpen} />
+      <div className="absolute top-4 right-4">
+        <button
+          type="button"
+          className="rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+          onClick={() => setOpen(true)}
+        >
+          <Cog6ToothIcon
+            className="h-5 w-5 text-gray-500 group-hover:text-gray-900"
+            aria-hidden="true"
+          />
+        </button>
+      </div>
+
+      <SlideOver
+        open={open}
+        setOpen={setOpen}
+        systemPrompt={systemPrompt}
+        handleSubmit={handleSettingsSubmit}
+      />
 
       <ChatForm onSubmit={handleSubmit} />
 

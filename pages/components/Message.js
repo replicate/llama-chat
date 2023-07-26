@@ -1,5 +1,3 @@
-import { Fragment } from "react";
-
 const Message = ({ message, isUser }) => {
   let containerClass = "";
   if (isUser) {
