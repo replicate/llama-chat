@@ -15,6 +15,10 @@ input {
   @apply py-2;
 }
 
+i {
+  @apply font-normal;
+}
+
 .border-hairline {
   @apply border border-black border-opacity-10;
 }
