@@ -3,7 +3,7 @@ const Message = ({ message, isUser }) => {
     message = message.join("");
   }
 
-  if (message === "") {
+  if (!message || message === "") {
     return null;
   }
 
