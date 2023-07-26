@@ -8,18 +8,24 @@ export default function Home() {
   const [prediction, setPrediction] = useState(null);
   const [eventSource, setEventSource] = useState(null);
 
-  const [currentMessage, dispatchCurrentMessage] = useReducer((state, action) => {
-    switch (action.type) {
-      case 'append':
-        return { ...state, buffer: state.buffer + action.payload };
-      case 'display':
-        return { ...state, displayed: state.displayed + state.buffer[state.displayed.length] };
-      case 'reset':
-        return { buffer: '', displayed: '' };
-      default:
-        throw new Error();
-    }
-  }, { buffer: '', displayed: '' });
+  const [currentMessage, dispatchCurrentMessage] = useReducer(
+    (state, action) => {
+      switch (action.type) {
+        case "append":
+          return { ...state, buffer: state.buffer + action.payload };
+        case "display":
+          return {
+            ...state,
+            displayed: state.displayed + state.buffer[state.displayed.length],
+          };
+        case "reset":
+          return { buffer: "", displayed: "" };
+        default:
+          throw new Error();
+      }
+    },
+    { buffer: "", displayed: "" }
+  );
   const intervalRef = useRef(null);
 
   const [error, setError] = useState(null);
@@ -33,22 +39,24 @@ export default function Home() {
     if (currentMessage.buffer.length > 0) {
       messageHistory.push({
         text: currentMessage.buffer,
-        isUser: false
+        isUser: false,
       });
     }
     messageHistory.push({
       text: userMessage,
-      isUser: true
+      isUser: true,
     });
     setMessages(messageHistory);
 
-    const messageHistoryPrompt = messageHistory.map((message) => {
-      if (message.isUser) {
-        return `User: ${message.text}`;
-      } else {
-        return `Assistant: ${message.text}`;
-      }
-    }).join("\n");
+    const messageHistoryPrompt = messageHistory
+      .map((message) => {
+        if (message.isUser) {
+          return `User: ${message.text}`;
+        } else {
+          return `Assistant: ${message.text}`;
+        }
+      })
+      .join("\n");
 
     const response = await fetch("/api/predictions", {
       method: "POST",
@@ -77,15 +85,15 @@ Assistant:`,
     const source = new EventSource(prediction.urls.stream);
     source.addEventListener("output", (e) => {
       console.log("output", e);
-      dispatchCurrentMessage({ type: 'append', payload: e.data });
+      dispatchCurrentMessage({ type: "append", payload: e.data });
     });
     source.addEventListener("error", (e) => {
       source.close();
-      setError(e);
+      setError(e.message);
     });
     setEventSource(source);
 
-    dispatchCurrentMessage({ type: 'reset' });
+    dispatchCurrentMessage({ type: "reset" });
 
     return () => {
       source.close();
@@ -96,11 +104,11 @@ Assistant:`,
   useEffect(() => {
     intervalRef.current = setInterval(() => {
       if (currentMessage.displayed.length < currentMessage.buffer.length) {
-        dispatchCurrentMessage({ type: 'display' });
+        dispatchCurrentMessage({ type: "display" });
       } else {
         clearInterval(intervalRef.current);
       }
-    }, 30);
+    }, 5);
 
     return () => {
       clearInterval(intervalRef.current);
@@ -124,7 +132,11 @@ Assistant:`,
 
       <div className="pb-24">
         {messages.map((message, index) => (
-          <Message key={`message-${index}`} message={message.text} isUser={message.isUser} />
+          <Message
+            key={`message-${index}`}
+            message={message.text}
+            isUser={message.isUser}
+          />
         ))}
         {currentMessage.displayed && currentMessage.displayed.length > 0 && (
           <Message message={currentMessage.displayed} isUser={false} />

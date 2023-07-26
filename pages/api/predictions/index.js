@@ -13,7 +13,7 @@ export default async function handler(req, res) {
 
   const prediction = await replicate.predictions.create({
     // See https://replicate.com/a16z-infra/llama13b-v2-chat/versions
-    version: "e951f18578850b652510200860fc4ea62b3b16fac280f83ff32282f87bbd2e48",
+    version: "4b0970478e6123a0437561282904683f32a9ed0307205dc5db2b5609d6a2ceff",
 
     stream: true,
 
