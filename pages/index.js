@@ -22,31 +22,7 @@ export default function Home() {
     "You are a friendly assistant."
   );
 
-  const [currentMessage, dispatchCurrentMessage] = useReducer(
-    (state, action) => {
-      switch (action.type) {
-        case "append":
-          bottomRef.current.scrollIntoView({ behavior: "smooth" });
-          //   return { ...state, buffer: state.buffer + action.payload };
-          return {
-            ...state,
-            displayed: state.displayed + action.payload,
-            buffer: state.buffer + action.payload,
-          };
-        case "display":
-          bottomRef.current.scrollIntoView({ behavior: "smooth" });
-          return {
-            ...state,
-            displayed: state.displayed + state.buffer[state.displayed.length],
-          };
-        case "reset":
-          return { buffer: "", displayed: "" };
-        default:
-          throw new Error();
-      }
-    },
-    { buffer: "", displayed: "" }
-  );
+  const [currentMessage, setCurrentMessage] = useState("");
   const intervalRef = useRef(null);
 
   const [error, setError] = useState(null);
@@ -65,9 +41,9 @@ export default function Home() {
     }
 
     const messageHistory = [...messages];
-    if (currentMessage.buffer.length > 0) {
+    if (currentMessage.length > 0) {
       messageHistory.push({
-        text: currentMessage.buffer,
+        text: currentMessage,
         isUser: false,
       });
     }
@@ -108,8 +84,6 @@ export default function Home() {
 
     setMessages(messageHistory);
 
-    console.log(systemPrompt);
-
     const response = await fetch("/api/predictions", {
       method: "POST",
       headers: {
@@ -135,22 +109,22 @@ Assistant:`,
       return;
     }
 
+    setCurrentMessage("");
+
     const source = new EventSource(prediction.urls.stream);
     source.addEventListener("output", (e) => {
       console.log("output", e);
-      dispatchCurrentMessage({ type: "append", payload: e.data });
+      setCurrentMessage((m) => m + e.data);
     });
     source.addEventListener("error", (e) => {
+      console.log("error", e);
       source.close();
       setError(e.message);
     });
     setEventSource(source);
 
-    dispatchCurrentMessage({ type: "reset" });
-
     return () => {
       source.close();
-      clearInterval(intervalRef.current);
     };
   }, [prediction]);
 
@@ -159,20 +133,6 @@ Assistant:`,
       bottomRef.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [messages, prediction]);
-
-  useEffect(() => {
-    intervalRef.current = setInterval(() => {
-      if (currentMessage.displayed.length < currentMessage.buffer.length) {
-        dispatchCurrentMessage({ type: "display" });
-      } else {
-        clearInterval(intervalRef.current);
-      }
-    }, 5);
-
-    return () => {
-      clearInterval(intervalRef.current);
-    };
-  }, [currentMessage.buffer, currentMessage.displayed.length]);
 
   return (
     <div className="font-serif">
@@ -231,8 +191,8 @@ Assistant:`,
               isUser={message.isUser}
             />
           ))}
-          {currentMessage.displayed && currentMessage.displayed.length > 0 && (
-            <Message message={currentMessage.displayed} isUser={false} />
+          {currentMessage && currentMessage.length > 0 && (
+            <Message message={currentMessage} isUser={false} />
           )}
           <div ref={bottomRef} />
         </div>
