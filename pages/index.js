@@ -15,17 +15,15 @@ export default function Home() {
   const bottomRef = useRef(null);
   const [prompt, setPrompt] = useState("");
   const [messages, setMessages] = useState([]);
+
   const [prediction, setPrediction] = useState(null);
   const [eventSource, setEventSource] = useState(null);
   const [open, setOpen] = useState(false);
   const [systemPrompt, setSystemPrompt] = useState(
-    `You are a helpful, respectful and honest assistant. Always answer as helpfully as possible, while being safe. Your answers should not include any harmful, unethical, racist, sexist, toxic, dangerous, or illegal content. Please ensure that your responses are socially unbiased and positive in nature.
-
-    If a question does not make any sense, or is not factually coherent, explain why instead of answering something not correct. If you don\'t know the answer to a question, please don\'t share false information.`
+    "You are a helpful assistant. You do not respond as 'User' or pretend to be 'User'. You only respond once as Assistant."
   );
 
   const [currentMessage, setCurrentMessage] = useState("");
-  const intervalRef = useRef(null);
 
   const [error, setError] = useState(null);
 
@@ -53,6 +51,8 @@ export default function Home() {
       text: userMessage,
       isUser: true,
     });
+
+    console.log(messageHistory);
 
     const generatePrompt = (messages) => {
       return messages
@@ -157,9 +157,9 @@ Assistant:`,
       <nav className="flex w-full justify-end p-3">
         <a
           className="rounded-md mr-3 inline-flex items-center bg-white px-3 py-2 text-sm font-semibold text-gray-700 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-          href="https://replicate.com/a16z-infra/llama13b-v2-chat?utm_source=project&utm_campaign=llamachat"
+          href="https://replicate.com/replicate/llama-2-70b-chat?utm_source=project&utm_campaign=llamachat"
         >
-          Run Llama Yourself
+          Run Llama
         </a>
         <button
           type="button"
@@ -173,10 +173,10 @@ Assistant:`,
         </button>
       </nav>
 
-      <main className="max-w-2xl pb-5 mx-auto">
+      <main className="max-w-2xl pb-5 px-4 mx-auto">
         <h1 className="text-center font-bold text-2xl">
           Chat with a{" "}
-          <a href="https://replicate.com/a16z-infra/llama13b-v2-chat?utm_source=project&utm_compaign=llamachat">
+          <a href="https://replicate.com/replicate/llama-2-70b-chat?utm_source=project&utm_compaign=llamachat">
             Llama
           </a>
         </h1>
