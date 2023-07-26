@@ -121,6 +121,10 @@ Assistant:`,
       source.close();
       setError(e.message);
     });
+    source.addEventListener("done", (e) => {
+      console.log("done", e);
+      source.close();
+    });
     setEventSource(source);
 
     return () => {
