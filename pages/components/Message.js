@@ -6,8 +6,6 @@ const Message = ({ message, isUser }) => {
     containerClass = "mt-5 bg-gray-100 p-5 rounded-md";
   }
 
-  console.log({ message });
-
   if (Array.isArray(message)) {
     message = message.join("");
   }
