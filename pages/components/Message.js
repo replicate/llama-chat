@@ -3,21 +3,22 @@ const Message = ({ message, isUser }) => {
     message = message.join("");
   }
 
-  return (
-    <div className=" border-b">
-      <ul className="">
-        {message &&
-          message.split("\n").map((text, index) => (
-            <li key={index} className="flex gap-x-4 py-5">
-              <div className="text-2xl"> {isUser ? "👤" : "🦙"}</div>
+  if (message === "") {
+    return null;
+  }
 
-              <div className="min-w-0">
-                <p className="mt-1">{text}</p>
-              </div>
-            </li>
-          ))}
-      </ul>
-    </div>
+  return (
+    <p className="flex gap-x-4 py-5 border-b">
+      <span className="text-2xl"> {isUser ? "👤" : "🦙"}</span>
+      <div className="flex flex-col flex-1 gap-y-4 mt-1">
+        {message.split("\n").map((text, index) => (
+          text.length > 0 &&
+          <span key={index} className="min-w-0">
+            {text}
+          </span>
+        ))}
+      </div>
+    </p >
   );
 };
 
