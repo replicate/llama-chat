@@ -1,9 +1,4 @@
 const Message = ({ message, isUser }) => {
-  let containerClass = "";
-  if (isUser) {
-    containerClass = "";
-  }
-
   console.log({ message });
 
   if (Array.isArray(message)) {
