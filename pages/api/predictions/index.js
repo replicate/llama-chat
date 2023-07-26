@@ -11,6 +11,8 @@ export default async function handler(req, res) {
     );
   }
 
+  console.log(req.body.systemPrompt);
+
   const prediction = await replicate.predictions.create({
     // See https://replicate.com/a16z-infra/llama13b-v2-chat/versions
     version: "4b0970478e6123a0437561282904683f32a9ed0307205dc5db2b5609d6a2ceff",
@@ -20,6 +22,7 @@ export default async function handler(req, res) {
     // This is the text prompt that will be submitted by a form on the frontend
     input: {
       prompt: req.body.prompt,
+      system_prompt: req.body.systemPrompt,
       max_length: 500,
       temperature: 0.75,
       repetition_penalty: 1,

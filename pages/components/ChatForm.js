@@ -1,7 +1,8 @@
-const ChatForm = ({ onSubmit }) => {
+const ChatForm = ({ prompt, setPrompt, onSubmit }) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     onSubmit(event.target.prompt.value);
+    setPrompt("");
     event.target.reset();
   };
 
@@ -11,12 +12,15 @@ const ChatForm = ({ onSubmit }) => {
         <div className="container max-w-2xl mx-auto p-5 pb-8">
           <form className="w-full flex" onSubmit={handleSubmit}>
             <input
+              onChange={(e) => setPrompt(e.target.value)}
               type="text"
-              className="flex-grow rounded-l-md"
+              required="true"
+              className="flex-grow rounded-l-md focus:outline-none outline-none focus:ring-0 focus:ring-offset-0"
               name="prompt"
+              value={prompt}
             />
             <button className="button" type="submit">
-              Send
+              Chat
             </button>
           </form>
         </div>

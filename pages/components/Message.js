@@ -1,28 +1,25 @@
-import { Fragment } from "react";
-
 const Message = ({ message, isUser }) => {
-  let containerClass = "mt-5 bg-green-200 p-5 rounded-md";
-  if (isUser) {
-    containerClass = "mt-5 bg-gray-100 p-5 rounded-md";
-  }
+
+  console.log({ message });
 
   if (Array.isArray(message)) {
     message = message.join("");
   }
 
   return (
-    <div className="">
-      <div>
+    <div className=" border-b">
+      <ul className="">
         {message &&
           message.split("\n").map((text, index) => (
-            <div class="">
-              <div className={containerClass} key={index}>
-                {text}
-                <br />
+            <li key={index} className="flex gap-x-4 py-5">
+              <div className="text-2xl"> {isUser ? "👤" : "🦙"}</div>
+
+              <div className="min-w-0">
+                <p className="mt-1">{text}</p>
               </div>
-            </div>
+            </li>
           ))}
-      </div>
+      </ul>
     </div>
   );
 };
