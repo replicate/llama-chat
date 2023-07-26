@@ -143,7 +143,7 @@ Assistant:`,
       <Head>
         <title>Llama Chat</title>
       </Head>
-      <nav class="flex w-full justify-end p-3">
+      <nav className="flex w-full justify-end p-3">
         <a
           className="rounded-md mr-3 inline-flex items-center bg-white px-3 py-2 text-sm font-semibold text-gray-700 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
           href="https://replicate.com/a16z-infra/llama13b-v2-chat?utm_source=project&utm_campaign=llamachat"
