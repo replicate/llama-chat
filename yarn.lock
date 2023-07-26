@@ -1765,10 +1765,9 @@ regexp.prototype.flags@^1.4.3:
     define-properties "^1.1.3"
     functions-have-names "^1.2.2"
 
-replicate@^0.12.3:
+"replicate@github:replicate/replicate-javascript#stream":
   version "0.12.3"
-  resolved "https://registry.npmjs.org/replicate/-/replicate-0.12.3.tgz"
-  integrity sha512-HVWKPoVhWVTONlWk+lUXmq9Vy2J8MxBJMtDBQq3dA5uq71ZzKTh0xvJfvzW4+VLBjhBeL7tkdua6hZJmKfzAPQ==
+  resolved "git+ssh://git@github.com/replicate/replicate-javascript.git#94c3b687145dae90f6f6533591e52be269ab1f43"
 
 resolve-from@^4.0.0:
   version "4.0.0"

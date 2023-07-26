@@ -13,7 +13,9 @@ export default async function handler(req, res) {
 
   const prediction = await replicate.predictions.create({
     // See https://replicate.com/a16z-infra/llama13b-v2-chat/versions
-    version: "df7690f1994d94e96ad9d568eac121aecf50684a0b0963b25a41cc40061269e5",
+    version: "4b0970478e6123a0437561282904683f32a9ed0307205dc5db2b5609d6a2ceff",
+
+    stream: true,
 
     // This is the text prompt that will be submitted by a form on the frontend
     input: {
@@ -24,6 +26,8 @@ export default async function handler(req, res) {
       top_p: 1,
     },
   });
+
+  console.log({ prediction });
 
   if (prediction?.error) {
     res.statusCode = 500;

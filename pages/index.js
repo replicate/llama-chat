@@ -1,30 +1,66 @@
-import { Fragment, useEffect, useState } from "react";
+import { useEffect, useRef, useReducer, useState } from "react";
 import Head from "next/head";
 import ChatForm from "./components/ChatForm";
 import Message from "./components/Message";
 
-const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
-
 export default function Home() {
   const [messages, setMessages] = useState([]);
   const [prediction, setPrediction] = useState(null);
+  const [eventSource, setEventSource] = useState(null);
+  const [systemPrompt, setSystemPrompt] = useState(
+    "You are a friendly assistant."
+  );
+
+  const [currentMessage, dispatchCurrentMessage] = useReducer(
+    (state, action) => {
+      switch (action.type) {
+        case "append":
+          return { ...state, buffer: state.buffer + action.payload };
+
+        case "display":
+          return {
+            ...state,
+            displayed: state.displayed + state.buffer[state.displayed.length],
+          };
+        case "reset":
+          return { buffer: "", displayed: "" };
+        default:
+          throw new Error();
+      }
+    },
+    { buffer: "", displayed: "" }
+  );
+  const intervalRef = useRef(null);
+
   const [error, setError] = useState(null);
 
   const handleSubmit = async (userMessage) => {
-    const messageHistory = [...messages, {
-      text: userMessage,
-      isUser: true
-    }]
+    if (eventSource) {
+      eventSource.close();
+    }
 
+    const messageHistory = messages;
+    if (currentMessage.buffer.length > 0) {
+      messageHistory.push({
+        text: currentMessage.buffer,
+        isUser: false,
+      });
+    }
+    messageHistory.push({
+      text: userMessage,
+      isUser: true,
+    });
     setMessages(messageHistory);
 
-    const messageHistoryPrompt = messageHistory.map((message) => {
-      if (message.isUser) {
-        return `User: ${message.text}`;
-      } else {
-        return `Assistant: ${message.text}`;
-      }
-    }).join("\n");
+    const messageHistoryPrompt = messageHistory
+      .map((message) => {
+        if (message.isUser) {
+          return `User: ${message.text}`;
+        } else {
+          return `Assistant: ${message.text}`;
+        }
+      })
+      .join("\n");
 
     const response = await fetch("/api/predictions", {
       method: "POST",
@@ -36,38 +72,52 @@ export default function Home() {
 Assistant:`,
       }),
     });
-    let prediction = await response.json();
+
+    const prediction = await response.json();
     if (response.status !== 201) {
       setError(prediction.detail);
       return;
     }
     setPrediction(prediction);
-
-    while (
-      prediction.status !== "succeeded" &&
-      prediction.status !== "failed"
-    ) {
-      await sleep(1000);
-      const response = await fetch("/api/predictions/" + prediction.id);
-      prediction = await response.json();
-      if (response.status !== 200) {
-        setError(prediction.detail);
-        return;
-      }
-      console.log({ prediction });
-      setPrediction(prediction);
-    }
   };
 
   useEffect(() => {
-    if (prediction?.status === "succeeded") {
-      setMessages([...messages, {
-        text: prediction.output.join(""),
-        isUser: false
-      }]);
-      setPrediction(null);
+    if (!prediction?.urls?.stream) {
+      return;
     }
+
+    const source = new EventSource(prediction.urls.stream);
+    source.addEventListener("output", (e) => {
+      console.log("output", e);
+      dispatchCurrentMessage({ type: "append", payload: e.data });
+    });
+    source.addEventListener("error", (e) => {
+      source.close();
+      setError(e.message);
+    });
+    setEventSource(source);
+
+    dispatchCurrentMessage({ type: "reset" });
+
+    return () => {
+      source.close();
+      clearInterval(intervalRef.current);
+    };
   }, [prediction]);
+
+  useEffect(() => {
+    intervalRef.current = setInterval(() => {
+      if (currentMessage.displayed.length < currentMessage.buffer.length) {
+        dispatchCurrentMessage({ type: "display" });
+      } else {
+        clearInterval(intervalRef.current);
+      }
+    }, 5);
+
+    return () => {
+      clearInterval(intervalRef.current);
+    };
+  }, [currentMessage.buffer, currentMessage.displayed.length]);
 
   return (
     <div className="container max-w-2xl mx-auto p-5">
@@ -86,17 +136,14 @@ Assistant:`,
 
       <div className="pb-24">
         {messages.map((message, index) => (
-          <Fragment key={index}>
-            <Message message={message.text} isUser={message.isUser} />
-          </Fragment>
+          <Message
+            key={`message-${index}`}
+            message={message.text}
+            isUser={message.isUser}
+          />
         ))}
-        {prediction && (
-          <>
-            {prediction.output && (
-              <Message message={prediction.output} isUser={false} />
-            )}
-            <p className="py-3 text-sm opacity-50">status: {prediction.status}</p>
-          </>
+        {currentMessage.displayed && currentMessage.displayed.length > 0 && (
+          <Message message={currentMessage.displayed} isUser={false} />
         )}
       </div>
     </div>
