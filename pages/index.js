@@ -19,7 +19,9 @@ export default function Home() {
   const [eventSource, setEventSource] = useState(null);
   const [open, setOpen] = useState(false);
   const [systemPrompt, setSystemPrompt] = useState(
-    "You are a friendly assistant."
+    `You are a helpful, respectful and honest assistant. Always answer as helpfully as possible, while being safe. Your answers should not include any harmful, unethical, racist, sexist, toxic, dangerous, or illegal content. Please ensure that your responses are socially unbiased and positive in nature.
+
+    If a question does not make any sense, or is not factually coherent, explain why instead of answering something not correct. If you don\'t know the answer to a question, please don\'t share false information.`
   );
 
   const [currentMessage, setCurrentMessage] = useState("");
@@ -173,7 +175,7 @@ Assistant:`,
 
       <main className="max-w-2xl pb-5 mx-auto">
         <h1 className="text-center font-bold text-2xl">
-          Chat with a {" "}
+          Chat with a{" "}
           <a href="https://replicate.com/a16z-infra/llama13b-v2-chat?utm_source=project&utm_compaign=llamachat">
             Llama
           </a>
