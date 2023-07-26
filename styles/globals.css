@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+  @apply font-serif;
+}
+
 input {
   @apply border;
   @apply border-solid;
@@ -9,6 +13,10 @@ input {
   /* @apply rounded-md; */
   @apply px-4;
   @apply py-2;
+}
+
+i {
+  @apply font-normal;
 }
 
 .border-hairline {

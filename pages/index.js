@@ -139,7 +139,7 @@ Assistant:`,
   }, [messages, currentMessage]);
 
   return (
-    <div className="font-serif">
+    <>
       <Head>
         <title>Llama Chat</title>
 
@@ -171,15 +171,13 @@ Assistant:`,
         </button>
       </nav>
 
-      <div className="max-w-2xl pb-5 mx-auto">
+      <main className="max-w-2xl pb-5 mx-auto">
         <h1 className="text-center font-bold text-2xl">
-          Chat with a{" "}
+          Chat with a {" "}
           <a href="https://replicate.com/a16z-infra/llama13b-v2-chat?utm_source=project&utm_compaign=llamachat">
             Llama
           </a>
         </h1>
-
-        {/* {messages.length == 0 && <EmptyState setPrompt={setPrompt} />} */}
 
         <SlideOver
           open={open}
@@ -196,7 +194,7 @@ Assistant:`,
 
         {error && <div>{error}</div>}
 
-        <div className="pb-24">
+        <article className="pb-24">
           {messages.map((message, index) => (
             <Message
               key={`message-${index}`}
@@ -208,8 +206,8 @@ Assistant:`,
             <Message message={currentMessage} isUser={false} />
           )}
           <div ref={bottomRef} />
-        </div>
-      </div>
-    </div>
+        </article>
+      </main>
+    </>
   );
 }
