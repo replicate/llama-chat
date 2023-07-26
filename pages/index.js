@@ -69,7 +69,13 @@ export default function Home() {
     });
 
     const generatePrompt = (messages) => {
-      return messages.map(message => (message.isUser ? `User: ${message.text}` : `Assistant: ${message.text}`)).join("\n");
+      return messages
+        .map((message) =>
+          message.isUser
+            ? `User: ${message.text}`
+            : `Assistant: ${message.text}`
+        )
+        .join("\n");
     };
 
     // Generate initial prompt and calculate tokens
@@ -102,10 +108,9 @@ export default function Home() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        prompt: `${messageHistoryPrompt}
+        prompt: `${prompt}
 Assistant:`,
         systemPrompt: systemPrompt,
-
       }),
     });
 
