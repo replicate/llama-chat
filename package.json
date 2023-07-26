@@ -18,7 +18,7 @@
     "next": "13.4.6",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "replicate": "github:replicate/replicate-javascript#stream"
+    "replicate": "^0.13.0"
   },
   "devDependencies": {
     "@tailwindcss/forms": "^0.5.4",
