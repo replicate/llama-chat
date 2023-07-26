@@ -53,11 +53,7 @@ const items = [
   },
 ];
 
-function classNames(...classes) {
-  return classes.filter(Boolean).join(" ");
-}
-
-export default function EmptyState() {
+export default function EmptyState({ setPrompt }) {
   return (
     <div className="mt-12">
       <h2 className="text-base font-semibold leading-6 text-gray-900">
@@ -68,14 +64,9 @@ export default function EmptyState() {
         <a className="underline" href="https://github.com/replicate/llama-chat">
           open source app
         </a>{" "}
-        for chatting with Llama 2. Powered by{" "}
-        <a
-          className="underline"
-          href="https://replicate.com/a16z-infra/llama13b-v2-chat?utm_source=project&utm_compaign=llamachat"
-        >
-          Replicate
-        </a>
-        .
+        for chatting with Llama 2. You can customize Llama's personality by
+        clicking on the settings button on the top right. Enter text in the
+        chatbox, or start a conversation:
       </p>
 
       <ul
@@ -83,7 +74,11 @@ export default function EmptyState() {
         className="mt-6 divide-y divide-gray-200 border-b border-t border-gray-200"
       >
         {items.map((item, itemIdx) => (
-          <li key={itemIdx}>
+          <button
+            className="text-left"
+            key={itemIdx}
+            onClick={() => setPrompt(item.description)}
+          >
             <div className="group relative flex items-start space-x-3 py-4">
               <div className="flex-shrink-0">
                 <span className="text-4xl mr-3">{item.emoji}</span>
@@ -104,7 +99,7 @@ export default function EmptyState() {
                 />
               </div>
             </div>
-          </li>
+          </button>
         ))}
       </ul>
     </div>

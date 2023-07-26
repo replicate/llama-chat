@@ -7,6 +7,7 @@ import EmptyState from "./components/EmptyState";
 import { Cog6ToothIcon } from "@heroicons/react/20/solid";
 
 export default function Home() {
+  const [prompt, setPrompt] = useState("");
   const [messages, setMessages] = useState([]);
   const [prediction, setPrediction] = useState(null);
   const [eventSource, setEventSource] = useState(null);
@@ -164,7 +165,7 @@ Assistant:`,
           </a>
         </h1>
 
-        <EmptyState />
+        {messages.length == 0 && <EmptyState setPrompt={setPrompt} />}
 
         <SlideOver
           open={open}
@@ -173,7 +174,11 @@ Assistant:`,
           handleSubmit={handleSettingsSubmit}
         />
 
-        <ChatForm onSubmit={handleSubmit} />
+        <ChatForm
+          prompt={prompt}
+          setPrompt={setPrompt}
+          onSubmit={handleSubmit}
+        />
 
         {error && <div>{error}</div>}
 

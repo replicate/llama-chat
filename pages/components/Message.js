@@ -11,11 +11,11 @@ const Message = ({ message, isUser }) => {
   }
 
   return (
-    <div className="">
-      <ul className="divide-y divide-gray-300">
+    <div className=" border-b">
+      <ul className="">
         {message &&
           message.split("\n").map((text, index) => (
-            <li key={index} className="flex gap-x-4 py-5 border-b">
+            <li key={index} className="flex gap-x-4 py-5">
               <div className="text-2xl"> {isUser ? "👤" : "🦙"}</div>
 
               <div className="min-w-0">
