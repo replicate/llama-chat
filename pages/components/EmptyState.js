@@ -64,7 +64,7 @@ export default function EmptyState({ setPrompt }) {
         <a className="underline" href="https://github.com/replicate/llama-chat">
           open source app
         </a>{" "}
-        for chatting with Llama 2. You can customize Llama's personality by
+        for chatting with Llama 2. You can customize Llama&apos;s personality by
         clicking on the settings button on the top right. Enter text in the
         chatbox, or start a conversation:
       </p>
