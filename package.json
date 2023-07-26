@@ -10,6 +10,8 @@
     "test": "npm run lint && npm run build"
   },
   "dependencies": {
+    "@headlessui/react": "^1.7.15",
+    "@heroicons/react": "^2.0.18",
     "@next/font": "13.4.6",
     "eslint": "8.43.0",
     "eslint-config-next": "13.0.7",
@@ -19,6 +21,7 @@
     "replicate": "github:replicate/replicate-javascript#stream"
   },
   "devDependencies": {
+    "@tailwindcss/forms": "^0.5.4",
     "autoprefixer": "^10.4.14",
     "postcss": "^8.4.21",
     "tailwindcss": "^3.3.2"

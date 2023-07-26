@@ -12,7 +12,8 @@ const ChatForm = ({ onSubmit }) => {
           <form className="w-full flex" onSubmit={handleSubmit}>
             <input
               type="text"
-              className="flex-grow rounded-l-md"
+              required="true"
+              className="flex-grow rounded-l-md focus:outline-none outline-none"
               name="prompt"
             />
             <button className="button" type="submit">

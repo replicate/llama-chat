@@ -2,14 +2,13 @@ import { useEffect, useRef, useReducer, useState } from "react";
 import Head from "next/head";
 import ChatForm from "./components/ChatForm";
 import Message from "./components/Message";
+import SlideOver from "./components/SlideOver";
 
 export default function Home() {
   const [messages, setMessages] = useState([]);
   const [prediction, setPrediction] = useState(null);
   const [eventSource, setEventSource] = useState(null);
-  const [systemPrompt, setSystemPrompt] = useState(
-    "You are a friendly assistant."
-  );
+  const [open, setOpen] = useState(true);
 
   const [currentMessage, dispatchCurrentMessage] = useReducer(
     (state, action) => {
@@ -120,15 +119,17 @@ Assistant:`,
   }, [currentMessage.buffer, currentMessage.displayed.length]);
 
   return (
-    <div className="container max-w-2xl mx-auto p-5">
+    <div className="container font-serif max-w-2xl mx-auto p-5">
       <Head>
         <title>Llama Chat</title>
       </Head>
 
-      <h1 className="py-6 text-center font-bold text-2xl">
+      <h1 className="pt-6 text-center font-bold text-2xl">
         Chat with a{" "}
         <a href="https://replicate.com/a16z-infra/llama13b-v2-chat">Llama</a>
       </h1>
+
+      <SlideOver open={open} setOpen={setOpen} />
 
       <ChatForm onSubmit={handleSubmit} />
 
