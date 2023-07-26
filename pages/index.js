@@ -12,6 +12,7 @@ function approximateTokenCount(text) {
 
 export default function Home() {
   const MAX_TOKENS = 4096;
+  const bottomRef = useRef(null);
   const [prompt, setPrompt] = useState("");
   const [messages, setMessages] = useState([]);
   const [prediction, setPrediction] = useState(null);
@@ -25,8 +26,10 @@ export default function Home() {
     (state, action) => {
       switch (action.type) {
         case "append":
+          bottomRef.current.scrollIntoView({ behavior: "smooth" });
           return { ...state, buffer: state.buffer + action.payload };
         case "display":
+          bottomRef.current.scrollIntoView({ behavior: "smooth" });
           return {
             ...state,
             displayed: state.displayed + state.buffer[state.displayed.length],
@@ -147,6 +150,12 @@ Assistant:`,
   }, [prediction]);
 
   useEffect(() => {
+    if (messages.length > 0) {
+      bottomRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages, prediction]);
+
+  useEffect(() => {
     intervalRef.current = setInterval(() => {
       if (currentMessage.displayed.length < currentMessage.buffer.length) {
         dispatchCurrentMessage({ type: "display" });
@@ -192,7 +201,7 @@ Assistant:`,
           </a>
         </h1>
 
-        {messages.length == 0 && <EmptyState setPrompt={setPrompt} />}
+        {messages.length !== 100 && <EmptyState setPrompt={setPrompt} />}
 
         <SlideOver
           open={open}
@@ -220,6 +229,7 @@ Assistant:`,
           {currentMessage.displayed && currentMessage.displayed.length > 0 && (
             <Message message={currentMessage.displayed} isUser={false} />
           )}
+          <div ref={bottomRef} />
         </div>
       </div>
     </div>
