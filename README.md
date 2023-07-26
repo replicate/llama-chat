@@ -44,5 +44,7 @@ TODO
 - [x] fix the runtime error
 - [ ] auto-scrolldown on last message
 - [ ] UI touchups
-- S[ ] ystem prompts
+- System prompts
 - add a select for the llama model (double check that they all have streaming)
+- stats on bottom
+- report that prompts email to team
