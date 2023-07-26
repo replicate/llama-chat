@@ -133,10 +133,10 @@ Assistant:`,
   }, [prediction]);
 
   useEffect(() => {
-    if (messages.length > 0) {
+    if (messages?.length > 0 || currentMessage?.length > 0) {
       bottomRef.current.scrollIntoView({ behavior: "smooth" });
     }
-  }, [messages, prediction]);
+  }, [messages, currentMessage]);
 
   return (
     <div className="font-serif">
