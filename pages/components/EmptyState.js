@@ -62,7 +62,7 @@ export default function EmptyState({ setOpen }) {
           open source app
         </a>{" "}
         for chatting with Llama 2. If you're a developer and want to build your
-        streaming chat app, this is a great place to start. <br />
+        own streaming chat app, this is a great place to start. <br />
       </p>
 
       <p className="mt-6">
