@@ -11,6 +11,21 @@ function approximateTokenCount(text) {
   return Math.ceil(text.length * 0.4);
 }
 
+const VERSIONS = [
+  {
+    name: "Llama 2 7B",
+    version: "4b0970478e6123a0437561282904683f32a9ed0307205dc5db2b5609d6a2ceff",
+  },
+  {
+    name: "Llama 2 13B",
+    version: "d5da4236b006f967ceb7da037be9cfc3924b20d21fed88e1e94f19d56e2d3111",
+  },
+  {
+    name: "Llama 2 70B",
+    version: "2c1608e18606fad2812020dc541930f2d0495ce32eee50074220b87300bc16e1",
+  },
+];
+
 export default function Home() {
   const MAX_TOKENS = 4096;
   const bottomRef = useRef(null);
@@ -24,6 +39,7 @@ export default function Home() {
   const [error, setError] = useState(null);
 
   //   Llama params
+  const [size, setSize] = useState(VERSIONS[2]);
   const [systemPrompt, setSystemPrompt] = useState(
     "You are a helpful assistant. You do not respond as 'User' or pretend to be 'User'. You only respond once as Assistant."
   );
@@ -100,6 +116,7 @@ export default function Home() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
+        version: size.version,
         prompt: `${prompt}
 Assistant:`,
         systemPrompt: systemPrompt,
@@ -208,6 +225,9 @@ Assistant:`,
           setMaxTokens={setMaxTokens}
           topP={topP}
           setTopP={setTopP}
+          versions={VERSIONS}
+          size={size}
+          setSize={setSize}
         />
 
         <ChatForm

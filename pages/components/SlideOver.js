@@ -1,6 +1,11 @@
 import { Fragment, useState } from "react";
-import { Dialog, Transition } from "@headlessui/react";
-import { XMarkIcon } from "@heroicons/react/24/outline";
+import { Dialog, Transition, Listbox } from "@headlessui/react";
+import {
+  XMarkIcon,
+  ChevronUpDownIcon,
+  CheckIcon,
+} from "@heroicons/react/24/outline";
+
 export default function SlideOver({
   open,
   setOpen,
@@ -11,6 +16,9 @@ export default function SlideOver({
   setTopP,
   maxTokens,
   setMaxTokens,
+  versions,
+  size,
+  setSize,
   handleSubmit,
 }) {
   return (
@@ -33,7 +41,7 @@ export default function SlideOver({
                 <Dialog.Panel className="pointer-events-auto w-screen max-w-md">
                   <form
                     onSubmit={(e) => handleSubmit(e)}
-                    className="flex h-full flex-col divide-y divide-gray-200 bg-white shadow-xl"
+                    className="flex h-full flex-col divide-y divide-gray-200 bg-white"
                   >
                     <div className="h-0 flex-1 overflow-y-auto">
                       <div className="bg-gray-700 px-4 py-6 sm:px-6">
@@ -69,6 +77,85 @@ export default function SlideOver({
                                 htmlFor="description"
                                 className="block font-bold text-sm leading-6 text-gray-900"
                               >
+                                Llama Size
+                              </label>
+
+                              <p
+                                id="system-prompt-description"
+                                className="mt-2 text-xs text-gray-500"
+                              >
+                                This is prepended to the prompt and helps guide
+                                system behavior.
+                              </p>
+                              <div className="">
+                                <Listbox value={size} onChange={setSize}>
+                                  <div className="relative mt-1">
+                                    <Listbox.Button className="relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left border border-gray-300 focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
+                                      <span className="block truncate">
+                                        {size.name}
+                                      </span>
+                                      <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                                        <ChevronUpDownIcon
+                                          className="h-5 w-5 text-gray-400"
+                                          aria-hidden="true"
+                                        />
+                                      </span>
+                                    </Listbox.Button>
+                                    <Transition
+                                      as={Fragment}
+                                      leave="transition ease-in duration-100"
+                                      leaveFrom="opacity-100"
+                                      leaveTo="opacity-0"
+                                    >
+                                      <Listbox.Options className="absolute mt-1 max-h-60 w-full shadow-md overflow-auto border-gray-700 rounded-md bg-white py-1 text-base ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                                        {versions.map((version, versionIdx) => (
+                                          <Listbox.Option
+                                            key={versionIdx}
+                                            className={({ active }) =>
+                                              `relative cursor-default select-none py-2 pl-10 pr-4 ${
+                                                active
+                                                  ? "bg-gray-100 text-gray-900"
+                                                  : "text-gray-900"
+                                              }`
+                                            }
+                                            value={version}
+                                          >
+                                            {({ selected }) => (
+                                              <>
+                                                <span
+                                                  className={`block truncate ${
+                                                    selected
+                                                      ? "font-medium"
+                                                      : "font-normal"
+                                                  }`}
+                                                >
+                                                  {version.name}
+                                                </span>
+                                                {selected ? (
+                                                  <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-600">
+                                                    <CheckIcon
+                                                      className="h-5 w-5"
+                                                      aria-hidden="true"
+                                                    />
+                                                  </span>
+                                                ) : null}
+                                              </>
+                                            )}
+                                          </Listbox.Option>
+                                        ))}
+                                      </Listbox.Options>
+                                    </Transition>
+                                  </div>
+                                </Listbox>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="space-y-6 pb-5 pt-6">
+                            <div>
+                              <label
+                                htmlFor="description"
+                                className="block font-bold text-sm leading-6 text-gray-900"
+                              >
                                 System Prompt
                               </label>
                               <p
@@ -83,7 +170,7 @@ export default function SlideOver({
                                   id="systemPrompt"
                                   name="systemPrompt"
                                   rows={4}
-                                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-600 sm:text-sm sm:leading-6"
+                                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-600 sm:text-sm sm:leading-6"
                                   defaultValue={systemPrompt}
                                 />
                               </div>
@@ -187,14 +274,14 @@ export default function SlideOver({
                     <div className="flex flex-shrink-0 justify-end px-4 py-4">
                       <button
                         type="button"
-                        className="rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                        className="rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
                         onClick={() => setOpen(false)}
                       >
                         Cancel
                       </button>
                       <button
                         type="submit"
-                        className="ml-4 inline-flex justify-center rounded-md bg-gray-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600"
+                        className="ml-4 inline-flex justify-center rounded-md bg-gray-600 px-3 py-2 text-sm font-semibold text-white hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600"
                       >
                         Save
                       </button>
