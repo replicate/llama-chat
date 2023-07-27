@@ -12,7 +12,8 @@ const ChatForm = ({ prompt, setPrompt, onSubmit }) => {
         <form className="w-full flex" onSubmit={handleSubmit}>
           <input
             type="text"
-            autoFocus={true}
+            autoComplete="off"
+            autoFocus
             name="prompt"
             className="flex-grow rounded-l-md focus:outline-none outline-none focus:ring-0 focus:ring-offset-0"
             placeholder="Send a message"

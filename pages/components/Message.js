@@ -10,7 +10,7 @@ const Message = ({ message, isUser }) => {
   return (
     <div className="flex gap-x-4 py-5 border-b">
       <span className="text-2xl" role="presentation">
-        {isUser ? <i title="User">👤</i> : <i title="AI">🦙</i>}
+        {isUser ? <span title="User">👤</span> : <span title="AI">🦙</span>}
       </span>
 
       <div className="flex flex-col flex-1 gap-y-4 mt-1">
