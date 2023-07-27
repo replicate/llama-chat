@@ -55,15 +55,16 @@ const items = [
 
 export default function EmptyState({ setPrompt }) {
   return (
-    <div className="mt-12 text-center text-gray-500">
-      <p className="mt-1 text-gray-500 text-xl">
-        This is an{" "}
+    <div className="mt-24 text-gray-400 text-2xl font-sans font-medium leading-12">
+      <p className="mt-1 ">
+        💬 Welcome to Llama Chat, an{" "}
         <a className="underline" href="https://github.com/replicate/llama-chat">
           open source app
         </a>{" "}
         for chatting with Llama 2. You can customize Llama&apos;s personality by
-        clicking on the settings button on the top right. Say something!
+        clicking on the settings button on the top right.
       </p>
+      <p class="mt-6">To get started, send me a message.</p>
     </div>
   );
 }

@@ -190,6 +190,8 @@ Assistant:`,
           </a>
         </h1>
 
+        {messages.length == 0 && <EmptyState />}
+
         <SlideOver
           open={open}
           setOpen={setOpen}
