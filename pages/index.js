@@ -5,6 +5,7 @@ import Message from "./components/Message";
 import SlideOver from "./components/SlideOver";
 import EmptyState from "./components/EmptyState";
 import { Cog6ToothIcon } from "@heroicons/react/20/solid";
+import LoadingChatLine from "./components/LoadingChatLine";
 
 function approximateTokenCount(text) {
   return Math.ceil(text.length * 0.4);
@@ -22,6 +23,7 @@ export default function Home() {
   const [systemPrompt, setSystemPrompt] = useState(
     "You are a helpful assistant. You do not respond as 'User' or pretend to be 'User'. You only respond once as Assistant."
   );
+  const [loading, setLoading] = useState(false);
 
   const [currentMessage, setCurrentMessage] = useState("");
 
@@ -34,6 +36,8 @@ export default function Home() {
   };
 
   const handleSubmit = async (userMessage) => {
+    setLoading(true);
+
     const SNIP = "<!-- snip -->";
 
     if (eventSource) {
@@ -104,6 +108,7 @@ Assistant:`,
       return;
     }
     setPrediction(prediction);
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -204,6 +209,7 @@ Assistant:`,
               isUser={message.isUser}
             />
           ))}
+          {loading && <LoadingChatLine />}
           {currentMessage && currentMessage.length > 0 && (
             <Message message={currentMessage} isUser={false} />
           )}
