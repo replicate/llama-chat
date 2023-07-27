@@ -22,6 +22,7 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [currentMessage, setCurrentMessage] = useState("");
   const [error, setError] = useState(null);
+  const [tokensPerSecond, setTokensPerSecond] = useState(0);
 
   //   Llama params
   const [systemPrompt, setSystemPrompt] = useState(
@@ -124,11 +125,23 @@ Assistant:`,
     }
 
     setCurrentMessage("");
+    let totalTokens = 0;
+    const startTime = new Date().getTime();
 
     const source = new EventSource(prediction.urls.stream);
     source.addEventListener("output", (e) => {
       console.log("output", e);
       setLoading(false);
+
+      // calculate tokens per second
+      const newTokens = e.data.length;
+      totalTokens += newTokens;
+      const timeElapsed = (new Date().getTime() - startTime) / 1000; // convert to seconds
+      const tokensPerSecond = totalTokens / timeElapsed;
+      console.log("tokens per second", tokensPerSecond);
+
+      setTokensPerSecond(tokensPerSecond);
+
       setCurrentMessage((m) => m + e.data);
     });
     source.addEventListener("error", (e) => {
@@ -214,6 +227,8 @@ Assistant:`,
           setPrompt={setPrompt}
           onSubmit={handleSubmit}
         />
+
+        {tokensPerSecond > 0 && tokensPerSecond}
 
         {error && <div>{error}</div>}
 
