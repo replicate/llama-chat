@@ -64,7 +64,7 @@ export default function EmptyState({ setPrompt }) {
         for chatting with Llama 2. You can customize Llama&apos;s personality by
         clicking on the settings button on the top right.
       </p>
-      <p class="mt-6">To get started, send me a message.</p>
+      <p className="mt-6">To get started, send me a message.</p>
     </div>
   );
 }

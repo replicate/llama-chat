@@ -111,8 +111,8 @@ Assistant:`,
       setError(prediction.detail);
       return;
     }
+
     setPrediction(prediction);
-    setLoading(false);
   };
 
   useEffect(() => {
@@ -125,6 +125,7 @@ Assistant:`,
     const source = new EventSource(prediction.urls.stream);
     source.addEventListener("output", (e) => {
       console.log("output", e);
+      setLoading(false);
       setCurrentMessage((m) => m + e.data);
     });
     source.addEventListener("error", (e) => {
