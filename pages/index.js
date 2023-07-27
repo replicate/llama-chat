@@ -104,6 +104,8 @@ export default function Home() {
 Assistant:`,
         systemPrompt: systemPrompt,
         temperature: parseFloat(temp),
+        topP: parseFloat(topP),
+        maxTokens: parseInt(maxTokens),
       }),
     });
 
@@ -168,9 +170,9 @@ Assistant:`,
       <nav className="flex w-full justify-end p-3">
         <a
           className="rounded-md mr-3 inline-flex items-center bg-white px-3 py-2 text-sm font-semibold text-gray-700 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-          href="https://replicate.com/replicate/llama-2-70b-chat?utm_source=project&utm_campaign=llamachat"
+          href="https://github.com/replicate/chat"
         >
-          Run Llama
+          Clone
         </a>
         <button
           type="button"
