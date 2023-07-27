@@ -53,7 +53,7 @@ const items = [
   },
 ];
 
-export default function EmptyState({ setPrompt }) {
+export default function EmptyState({ setOpen }) {
   return (
     <div className="mt-24 text-gray-400 text-2xl font-sans font-medium leading-12">
       <p className="mt-1 ">
@@ -61,8 +61,12 @@ export default function EmptyState({ setPrompt }) {
         <a className="underline" href="https://github.com/replicate/llama-chat">
           open source app
         </a>{" "}
-        for chatting with Llama 2. You can customize Llama&apos;s personality by
-        clicking on the settings button on the top right.
+        for chatting with Llama 2. Customize Llama&apos;s personality by
+        clicking on the top right{" "}
+        <button className="underline" onClick={() => setOpen(true)}>
+          settings
+        </button>{" "}
+        button.
       </p>
       <p className="mt-6">To get started, send me a message.</p>
     </div>

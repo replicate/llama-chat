@@ -16,19 +16,20 @@ export default function Home() {
   const bottomRef = useRef(null);
   const [prompt, setPrompt] = useState("");
   const [messages, setMessages] = useState([]);
-
   const [prediction, setPrediction] = useState(null);
   const [eventSource, setEventSource] = useState(null);
   const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [currentMessage, setCurrentMessage] = useState("");
+  const [error, setError] = useState(null);
+
+  //   Llama params
   const [systemPrompt, setSystemPrompt] = useState(
     "You are a helpful assistant. You do not respond as 'User' or pretend to be 'User'. You only respond once as Assistant."
   );
   const [temp, setTemp] = useState(0.75);
-  const [loading, setLoading] = useState(false);
-
-  const [currentMessage, setCurrentMessage] = useState("");
-
-  const [error, setError] = useState(null);
+  const [topP, setTopP] = useState(1);
+  const [maxTokens, setMaxTokens] = useState(800);
 
   const handleSettingsSubmit = async (event) => {
     event.preventDefault();
@@ -191,7 +192,7 @@ Assistant:`,
           </a>
         </h1>
 
-        {messages.length == 0 && <EmptyState />}
+        {messages.length == 0 && <EmptyState setOpen={setOpen} />}
 
         <SlideOver
           open={open}
@@ -200,6 +201,10 @@ Assistant:`,
           handleSubmit={handleSettingsSubmit}
           temp={temp}
           setTemp={setTemp}
+          maxTokens={maxTokens}
+          setMaxTokens={setMaxTokens}
+          topP={topP}
+          setTopP={setTopP}
         />
 
         <ChatForm

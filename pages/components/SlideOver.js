@@ -7,6 +7,10 @@ export default function SlideOver({
   systemPrompt,
   temp,
   setTemp,
+  topP,
+  setTopP,
+  maxTokens,
+  setMaxTokens,
   handleSubmit,
 }) {
   return (
@@ -107,10 +111,71 @@ export default function SlideOver({
                                   type="range"
                                   min="0.01"
                                   onChange={(e) => setTemp(e.target.value)}
-                                  defaultValue={"0.75"}
+                                  value={temp}
                                   max="5"
                                   step="0.01"
                                   name="temperature"
+                                  className="w-full h-1 bg-gray-100 rounded-lg appearance-none cursor-pointer"
+                                />
+                              </div>
+                            </div>
+                          </div>
+                          <div className="space-y-6 pb-5 pt-6">
+                            <div>
+                              <label
+                                htmlFor="temperature"
+                                className="block text-sm font-bold leading-6 text-gray-900"
+                              >
+                                Max Tokens - {maxTokens}
+                              </label>
+                              <p
+                                className="mt-2 text-xs text-gray-500"
+                                id="temperature-description"
+                              >
+                                Maximum number of tokens to generate. A word is
+                                generally 2-3 tokens.
+                              </p>
+                              <div className="mt-3">
+                                <input
+                                  id="maxTokens"
+                                  type="range"
+                                  min="1"
+                                  onChange={(e) => setMaxTokens(e.target.value)}
+                                  value={maxTokens}
+                                  max="4096"
+                                  step="1"
+                                  name="maxTokens"
+                                  className="w-full h-1 bg-gray-100 rounded-lg appearance-none cursor-pointer"
+                                />
+                              </div>
+                            </div>
+                          </div>
+                          <div className="space-y-6 pb-5 pt-6">
+                            <div>
+                              <label
+                                htmlFor="temperature"
+                                className="block text-sm font-bold leading-6 text-gray-900"
+                              >
+                                Top P - {topP}
+                              </label>
+                              <p
+                                className="mt-2 text-xs text-gray-500"
+                                id="temperature-description"
+                              >
+                                When decoding text, samples from the top p
+                                percentage of most likely tokens; lower to
+                                ignore less likely tokens.
+                              </p>
+                              <div className="mt-3">
+                                <input
+                                  id="topP"
+                                  type="range"
+                                  min="0.01"
+                                  onChange={(e) => setTopP(e.target.value)}
+                                  value={topP}
+                                  max="1"
+                                  step="0.01"
+                                  name="topP"
                                   className="w-full h-1 bg-gray-100 rounded-lg appearance-none cursor-pointer"
                                 />
                               </div>
