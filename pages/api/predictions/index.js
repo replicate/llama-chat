@@ -24,7 +24,7 @@ export default async function handler(req, res) {
       prompt: req.body.prompt,
       system_prompt: req.body.systemPrompt,
       max_length: 500,
-      temperature: 0.75,
+      temperature: req.body.temperature,
       repetition_penalty: 1,
       top_p: 1,
     },

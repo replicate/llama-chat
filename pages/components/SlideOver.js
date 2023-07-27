@@ -1,16 +1,12 @@
 import { Fragment, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import {
-  LinkIcon,
-  PlusIcon,
-  QuestionMarkCircleIcon,
-} from "@heroicons/react/20/solid";
-
 export default function SlideOver({
   open,
   setOpen,
   systemPrompt,
+  temp,
+  setTemp,
   handleSubmit,
 }) {
   return (
@@ -67,17 +63,55 @@ export default function SlideOver({
                             <div>
                               <label
                                 htmlFor="description"
-                                className="block text-sm font-medium leading-6 text-gray-900"
+                                className="block font-bold text-sm leading-6 text-gray-900"
                               >
                                 System Prompt
                               </label>
-                              <div className="mt-2">
+                              <p
+                                id="system-prompt-description"
+                                className="mt-2 text-xs text-gray-500"
+                              >
+                                This is prepended to the prompt and helps guide
+                                system behavior.
+                              </p>
+                              <div className="mt-3">
                                 <textarea
                                   id="systemPrompt"
                                   name="systemPrompt"
                                   rows={4}
                                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-600 sm:text-sm sm:leading-6"
                                   defaultValue={systemPrompt}
+                                />
+                              </div>
+                            </div>
+                          </div>
+                          <div className="space-y-6 pb-5 pt-6">
+                            <div>
+                              <label
+                                htmlFor="temperature"
+                                className="block text-sm font-bold leading-6 text-gray-900"
+                              >
+                                Temperature - {temp}
+                              </label>
+                              <p
+                                className="mt-2 text-xs text-gray-500"
+                                id="temperature-description"
+                              >
+                                Adjusts randomness of outputs, greater than 1 is
+                                random and 0 is deterministic, 0.75 is a good
+                                starting value.
+                              </p>
+                              <div className="mt-3">
+                                <input
+                                  id="temperature"
+                                  type="range"
+                                  min="0.01"
+                                  onChange={(e) => setTemp(e.target.value)}
+                                  defaultValue={"0.75"}
+                                  max="5"
+                                  step="0.01"
+                                  name="temperature"
+                                  className="w-full h-1 bg-gray-100 rounded-lg appearance-none cursor-pointer"
                                 />
                               </div>
                             </div>

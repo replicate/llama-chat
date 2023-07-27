@@ -22,6 +22,7 @@ export default function Home() {
   const [systemPrompt, setSystemPrompt] = useState(
     "You are a helpful assistant. You do not respond as 'User' or pretend to be 'User'. You only respond once as Assistant."
   );
+  const [temp, setTemp] = useState(0.75);
 
   const [currentMessage, setCurrentMessage] = useState("");
 
@@ -86,6 +87,8 @@ export default function Home() {
 
     setMessages(messageHistory);
 
+    console.log("temp is ", temp);
+
     const response = await fetch("/api/predictions", {
       method: "POST",
       headers: {
@@ -95,6 +98,7 @@ export default function Home() {
         prompt: `${prompt}
 Assistant:`,
         systemPrompt: systemPrompt,
+        temperature: parseFloat(temp),
       }),
     });
 
@@ -186,6 +190,8 @@ Assistant:`,
           setOpen={setOpen}
           systemPrompt={systemPrompt}
           handleSubmit={handleSettingsSubmit}
+          temp={temp}
+          setTemp={setTemp}
         />
 
         <ChatForm
