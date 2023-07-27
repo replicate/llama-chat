@@ -61,8 +61,13 @@ export default function EmptyState({ setOpen }) {
         <a className="underline" href="https://github.com/replicate/llama-chat">
           open source app
         </a>{" "}
-        for chatting with Llama 2. Customize Llama&apos;s personality by
-        clicking on the top right{" "}
+        for chatting with Llama 2. If you're a developer and want to build your
+        streaming chat app, this is a great place to start. <br />
+      </p>
+
+      <p className="mt-6">
+        {" "}
+        Customize Llama&apos;s personality by clicking on the top right{" "}
         <button className="underline" onClick={() => setOpen(true)}>
           settings
         </button>{" "}
