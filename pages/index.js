@@ -208,7 +208,7 @@ Assistant:`,
               className="h-5 w-5 sm:mr-2 text-gray-500 group-hover:text-gray-900"
               aria-hidden="true"
             />{" "}
-            <span className="hidden sm:visible">Clone</span>
+            <span className="hidden sm:inline">Clone</span>
           </a>
           <button
             type="button"
@@ -219,7 +219,7 @@ Assistant:`,
               className="h-5 w-5 sm:mr-2 text-gray-500 group-hover:text-gray-900"
               aria-hidden="true"
             />{" "}
-            <span className="hidden sm:visible">Settings</span>
+            <span className="hidden sm:inline">Settings</span>
           </button>
         </div>
       </nav>
