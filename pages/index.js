@@ -220,7 +220,9 @@ Assistant:`,
           </button>
         </div>
 
-        {messages.length == 0 && <EmptyState setOpen={setOpen} />}
+        {messages.length == 0 && (
+          <EmptyState setPrompt={setPrompt} setOpen={setOpen} />
+        )}
 
         <SlideOver
           open={open}
