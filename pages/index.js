@@ -205,10 +205,10 @@ Assistant:`,
             href="https://github.com/replicate/chat"
           >
             <CodeBracketIcon
-              className="h-5 w-5 mr-2 text-gray-500 group-hover:text-gray-900"
+              className="h-5 w-5 sm:mr-2 text-gray-500 group-hover:text-gray-900"
               aria-hidden="true"
             />{" "}
-            Clone
+            <span className="hidden sm:visible">Clone</span>
           </a>
           <button
             type="button"
@@ -216,10 +216,10 @@ Assistant:`,
             onClick={() => setOpen(true)}
           >
             <Cog6ToothIcon
-              className="h-5 w-5 mr-2 text-gray-500 group-hover:text-gray-900"
+              className="h-5 w-5 sm:mr-2 text-gray-500 group-hover:text-gray-900"
               aria-hidden="true"
             />{" "}
-            Settings{" "}
+            <span className="hidden sm:visible">Settings</span>
           </button>
         </div>
       </nav>
