@@ -199,7 +199,7 @@ Assistant:`,
             className="hover:underline py-2 font-semibold text-gray-500"
             onClick={() => setOpen(true)}
           >
-            Llama {size.shortened}
+            Llama 2 {size.shortened}
           </button>
         </div>
 
