@@ -1,6 +1,6 @@
 const LoadingChatLine = () => {
   return (
-    <div role="status" className="mt-4">
+    <div role="status" className="mt-4 ml-2">
       <svg
         aria-hidden="true"
         className="inline w-8 h-8 mr-2 text-gray-200 animate-spin fill-gray-600"
