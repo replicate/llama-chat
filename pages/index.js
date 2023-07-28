@@ -47,6 +47,10 @@ export default function Home() {
   const [topP, setTopP] = useState(0.9);
   const [maxTokens, setMaxTokens] = useState(800);
 
+  const setAndSubmitPrompt = (newPrompt) => {
+    handleSubmit(newPrompt);
+  };
+
   const handleSettingsSubmit = async (event) => {
     event.preventDefault();
     setOpen(false);
@@ -220,7 +224,7 @@ Assistant:`,
         </div>
 
         {messages.length == 0 && (
-          <EmptyState setPrompt={setPrompt} setOpen={setOpen} />
+          <EmptyState setPrompt={setAndSubmitPrompt} setOpen={setOpen} />
         )}
 
         <SlideOver
