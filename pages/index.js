@@ -211,6 +211,14 @@ Assistant:`,
             Llama
           </a>
         </h1>
+        <div className="text-center mt-2">
+          <button
+            className="hover:underline text-sm text-gray-500"
+            onClick={() => setOpen(true)}
+          >
+            {size.name}
+          </button>
+        </div>
 
         {messages.length == 0 && <EmptyState setOpen={setOpen} />}
 
