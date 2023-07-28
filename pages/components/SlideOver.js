@@ -206,7 +206,7 @@ export default function SlideOver({
                                   max="5"
                                   step="0.01"
                                   name="temperature"
-                                  className="w-full h-1 bg-gray-100 rounded-lg appearance-none cursor-pointer"
+                                  className="w-full h-1 bg-gray-100 accent-gray-500  rounded-lg appearance-none cursor-pointer"
                                 />
                               </div>
                             </div>
@@ -236,7 +236,7 @@ export default function SlideOver({
                                   max="4096"
                                   step="1"
                                   name="maxTokens"
-                                  className="w-full h-1 bg-gray-100 rounded-lg appearance-none cursor-pointer"
+                                  className="w-full h-1 bg-gray-100 accent-gray-500  rounded-lg appearance-none cursor-pointer"
                                 />
                               </div>
                             </div>
@@ -267,7 +267,7 @@ export default function SlideOver({
                                   max="1"
                                   step="0.01"
                                   name="topP"
-                                  className="w-full h-1 bg-gray-100 rounded-lg appearance-none cursor-pointer"
+                                  className="w-full h-1 bg-gray-100 accent-gray-500 rounded-lg appearance-none cursor-pointer"
                                 />
                               </div>
                             </div>
