@@ -26,7 +26,7 @@ export default async function handler(req, res) {
       max_length: req.body.maxTokens,
       temperature: req.body.temperature,
       repetition_penalty: 1,
-      top_p: req.body.top_p,
+      top_p: req.body.topP,
     },
   });
 

@@ -44,7 +44,7 @@ export default function Home() {
     "You are a helpful assistant. You do not respond as 'User' or pretend to be 'User'. You only respond once as Assistant."
   );
   const [temp, setTemp] = useState(0.75);
-  const [topP, setTopP] = useState(1);
+  const [topP, setTopP] = useState(0.9);
   const [maxTokens, setMaxTokens] = useState(800);
 
   const handleSettingsSubmit = async (event) => {
