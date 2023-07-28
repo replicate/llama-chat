@@ -144,9 +144,9 @@ Assistant:`,
 
     const source = new EventSource(prediction.urls.stream);
     source.addEventListener("output", (e) => {
+      // stream in the tokens
       console.log("output", e);
       setLoading(false);
-
       setCurrentMessage((m) => m + e.data);
     });
     source.addEventListener("error", (e) => {
