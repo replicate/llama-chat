@@ -224,7 +224,7 @@ Assistant:`,
         </div>
       </nav>
 
-      <main className="max-w-2xl pb-5 mt-4 px-4 mx-auto">
+      <main className="max-w-2xl pb-5 mt-4 sm:px-4 mx-auto">
         <div className="text-center"></div>
         {messages.length == 0 && (
           <EmptyState setPrompt={setAndSubmitPrompt} setOpen={setOpen} />
