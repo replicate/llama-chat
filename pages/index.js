@@ -194,7 +194,7 @@ Assistant:`,
       <nav className="grid grid-cols-3 pt-3 pr-3">
         <div></div>
         <div className="text-center font-semibold text-gray-500">
-          🦙 Chat with{" "}
+          🦙 <span className="hidden sm:inline-block">Chat with</span>{" "}
           <button
             className="hover:underline py-2 font-semibold text-gray-500"
             onClick={() => setOpen(true)}
