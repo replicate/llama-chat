@@ -1,6 +1,6 @@
 export default function EmptyState({ setOpen, setPrompt }) {
   return (
-    <div className="mt-24 space-y-6 text-gray-400 text-base mx-8 sm:mx-4 sm:text-2xl font-medium leading-12">
+    <div className="mt-12 sm:mt-24 space-y-6 text-gray-400 text-base mx-8 sm:mx-4 sm:text-2xl font-medium leading-12">
       <p className="mt-1">
         Welcome to Llama Chat, an{" "}
         <a className="underline" href="https://github.com/replicate/llama-chat">
