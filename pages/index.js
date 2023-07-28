@@ -4,7 +4,7 @@ import ChatForm from "./components/ChatForm";
 import Message from "./components/Message";
 import SlideOver from "./components/SlideOver";
 import EmptyState from "./components/EmptyState";
-import { Cog6ToothIcon } from "@heroicons/react/20/solid";
+import { Cog6ToothIcon, CodeBracketIcon } from "@heroicons/react/20/solid";
 import LoadingChatLine from "./components/LoadingChatLine";
 
 function approximateTokenCount(text) {
@@ -188,41 +188,44 @@ Assistant:`,
           href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🦙</text></svg>"
         />
       </Head>
-      <nav className="flex w-full justify-end p-3">
-        <a
-          className="rounded-md mr-3 inline-flex items-center bg-white px-3 py-2 text-sm font-semibold text-gray-700 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-          href="https://github.com/replicate/chat"
-        >
-          Clone
-        </a>
-        <button
-          type="button"
-          className="rounded-md inline-flex items-center bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-          onClick={() => setOpen(true)}
-        >
-          <Cog6ToothIcon
-            className="h-5 w-5 text-gray-500 group-hover:text-gray-900"
-            aria-hidden="true"
-          />{" "}
-        </button>
-      </nav>
-
-      <main className="max-w-2xl pb-5 px-4 mx-auto">
-        <h1 className="text-center font-bold text-2xl">
-          Chat with a{" "}
-          <a href="https://replicate.com/replicate/llama-2-70b-chat?utm_source=project&utm_compaign=llamachat">
-            Llama
-          </a>
-        </h1>
-        <div className="text-center mt-2">
+      <nav className="grid grid-cols-3 pt-3 pr-3">
+        <div></div>
+        <div className="text-center">
           <button
-            className="hover:underline text-sm text-gray-500"
+            className="hover:underline py-2 font-semibold text-gray-900"
             onClick={() => setOpen(true)}
           >
             {size.name}
           </button>
         </div>
 
+        <div class="flex justify-end">
+          <a
+            className="rounded-md mr-3 inline-flex items-center bg-white px-3 py-2 text-sm font-semibold text-gray-700 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+            href="https://github.com/replicate/chat"
+          >
+            <CodeBracketIcon
+              className="h-5 w-5 mr-2 text-gray-500 group-hover:text-gray-900"
+              aria-hidden="true"
+            />{" "}
+            Clone
+          </a>
+          <button
+            type="button"
+            className="rounded-md inline-flex items-center bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+            onClick={() => setOpen(true)}
+          >
+            <Cog6ToothIcon
+              className="h-5 w-5 mr-2 text-gray-500 group-hover:text-gray-900"
+              aria-hidden="true"
+            />{" "}
+            Settings{" "}
+          </button>
+        </div>
+      </nav>
+
+      <main className="max-w-2xl pb-5 px-4 mx-auto">
+        <div className="text-center"></div>
         {messages.length == 0 && (
           <EmptyState setPrompt={setAndSubmitPrompt} setOpen={setOpen} />
         )}
