@@ -246,8 +246,9 @@ Assistant:`,
               isUser={message.isUser}
             />
           ))}
-          {loading && <LoadingChatLine />}
-          {currentMessage && currentMessage.length > 0 && (
+          {loading ? (
+            <LoadingChatLine />
+          ) : (
             <Message message={currentMessage} isUser={false} />
           )}
           <div ref={bottomRef} />
