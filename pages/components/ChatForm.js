@@ -15,13 +15,16 @@ const ChatForm = ({ prompt, setPrompt, onSubmit }) => {
             autoComplete="off"
             autoFocus
             name="prompt"
-            className="flex-grow rounded-l-md focus:outline-none outline-none focus:ring-0 focus:ring-offset-0"
+            className="flex-grow block w-full rounded-l-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-600 sm:leading-6"
             placeholder="Send a message"
             required={true}
             value={prompt}
             onChange={(e) => setPrompt(e.target.value)}
           />
-          <button className="button" type="submit">
+          <button
+            className="bg-gray-600 hover:bg-gray-800 items-center font-semibold text-white rounded-r-md px-5 py-3"
+            type="submit"
+          >
             Chat
           </button>
         </form>
