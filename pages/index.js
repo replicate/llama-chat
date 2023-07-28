@@ -39,7 +39,7 @@ export default function Home() {
   const [error, setError] = useState(null);
 
   //   Llama params
-  const [size, setSize] = useState(VERSIONS[1]); // default to 13B
+  const [size, setSize] = useState(VERSIONS[2]); // default to 13B
   const [systemPrompt, setSystemPrompt] = useState(
     "You are a helpful assistant. You do not respond as 'User' or pretend to be 'User'. You only respond once as Assistant."
   );
