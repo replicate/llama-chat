@@ -84,8 +84,7 @@ export default function SlideOver({
                                 id="system-prompt-description"
                                 className="mt-2 text-xs text-gray-500"
                               >
-                                This is prepended to the prompt and helps guide
-                                system behavior.
+                                Larger size means smarter, but slower.
                               </p>
                               <div className="">
                                 <Listbox value={size} onChange={setSize}>
