@@ -10,9 +10,9 @@ export default function EmptyState({ setOpen, setPrompt }) {
           className="prompt-button inline-flex items-center "
           onClick={() => setOpen(true)}
         >
-          settings
+          settings{" "}
         </button>{" "}
-        button here or in the top right.
+        button.
       </p>
       <p>
         I can{" "}
