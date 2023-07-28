@@ -238,6 +238,7 @@ Assistant:`,
           open={open}
           setOpen={setOpen}
           systemPrompt={systemPrompt}
+          setSystemPrompt={setSystemPrompt}
           handleSubmit={handleSettingsSubmit}
           temp={temp}
           setTemp={setTemp}

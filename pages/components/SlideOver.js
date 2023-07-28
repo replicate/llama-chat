@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Fragment } from "react";
 import { Dialog, Transition, Listbox } from "@headlessui/react";
 import {
   XMarkIcon,
@@ -10,6 +10,7 @@ export default function SlideOver({
   open,
   setOpen,
   systemPrompt,
+  setSystemPrompt,
   temp,
   setTemp,
   topP,
@@ -174,7 +175,10 @@ export default function SlideOver({
                                   name="systemPrompt"
                                   rows={4}
                                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-600 sm:text-sm sm:leading-6"
-                                  defaultValue={systemPrompt}
+                                  value={systemPrompt}
+                                  onChange={(e) =>
+                                    setSystemPrompt(e.target.value)
+                                  }
                                 />
                               </div>
                             </div>
