@@ -1,7 +1,7 @@
 const Message = ({ message, isUser }) => {
   let containerClass = "bg-gray-50";
   if (isUser) {
-    containerClass = "bg-gray-100";
+    containerClass = "";
   }
 
   if (Array.isArray(message)) {
@@ -13,7 +13,7 @@ const Message = ({ message, isUser }) => {
   }
 
   return (
-    <div className={`flex gap-x-4 mb-2 ${containerClass} rounded-lg py-5 px-5`}>
+    <div className={`flex gap-x-4 rounded-md ${containerClass} py-5 px-5`}>
       {isUser ? (
         <span className="text-2xl" title="user">
           🥸
