@@ -41,7 +41,7 @@ export default function SlideOver({
                 <Dialog.Panel className="pointer-events-auto w-screen max-w-md">
                   <form
                     onSubmit={(e) => handleSubmit(e)}
-                    className="flex h-full flex-col divide-y divide-gray-200 bg-white"
+                    className="flex h-full flex-col divide-y divide-gray-200 bg-white shadow-xl"
                   >
                     <div className="h-0 flex-1 overflow-y-auto">
                       <div className="bg-gray-700 px-4 py-6 sm:px-6">
