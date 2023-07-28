@@ -55,7 +55,7 @@ const items = [
 
 export default function EmptyState({ setOpen }) {
   return (
-    <div className="mt-24 text-gray-400 text-2xl font-sans font-medium leading-12">
+    <div className="mt-24 text-gray-400 text-base mx-8 sm:mx-4 sm:text-2xl font-sans font-medium leading-12">
       <p className="mt-1 ">
         💬 Welcome to Llama Chat, an{" "}
         <a className="underline" href="https://github.com/replicate/llama-chat">
