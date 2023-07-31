@@ -203,7 +203,7 @@ Assistant:`,
           </button>
         </div>
 
-        <div class="flex justify-end">
+        <div className="flex justify-end">
           <a
             className="rounded-md mr-3 inline-flex items-center bg-white px-3 py-2 text-sm font-semibold text-gray-700 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
             href="https://github.com/replicate/chat"
