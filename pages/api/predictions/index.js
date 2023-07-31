@@ -23,7 +23,7 @@ export default async function handler(req, res) {
     input: {
       prompt: req.body.prompt,
       system_prompt: req.body.systemPrompt,
-      max_length: req.body.maxTokens,
+      max_new_tokens: req.body.maxTokens,
       temperature: req.body.temperature,
       repetition_penalty: 1,
       top_p: req.body.topP,
