@@ -87,14 +87,14 @@ export default function Home() {
       return messages
         .map((message) =>
           message.isUser
-            ? `User: ${message.text}`
-            : `Assistant: ${message.text}`
+            ? `[INST] ${message.text} [/INST]`
+            : `${message.text}`
         )
         .join("\n");
     };
 
     // Generate initial prompt and calculate tokens
-    let prompt = `${generatePrompt(messageHistory)}\nAssistant: `;
+    let prompt = `${generatePrompt(messageHistory)}\n`;
 
     // Check if we exceed max tokens and truncate the message history if so.
     while (approximateTokenCount(prompt) > MAX_TOKENS) {
