@@ -31,22 +31,6 @@ const VERSIONS = [
   },
 ];
 
-export const metdata = {
-  title: "Llama Chat",
-  openGraph: {
-    title: "Llama Chat",
-    description: "Chat with Llama 2",
-    images: [
-      {
-        url: "/og.png",
-        width: 1200,
-        height: 630,
-        alt: "Llama Chat",
-      },
-    ],
-  },
-};
-
 export default function HomePage() {
   const MAX_TOKENS = 4096;
   const bottomRef = useRef(null);
@@ -63,13 +47,7 @@ export default function HomePage() {
   const [topP, setTopP] = useState(0.9);
   const [maxTokens, setMaxTokens] = useState(800);
 
-  const {
-    error: apiError,
-    complete,
-    completion,
-    setInput,
-    input,
-  } = useCompletion({
+  const { complete, completion, setInput, input } = useCompletion({
     api: "/api",
     body: {
       version: size.version,
@@ -78,14 +56,10 @@ export default function HomePage() {
       topP: parseFloat(topP),
       maxTokens: parseInt(maxTokens),
     },
+    onError: (error) => {
+      setError(error);
+    },
   });
-
-  //   Set error on SDK error
-  useEffect(() => {
-    if (apiError) {
-      setError(apiError.message);
-    }
-  }, [apiError]);
 
   const setAndSubmitPrompt = (newPrompt) => {
     handleSubmit(newPrompt);
