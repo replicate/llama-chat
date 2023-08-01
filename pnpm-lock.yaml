@@ -15,8 +15,8 @@ dependencies:
     specifier: ^1.0.1
     version: 1.0.1
   ai:
-    specifier: ^2.1.29
-    version: 2.1.29(react@18.2.0)(solid-js@1.7.8)(svelte@4.1.2)(vue@3.3.4)
+    specifier: ^2.1.31
+    version: 2.1.31(react@18.2.0)(solid-js@1.7.8)(svelte@4.1.2)(vue@3.3.4)
   eslint:
     specifier: 8.43.0
     version: 8.43.0
@@ -520,8 +520,8 @@ packages:
     hasBin: true
     dev: false
 
-  /ai@2.1.29(react@18.2.0)(solid-js@1.7.8)(svelte@4.1.2)(vue@3.3.4):
-    resolution: {integrity: sha512-YmTWqZEcMczjr1yuWN35C9XXI0PL/Pt57dRv73XyCfUrWs+r8nvP9kWXWoFM4Ii9RnvhIg8VsPxpA65B9KT+vA==}
+  /ai@2.1.31(react@18.2.0)(solid-js@1.7.8)(svelte@4.1.2)(vue@3.3.4):
+    resolution: {integrity: sha512-ihkimg9iP/C/OaxjYj9KgA4gPC9Rzw60Xv3+AWYrQ807L/NEF8sgZBmA1hv8/DC8KzMv/7N+a5HCQPDZXNUs+g==}
     engines: {node: '>=14.6'}
     peerDependencies:
       react: ^18.2.0
