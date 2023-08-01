@@ -6,14 +6,6 @@ export const metdata = {
   openGraph: {
     title: "Llama Chat",
     description: "Chat with Llama 2",
-    images: [
-      {
-        url: "/og.png",
-        width: 1200,
-        height: 630,
-        alt: "Llama Chat",
-      },
-    ],
   },
 };
 
