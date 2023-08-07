@@ -110,7 +110,7 @@ export default function Home() {
       messageHistory.splice(1, 2);
 
       // Recreate the prompt
-      prompt = `${SNIP}\n${generatePrompt(messageHistory)}\nAssistant: `;
+      prompt = `${SNIP}\n${generatePrompt(messageHistory)}\n`;
     }
 
     setMessages(messageHistory);
