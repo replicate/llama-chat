@@ -4,22 +4,22 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "REPLICATE_API_TOKEN=test-token next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "npm run lint && npm run build"
+    "test": "REPLICATE_API_TOKEN=test-token npm run lint && npm run build"
   },
   "dependencies": {
     "@headlessui/react": "^1.7.15",
     "@heroicons/react": "^2.0.18",
-    "@next/font": "13.4.6",
     "@vercel/analytics": "^1.0.1",
+    "ai": "^2.1.31",
     "eslint": "8.43.0",
-    "eslint-config-next": "13.0.7",
-    "next": "13.4.6",
+    "eslint-config-next": "13.4.12",
+    "next": "13.4.12",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "replicate": "^0.13.0"
+    "replicate": "^0.16.0"
   },
   "devDependencies": {
     "@tailwindcss/forms": "^0.5.4",
