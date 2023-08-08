@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "npm run lint && npm run build"
+    "test": "REPLICATE_API_TOKEN=test-token npm run lint && npm run build"
   },
   "dependencies": {
     "@headlessui/react": "^1.7.15",
