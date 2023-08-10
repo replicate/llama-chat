@@ -41,7 +41,7 @@ export default function HomePage() {
   //   Llama params
   const [size, setSize] = useState(VERSIONS[2]); // default to 70B
   const [systemPrompt, setSystemPrompt] = useState(
-    "You are a helpful assistant. You do not respond as 'User' or pretend to be 'User'. You only respond once as Assistant."
+    "You are a helpful assistant."
   );
   const [temp, setTemp] = useState(0.75);
   const [topP, setTopP] = useState(0.9);
