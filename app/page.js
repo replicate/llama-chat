@@ -95,7 +95,7 @@ export default function HomePage() {
     };
 
     // Generate initial prompt and calculate tokens
-    let prompt = `${generatePrompt(messageHistory)}\nAssistant: `;
+    let prompt = `${generatePrompt(messageHistory)}\n`;
     // Check if we exceed max tokens and truncate the message history if so.
     while (approximateTokenCount(prompt) > MAX_TOKENS) {
       if (messageHistory.length < 3) {
