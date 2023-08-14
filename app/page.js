@@ -135,7 +135,7 @@ export default function HomePage() {
           target="_blank"
           className="underline"
         >
-          Run and &amp; fine-tune Llama 2 in the cloud.
+          Run and fine-tune Llama 2 in the cloud.
         </a>
       </div>
       <nav className="grid grid-cols-2 pt-3 pl-6 pr-3 sm:grid-cols-3 sm:pl-0">
