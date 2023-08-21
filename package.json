@@ -13,7 +13,7 @@
     "@headlessui/react": "^1.7.15",
     "@heroicons/react": "^2.0.18",
     "@vercel/analytics": "^1.0.1",
-    "ai": "^2.1.31",
+    "ai": "^2.2.7",
     "eslint": "8.43.0",
     "eslint-config-next": "13.4.12",
     "next": "13.4.12",
