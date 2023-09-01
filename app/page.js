@@ -6,7 +6,6 @@ import Message from "./components/Message";
 import SlideOver from "./components/SlideOver";
 import EmptyState from "./components/EmptyState";
 import { Cog6ToothIcon, CodeBracketIcon } from "@heroicons/react/20/solid";
-import LoadingChatLine from "./components/LoadingChatLine";
 import { useCompletion } from "ai/react";
 
 function approximateTokenCount(text) {
