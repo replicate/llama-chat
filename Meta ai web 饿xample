@@ -1,0 +1,145 @@
+CONVERSATIONAL AI
+NLP
+Llama 2: Open Foundation and Fine-Tuned Chat Models
+July 18, 2023
+
+Abstract
+In this work, we develop and release Llama 2, a collection of pretrained and fine-tuned large language models (LLMs) ranging in scale from 7 billion to 70 billion parameters. Our fine-tuned LLMs, called Llama 2-Chat, are optimized for dialogue use cases. Our models outperform open-source chat models on most benchmarks we tested, and based on our human evaluations for helpfulness and safety, may be a suitable substitute for closedsource models. We provide a detailed description of our approach to fine-tuning and safety improvements of Llama 2-Chat in order to enable the community to build on our work and contribute to the responsible development of LLMs.
+
+Download the Paper
+AUTHORS
+Written by
+Hugo Touvron
+Louis Martin
+Kevin Stone
+Peter Albert
+Amjad Almahairi
+Yasmine Babaei
+Nikolay Bashlykov
+Soumya Batra
+Prajjwal Bhargava
+Shruti Bhosale
+Dan Bikel
+Lukas Blecher
+Cristian Canton Ferrer
+Moya Chen
+Guillem Cucurull
+David Esiobu
+Jude Fernandes
+Jeremy Fu
+Wenyin Fu
+Brian Fuller
+Cynthia Gao
+Vedanuj Goswami
+Naman Goyal
+Anthony Hartshorn
+Saghar Hosseini
+Rui Hou
+Hakan Inan
+Marcin Kardas
+Viktor Kerkez
+Madian Khabsa
+Isabel Kloumann
+Artem Korenev
+Punit Singh Koura
+Marie-Anne Lachaux
+Thibaut Lavril
+Jenya Lee
+Diana Liskovich
+Yinghai Lu
+Yuning Mao
+Xavier Martinet
+Todor Mihaylov
+Pushkar Mishra
+Igor Molybog
+Yixin Nie
+Andrew Poulton
+Jeremy Reizenstein
+Rashi Rungta
+Kalyan Saladi
+Alan Schelten
+Ruan Silva
+Eric Michael Smith
+Ranjan Subramanian
+Xiaoqing Ellen Tan
+Binh Tang
+Ross Taylor
+Adina Williams
+Jian Xiang Kuan
+Puxin Xu
+Zheng Yan
+Iliyan Zarov
+Yuchen Zhang
+Angela Fan
+Melanie Kambadur
+Sharan Narang
+Aurelien Rodriguez
+Robert Stojnic
+Sergey Edunov
+Thomas Scialom
+Publisher
+arxiv
+Research Topics
+Conversational AI
+Natural Language Processing (NLP)
+Related Publications
+
+August 24, 2023
+
+NLP
+CORE MACHINE LEARNING
+Code Llama: Open Foundation Models for Code
+We release Code Llama, a family of large language models for code based on Llama 2 providing state-of-the-art performance among open models, infilling capabilities, support for large input contexts, and zero-shot instruction following ability for programming tasks. We provide multiple flavors to cover a wide range of applications: foundation models (Code Llama), Python specializations (Code Llama - Python), and instruction-following models (Code Llama - Instruct) with 7B, 13B and 34B parameters each. All models are trained on sequences of 16k tokens and show improvements on inputs with up to 100k tokens. 7B and 13B Code Llama and Code Llama - Instruct variants support infilling based on surrounding content. Code Llama reaches state-of-the-art performance among open models on several code benchmarks, with scores of up to 53% and 55% on HumanEval and MBPP, respectively. Notably, Code Llama - Python 7B outperforms Llama 2 70B on HumanEval and MBPP, and all our models outperform every other publicly available model on MultiPL-E. We release Code Llama under a permissive license that allows for both research and commercial use.
+Baptiste Rozière, Jonas Gehring, Fabian Gloeckle, Sten Sootla, Itai Gat, Ellen Tan, Yossef (Yossi) Adi, Jingyu Liu, Tal Remez, Jérémy Rapin, Artyom Kozhevnikov, Ivan Evtimov, Joanna Bitton, Manish Bhatt, Cristian Canton Ferrer, Aaron Grattafiori, Wenhan Xiong, Alexandre Defossez, Jade Copet, Faisal Azhar, Hugo Touvron, Gabriel Synnaeve, Louis Martin, Nicolas Usunier, Thomas Scialom
+
+Read the Paper
+August 22, 2023
+
+SPEECH & AUDIO
+NLP
+SeamlessM4T—Massively Multilingual & Multimodal Machine Translation
+What does it take to create the Babel Fish, a tool that can help individuals translate speech between any two languages? While recent breakthroughs in text-based models have pushed machine translation coverage beyond 200 languages, unified speech-to-speech translation models have yet to achieve similar strides. More specifically, conventional speech-to-speech translation systems rely on cascaded systems composed of multiple subsystems performing translation progressively, putting scalable and high-performing unified speech translation systems out of reach. To address these gaps, we introduce SeamlessM4T—Massively Multilingual & Multimodal Machine Translation—a single model that supports speech-to-speech translation, speech-to-text translation, text-to-speech translation, text-to-text translation, and automatic speech recognition for up to 100 languages. To build this, we used 1 million hours of open speech audio data to learn self-supervised speech representations with w2v-BERT 2.0. Subsequently, we created a multimodal corpus of automatically aligned speech translations, dubbed SeamlessAlign. Filtered and combined with human labeled and pseudo-labeled data (totaling 406,000 hours), we developed the first multilingual system capable of translating from and into English for both speech and text. On Fleurs, SeamlessM4T sets a new standard for translations into multiple target languages, achieving an improvement of 20% BLEU over the previous state-of-the-art in direct speech-to-text translation. Compared to strong cascaded models, SeamlessM4T improves the quality of into-English translation by 1.3 BLEU points in speech-to-text and by 2.6 ASR-BLEU points in speech-to-speech. On CVSS and compared to a 2-stage cascaded model for speech-to-speech translation, SeamlessM4T-Large’s performance is stronger by 58%. Preliminary human evaluations of speech-to-text translation outputs evinced similarly impressive results; for translations from English, XSTS scores for 24 evaluated languages are consistently above 4 (out of 5). For into English directions, we see significant improvement over WhisperLarge-v2’s baseline for 7 out of 24 languages. To further evaluate our system, we developed Blaser 2.0, which enables evaluation across speech and text with similar accuracy compared to its predecessor when it comes to quality estimation. Tested for robustness, our system performs better against background noises and speaker variations in speech-to-text tasks (average improvements of 38% and 49%, respectively) compared to the current state-of-the-art model. Critically, we evaluated SeamlessM4T on gender bias and added toxicity to assess translation safety. Compared to the state-of-the-art, we report up to 63% of reduction in added toxicity in our translation outputs. Finally, all contributions in this work—including models, inference code, finetuning recipes backed by our improved modeling toolkit Fairseq2, and metadata to recreate the unfiltered 470,000 hours of SeamlessAlign — are open-sourced and accessible at https://github.com/facebookresearch/seamless_communication.
+Seamless Communication, Loic Barrault, Andy Chung, David Dale, Ning Dong (AI), Paul-Ambroise Duquenne, Hady Elsahar, Hongyu Gong, Kevin Heffernan, John Hoffman, Christopher Klaiber, Peng-Jen Chen, Daniel Licht, Jean Maillard, Alice Rakotoarison, Kaushik Ram Sadagopan, Guillaume Wenzek, Abinesh Ramakrishnan, Alexandre Mourachko, Amanda Kallet, Ann Lee, Anna Sun, Bapi Akula, Benjamin Peloquin, Bernie Huang, Bokai Yu, Brian Ellis, Can Balioglu, Carleigh Wood, Changhan Wang, Christophe Ropers, Cynthia Gao, Daniel Li (FAIR), Elahe Kalbassi, Ethan Ye, Gabriel Mejia Gonzalez, Hirofumi Inaguma, Holger Schwenk, Igor Tufanov, Ilia Kulikov, Janice Lam, Jeff Wang (PM - AI), Juan Pino, Justin Haaheim, Justine Kao, Prangthip Hasanti, Kevin Tran, Maha Elbayad, Marta R. Costa-jussa, Mohamed Ramadan, Naji El Hachem, Onur Çelebi, Paco Guzmán, Paden Tomasello, Pengwei Li, Pierre Andrews, Ruslan Mavlyutov, Russ Howes, Safiyyah Saleem, Skyler Wang, Somya Jain, Sravya Popuri, Tuan Tran, Vish Vogeti, Xutai Ma, Yilin Yang
+
+Read the Paper
+August 21, 2023
+
+NLP
+SONAR: Sentence-Level Multimodal and Language-Agnostic Representations
+We introduce SONAR, a new multilingual and multimodal fixed-size sentence embedding space. Our single text encoder, covering 200 languages, substantially outperforms existing sentence embeddings such as LASER3 and LabSE on the xsim and xsim++ multilingual similarity search tasks. Speech segments can be embedded in the same SONAR embedding space using language-specific speech encoders trained in a teacher-student setting on speech transcription data. Our encoders outperform existing speech encoders on similarity search tasks. We also provide a text decoder for 200 languages, which allows us to perform text-to-text and speech-to-text machine translation, including for zero-shot language and modality combinations. Our text-to-text results are competitive compared to the state-of-the-art NLLB 1B model, despite the fixed-size bottleneck representation. Our zero-shot speech-to-text translation results compare favorably with strong supervised baselines such as Whisper.
+Paul-Ambroise Duquenne, Holger Schwenk, Benoit Sagot
+
+Read the Paper
+August 19, 2023
+
+NLP
+EXPRESSO: A Benchmark and Analysis of Discrete Expressive Speech Resynthesis
+Recent work has shown that it is possible to resynthesize high-quality speech based, not on text, but on low bitrate discrete units that have been learned in a self-supervised fashion and can therefore capture expressive aspects of speech that are hard to transcribe (prosody, voice styles, non-verbal vocalization). The adoption of these methods is still limited by the fact that most speech synthesis datasets are read, severely limiting spontaneity and expressivity. Here, we introduce \expresso, a high-quality expressive speech dataset for textless speech synthesis that includes both read speech and improvised dialogues rendered in 26 spontaneous expressive styles. We illustrate the challenges and potentials of this dataset with an \textit{expressive resynthesis benchmark} where the task is to encode the input in low-bitrate units and resynthesize it in a target voice while preserving content and style. We evaluate resynthesis quality with automatic metrics for different self-supervised discrete encoders, and explore tradeoffs between quality, bitrate and invariance to speaker and style. The dataset, evaluation metrics and baseline models will be open sourced.
+Tu Anh Nguyen, Wei-Ning Hsu, Antony D'Avirro, Bowen Shi, Itai Gat, Maryam Fazel-Zarandi, Tal Remez, Jade Copet, Gabriel Synnaeve, Michael Hassid, Felix Kreuk, Yossef Mordechay Adi, Emmanuel Dupoux
+
+Read the Paper
+See All Papers
+
+Help Us Pioneer The Future of AI
+We share our open source frameworks, tools, libraries, and models for everything from research exploration to large-scale production deployment.
+Join our Team
+Who We Are
+About Meta AI
+People
+Careers
+Events
+Latest Work
+Research
+Infrastructure
+Blog
+Resources
+Our Actions
+Responsibilities
+Newsletter
+Sign Up
+
+
+Privacy Policy
+Terms
+Cookies
+Meta
