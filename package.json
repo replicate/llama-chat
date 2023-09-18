@@ -22,7 +22,7 @@
     "replicate": "^0.16.0"
   },
   "devDependencies": {
-    "@tailwindcss/forms": "^0.5.4",
+    "@tailwindcss/forms": "^0.5.6",
     "autoprefixer": "^10.4.15",
     "postcss": "^8.4.21",
     "tailwindcss": "^3.3.2"
