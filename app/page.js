@@ -127,7 +127,7 @@ export default function HomePage() {
 
   return (
     <>
-      <div className="bg-slate-100 border-b-2 text-center p-3">
+      <div id="banner" className="bg-slate-100 border-b-2 text-center p-3">
         Powered by Replicate.{" "}
         <a
           href="https://replicate.com/blog/run-llama-2-with-an-api?utm_source=project&utm_campaign=llama2ai"
