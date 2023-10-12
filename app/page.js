@@ -7,23 +7,10 @@ import SlideOver from "./components/SlideOver";
 import EmptyState from "./components/EmptyState";
 import { Cog6ToothIcon, CodeBracketIcon } from "@heroicons/react/20/solid";
 import { useCompletion } from "ai/react";
-import { Uploader } from "uploader"; // Installed by "react-uploader".
-import { UploadButton } from "react-uploader";
 
 function approximateTokenCount(text) {
   return Math.ceil(text.length * 0.4);
 }
-
-const uploader = Uploader({
-  apiKey: "public_kW15biSARCJN7FAz6rANdRg3pNkh",
-});
-
-const options = {
-  maxFileCount: 1,
-  mimeTypes: ["image/jpeg", "image/png"],
-  showFinishButton: false,
-  preview: false,
-};
 
 const VERSIONS = [
   {
@@ -40,6 +27,11 @@ const VERSIONS = [
     name: "Llama 2 70B",
     version: "2796ee9483c3fd7aa2e171d38f4ca12251a30609463dcfd4cd76703f22e96cdf",
     shortened: "70B",
+  },
+  {
+    name: "Llava 13B",
+    version: "6bc1c7bb0d2a34e413301fee8f7cc728d2d4e75bfab186aa995f63292bda92fc",
+    shortened: "Llava",
   },
 ];
 
@@ -77,10 +69,11 @@ export default function HomePage() {
   });
 
   const handleImageUpload = (file) => {
-    console.log("file uploaded is", file);
-    setImage(file.fileUrl);
+    if (file) {
+      setImage(file.fileUrl);
+      setSize(VERSIONS[3]);
+    }
   };
-
   const setAndSubmitPrompt = (newPrompt) => {
     handleSubmit(newPrompt);
   };
@@ -135,8 +128,6 @@ export default function HomePage() {
 
     setMessages(messageHistory);
 
-    console.log("temp is ", temp);
-
     complete(prompt);
   };
 
@@ -166,7 +157,7 @@ export default function HomePage() {
             className="py-2 font-semibold text-gray-500 hover:underline"
             onClick={() => setOpen(true)}
           >
-            Llama 2 {size.shortened}
+            {size.shortened == "Llava" ? "Llava" : "Llama 2 " + size.shortened}
           </button>
         </div>
         <div className="flex justify-end">
@@ -196,7 +187,7 @@ export default function HomePage() {
 
       <main className="max-w-2xl pb-5 mx-auto mt-4 sm:px-4">
         <div className="text-center"></div>
-        {messages.length == 0 && (
+        {messages.length == 0 && !image && (
           <EmptyState setPrompt={setAndSubmitPrompt} setOpen={setOpen} />
         )}
 
@@ -217,15 +208,14 @@ export default function HomePage() {
           setSize={setSize}
         />
 
-        <UploadButton
-          uploader={uploader}
-          options={options}
-          onComplete={(files) => handleImageUpload(files[0])}
-        >
-          {({ onClick }) => <button onClick={onClick}>Upload a file...</button>}
-        </UploadButton>
+        {image && <img src={image} className="mt-6 sm:rounded-xl" />}
 
-        <ChatForm prompt={input} setPrompt={setInput} onSubmit={handleSubmit} />
+        <ChatForm
+          prompt={input}
+          setPrompt={setInput}
+          onSubmit={handleSubmit}
+          handleImageUpload={handleImageUpload}
+        />
 
         {error && <div>{error}</div>}
 
