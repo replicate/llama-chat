@@ -7,6 +7,7 @@ import SlideOver from "./components/SlideOver";
 import EmptyState from "./components/EmptyState";
 import { Cog6ToothIcon, CodeBracketIcon } from "@heroicons/react/20/solid";
 import { useCompletion } from "ai/react";
+import { Toaster, toast } from "react-hot-toast";
 
 function approximateTokenCount(text) {
   return Math.ceil(text.length * 0.4);
@@ -72,6 +73,9 @@ export default function HomePage() {
     if (file) {
       setImage(file.fileUrl);
       setSize(VERSIONS[3]);
+      toast.success(
+        "You uploaded an image, so you're now speaking with Llava."
+      );
     }
   };
   const setAndSubmitPrompt = (newPrompt) => {
@@ -185,6 +189,8 @@ export default function HomePage() {
         </div>
       </nav>
 
+      <Toaster position="top-left" reverseOrder={false} />
+
       <main className="max-w-2xl pb-5 mx-auto mt-4 sm:px-4">
         <div className="text-center"></div>
         {messages.length == 0 && !image && (
@@ -208,7 +214,11 @@ export default function HomePage() {
           setSize={setSize}
         />
 
-        {image && <img src={image} className="mt-6 sm:rounded-xl" />}
+        {image && (
+          <div>
+            <img src={image} className="mt-6 sm:rounded-xl" />
+          </div>
+        )}
 
         <ChatForm
           prompt={input}

@@ -17,7 +17,19 @@ const options = {
       crop: false,
     },
   },
-  styles: {},
+  styles: {
+    colors: {
+      active: "#1f2937",
+      error: "#d23f4d",
+      primary: "#4b5563",
+    },
+    fontFamilies: {
+      base: "inter, -apple-system, blinkmacsystemfont, Segoe UI, helvetica, arial, sans-serif",
+    },
+    fontSizes: {
+      base: 16,
+    },
+  },
 };
 
 const ChatForm = ({ prompt, setPrompt, onSubmit, handleImageUpload }) => {
@@ -45,7 +57,12 @@ const ChatForm = ({ prompt, setPrompt, onSubmit, handleImageUpload }) => {
             onComplete={(files) => handleImageUpload(files[0])}
           >
             {({ onClick }) => (
-              <button onClick={onClick}>Upload a file...</button>
+              <button
+                className="p-3 border-gray-600 border-2 inline-flex hover:bg-gray-300 rounded-md mr-3"
+                onClick={onClick}
+              >
+                Upload
+              </button>
             )}
           </UploadButton>
           <textarea
