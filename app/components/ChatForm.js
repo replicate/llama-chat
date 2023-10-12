@@ -1,4 +1,38 @@
-const ChatForm = ({ prompt, setPrompt, onSubmit }) => {
+import { Uploader } from "uploader";
+import { UploadButton } from "react-uploader";
+
+const uploader = Uploader({
+  apiKey: "public_kW15biSARCJN7FAz6rANdRg3pNkh",
+});
+
+const options = {
+  apiKey: "public_kW15biSARCJN7FAz6rANdRg3pNkh",
+  maxFileCount: 1,
+  mimeTypes: ["image/jpeg", "image/png"],
+  showFinishButton: false,
+  preview: true,
+  editor: {
+    images: {
+      preview: false,
+      crop: false,
+    },
+  },
+  styles: {
+    colors: {
+      active: "#1f2937",
+      error: "#d23f4d",
+      primary: "#4b5563",
+    },
+    fontFamilies: {
+      base: "inter, -apple-system, blinkmacsystemfont, Segoe UI, helvetica, arial, sans-serif",
+    },
+    fontSizes: {
+      base: 16,
+    },
+  },
+};
+
+const ChatForm = ({ prompt, setPrompt, onSubmit, handleImageUpload }) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     onSubmit(prompt);
@@ -7,7 +41,7 @@ const ChatForm = ({ prompt, setPrompt, onSubmit }) => {
   };
 
   const handleKeyDown = (event) => {
-    if (event.key === 'Enter' && !event.shiftKey) {
+    if (event.key === "Enter" && !event.shiftKey) {
       event.preventDefault();
       handleSubmit(event);
     }
@@ -17,6 +51,20 @@ const ChatForm = ({ prompt, setPrompt, onSubmit }) => {
     <footer className="z-10 fixed bottom-0 left-0 right-0 bg-slate-100 border-t-2">
       <div className="container max-w-2xl mx-auto p-5 pb-8">
         <form className="w-full flex" onSubmit={handleSubmit}>
+          <UploadButton
+            uploader={uploader}
+            options={options}
+            onComplete={(files) => handleImageUpload(files[0])}
+          >
+            {({ onClick }) => (
+              <button
+                className="p-3 border-gray-600 border-2 inline-flex hover:bg-gray-300 rounded-md mr-3"
+                onClick={onClick}
+              >
+                Upload
+              </button>
+            )}
+          </UploadButton>
           <textarea
             autoComplete="off"
             autoFocus
@@ -29,7 +77,7 @@ const ChatForm = ({ prompt, setPrompt, onSubmit }) => {
             onChange={(e) => setPrompt(e.target.value)}
             onKeyDown={handleKeyDown}
             onInput={(e) => {
-              const lineCount = e.target.value.split('\n').length;
+              const lineCount = e.target.value.split("\n").length;
               e.target.rows = lineCount > 10 ? 10 : lineCount;
             }}
           />

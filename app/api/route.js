@@ -14,10 +14,28 @@ if (!process.env.REPLICATE_API_TOKEN) {
 export const runtime = "edge";
 
 export async function POST(req) {
-  const { prompt, systemPrompt, maxTokens, temperature, topP, version } =
-    await req.json();
+  const params = await req.json();
 
-  const response = await replicate.predictions.create({
+  const response = params.image
+    ? await runLlava(params)
+    : await runLlama(params);
+
+  // Convert the response into a friendly text-stream
+  const stream = await ReplicateStream(response);
+  // Respond with the stream
+  return new StreamingTextResponse(stream);
+}
+
+async function runLlama({
+  prompt,
+  systemPrompt,
+  maxTokens,
+  temperature,
+  topP,
+  version,
+}) {
+  console.log("running llama");
+  return await replicate.predictions.create({
     // IMPORTANT! You must enable streaming.
     stream: true,
     input: {
@@ -31,9 +49,22 @@ export async function POST(req) {
     // IMPORTANT! The model must support streaming. See https://replicate.com/docs/streaming
     version: version,
   });
+}
 
-  // Convert the response into a friendly text-stream
-  const stream = await ReplicateStream(response);
-  // Respond with the stream
-  return new StreamingTextResponse(stream);
+async function runLlava({ prompt, maxTokens, temperature, topP, image }) {
+  console.log("running llava");
+
+  return await replicate.predictions.create({
+    // IMPORTANT! You must enable streaming.
+    stream: true,
+    input: {
+      prompt: `${prompt}`,
+      topP: topP,
+      temperature: temperature,
+      maxTokens: maxTokens,
+      image: image,
+    },
+    // IMPORTANT! The model must support streaming. See https://replicate.com/docs/streaming
+    version: "6bc1c7bb0d2a34e413301fee8f7cc728d2d4e75bfab186aa995f63292bda92fc", // hardcoded https://replicate.com/yorickvp/llava-13b/versions
+  });
 }

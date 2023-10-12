@@ -7,6 +7,7 @@ import SlideOver from "./components/SlideOver";
 import EmptyState from "./components/EmptyState";
 import { Cog6ToothIcon, CodeBracketIcon } from "@heroicons/react/20/solid";
 import { useCompletion } from "ai/react";
+import { Toaster, toast } from "react-hot-toast";
 
 function approximateTokenCount(text) {
   return Math.ceil(text.length * 0.4);
@@ -28,6 +29,11 @@ const VERSIONS = [
     version: "2796ee9483c3fd7aa2e171d38f4ca12251a30609463dcfd4cd76703f22e96cdf",
     shortened: "70B",
   },
+  {
+    name: "Llava 13B",
+    version: "6bc1c7bb0d2a34e413301fee8f7cc728d2d4e75bfab186aa995f63292bda92fc",
+    shortened: "Llava",
+  },
 ];
 
 export default function HomePage() {
@@ -46,6 +52,8 @@ export default function HomePage() {
   const [topP, setTopP] = useState(0.9);
   const [maxTokens, setMaxTokens] = useState(800);
 
+  const [image, setImage] = useState(null);
+
   const { complete, completion, setInput, input } = useCompletion({
     api: "/api",
     body: {
@@ -54,12 +62,22 @@ export default function HomePage() {
       temperature: parseFloat(temp),
       topP: parseFloat(topP),
       maxTokens: parseInt(maxTokens),
+      image: image,
     },
     onError: (error) => {
       setError(error);
     },
   });
 
+  const handleImageUpload = (file) => {
+    if (file) {
+      setImage(file.fileUrl);
+      setSize(VERSIONS[3]);
+      toast.success(
+        "You uploaded an image, so you're now speaking with Llava."
+      );
+    }
+  };
   const setAndSubmitPrompt = (newPrompt) => {
     handleSubmit(newPrompt);
   };
@@ -114,8 +132,6 @@ export default function HomePage() {
 
     setMessages(messageHistory);
 
-    console.log("temp is ", temp);
-
     complete(prompt);
   };
 
@@ -145,7 +161,7 @@ export default function HomePage() {
             className="py-2 font-semibold text-gray-500 hover:underline"
             onClick={() => setOpen(true)}
           >
-            Llama 2 {size.shortened}
+            {size.shortened == "Llava" ? "Llava" : "Llama 2 " + size.shortened}
           </button>
         </div>
         <div className="flex justify-end">
@@ -173,9 +189,11 @@ export default function HomePage() {
         </div>
       </nav>
 
+      <Toaster position="top-left" reverseOrder={false} />
+
       <main className="max-w-2xl pb-5 mx-auto mt-4 sm:px-4">
         <div className="text-center"></div>
-        {messages.length == 0 && (
+        {messages.length == 0 && !image && (
           <EmptyState setPrompt={setAndSubmitPrompt} setOpen={setOpen} />
         )}
 
@@ -196,7 +214,18 @@ export default function HomePage() {
           setSize={setSize}
         />
 
-        <ChatForm prompt={input} setPrompt={setInput} onSubmit={handleSubmit} />
+        {image && (
+          <div>
+            <img src={image} className="mt-6 sm:rounded-xl" />
+          </div>
+        )}
+
+        <ChatForm
+          prompt={input}
+          setPrompt={setInput}
+          onSubmit={handleSubmit}
+          handleImageUpload={handleImageUpload}
+        />
 
         {error && <div>{error}</div>}
 

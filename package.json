@@ -10,6 +10,7 @@
     "test": "REPLICATE_API_TOKEN=test-token npm run lint && npm run build"
   },
   "dependencies": {
+    "@bytescale/upload-widget-react": "^4.10.0",
     "@headlessui/react": "^1.7.15",
     "@heroicons/react": "^2.0.18",
     "@vercel/analytics": "^1.0.1",
@@ -19,6 +20,8 @@
     "next": "13.4.19",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-hot-toast": "^2.4.1",
+    "react-uploader": "^3.43.0",
     "replicate": "^0.16.0"
   },
   "devDependencies": {
