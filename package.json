@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@bytescale/upload-widget-react": "^4.10.0",
-    "@headlessui/react": "^1.7.15",
+    "@headlessui/react": "^1.7.17",
     "@heroicons/react": "^2.0.18",
     "@vercel/analytics": "^1.0.1",
     "ai": "^2.2.12",
