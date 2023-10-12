@@ -7,10 +7,23 @@ import SlideOver from "./components/SlideOver";
 import EmptyState from "./components/EmptyState";
 import { Cog6ToothIcon, CodeBracketIcon } from "@heroicons/react/20/solid";
 import { useCompletion } from "ai/react";
+import { Uploader } from "uploader"; // Installed by "react-uploader".
+import { UploadButton } from "react-uploader";
 
 function approximateTokenCount(text) {
   return Math.ceil(text.length * 0.4);
 }
+
+const uploader = Uploader({
+  apiKey: "public_kW15biSARCJN7FAz6rANdRg3pNkh",
+});
+
+const options = {
+  maxFileCount: 1,
+  mimeTypes: ["image/jpeg", "image/png"],
+  showFinishButton: false,
+  preview: false,
+};
 
 const VERSIONS = [
   {
@@ -46,6 +59,8 @@ export default function HomePage() {
   const [topP, setTopP] = useState(0.9);
   const [maxTokens, setMaxTokens] = useState(800);
 
+  const [image, setImage] = useState(null);
+
   const { complete, completion, setInput, input } = useCompletion({
     api: "/api",
     body: {
@@ -54,11 +69,17 @@ export default function HomePage() {
       temperature: parseFloat(temp),
       topP: parseFloat(topP),
       maxTokens: parseInt(maxTokens),
+      image: image,
     },
     onError: (error) => {
       setError(error);
     },
   });
+
+  const handleImageUpload = (file) => {
+    console.log("file uploaded is", file);
+    setImage(file.fileUrl);
+  };
 
   const setAndSubmitPrompt = (newPrompt) => {
     handleSubmit(newPrompt);
@@ -195,6 +216,14 @@ export default function HomePage() {
           size={size}
           setSize={setSize}
         />
+
+        <UploadButton
+          uploader={uploader}
+          options={options}
+          onComplete={(files) => handleImageUpload(files[0])}
+        >
+          {({ onClick }) => <button onClick={onClick}>Upload a file...</button>}
+        </UploadButton>
 
         <ChatForm prompt={input} setPrompt={setInput} onSubmit={handleSubmit} />
 
