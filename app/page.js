@@ -34,7 +34,46 @@ const VERSIONS = [
     version: "6bc1c7bb0d2a34e413301fee8f7cc728d2d4e75bfab186aa995f63292bda92fc",
     shortened: "Llava",
   },
+  {
+    name: "Salmonn",
+    version: "f49c499450c8aa0692692b69c1af047e7911256a3ba2967277ad465aafe2c05f",
+    shortened: "Salmonn",
+  },
 ];
+
+function CTA({ shortenedModelName }) {
+  if (shortenedModelName == "Llava") {
+    return (
+      <a
+        href="https://replicate.com/blog/run-llama-2-with-an-api?utm_source=project&utm_campaign=llama2ai"
+        target="_blank"
+        className="underline"
+      >
+        Run and fine-tune Llava in the cloud.
+      </a>
+    );
+  } else if (shortenedModelName == "Salmonn") {
+    return (
+      <a
+        href="https://replicate.com/blog/run-llama-2-with-an-api?utm_source=project&utm_campaign=llama2ai"
+        target="_blank"
+        className="underline"
+      >
+        Run and fine-tune Salmonn in the cloud.
+      </a>
+    );
+  } else {
+    return (
+      <a
+        href="https://replicate.com/blog/run-llama-2-with-an-api?utm_source=project&utm_campaign=llama2ai"
+        target="_blank"
+        className="underline"
+      >
+        Run and fine-tune Llama 2 in the cloud.
+      </a>
+    );
+  }
+}
 
 export default function HomePage() {
   const MAX_TOKENS = 4096;
@@ -52,7 +91,11 @@ export default function HomePage() {
   const [topP, setTopP] = useState(0.9);
   const [maxTokens, setMaxTokens] = useState(800);
 
+  //  Llava params
   const [image, setImage] = useState(null);
+
+  // Salmonn params
+  const [audio, setAudio] = useState(null);
 
   const { complete, completion, setInput, input } = useCompletion({
     api: "/api",
@@ -63,21 +106,45 @@ export default function HomePage() {
       topP: parseFloat(topP),
       maxTokens: parseInt(maxTokens),
       image: image,
+      audio: audio,
     },
     onError: (error) => {
       setError(error);
     },
   });
 
-  const handleImageUpload = (file) => {
+  const handleFileUpload = (file) => {
     if (file) {
-      setImage(file.fileUrl);
-      setSize(VERSIONS[3]);
-      toast.success(
-        "You uploaded an image, so you're now speaking with Llava."
-      );
+      console.log(file);
+      // determine if file is image or audio
+      if (
+        ["audio/mpeg", "audio/wav", "audio/ogg"].includes(
+          file.originalFile.mime
+        )
+      ) {
+        setAudio(file.fileUrl);
+        setSize(VERSIONS[4]);
+        toast.success(
+          "You uploaded an audio file, so you're now speaking with Salmonn."
+        );
+      } else if (
+        ["audio/mpeg", "audio/wav", "audio/ogg"].includes(
+          file.originalFile.mime
+        )
+      ) {
+        setImage(file.fileUrl);
+        setSize(VERSIONS[3]);
+        toast.success(
+          "You uploaded an image, so you're now speaking with Llava."
+        );
+      } else {
+        toast.error(
+          `Sorry, we don't support that file type (${file.originalFile.mime}) yet. Feel free to push a PR to add support for it!`
+        );
+      }
     }
   };
+
   const setAndSubmitPrompt = (newPrompt) => {
     handleSubmit(newPrompt);
   };
@@ -144,24 +211,24 @@ export default function HomePage() {
   return (
     <>
       <div className="bg-slate-100 border-b-2 text-center p-3">
-        Powered by Replicate.{" "}
-        <a
-          href="https://replicate.com/blog/run-llama-2-with-an-api?utm_source=project&utm_campaign=llama2ai"
-          target="_blank"
-          className="underline"
-        >
-          Run and fine-tune Llama 2 in the cloud.
-        </a>
+        Powered by Replicate. <CTA shortenedModelName={size.shortened} />
       </div>
       <nav className="grid grid-cols-2 pt-3 pl-6 pr-3 sm:grid-cols-3 sm:pl-0">
         <div className="hidden sm:inline-block"></div>
         <div className="font-semibold text-gray-500 sm:text-center">
-          🦙 <span className="hidden sm:inline-block">Chat with</span>{" "}
+          {size.shortened == "Llava"
+            ? "🌋"
+            : size.shortened == "Salmonn"
+            ? "🐟"
+            : "🦙"}{" "}
+          <span className="hidden sm:inline-block">Chat with</span>{" "}
           <button
             className="py-2 font-semibold text-gray-500 hover:underline"
             onClick={() => setOpen(true)}
           >
-            {size.shortened == "Llava" ? "Llava" : "Llama 2 " + size.shortened}
+            {size.shortened == "Llava" || size.shortened == "Salmonn"
+              ? size.shortened
+              : "Llama 2 " + size.shortened}
           </button>
         </div>
         <div className="flex justify-end">
@@ -193,7 +260,7 @@ export default function HomePage() {
 
       <main className="max-w-2xl pb-5 mx-auto mt-4 sm:px-4">
         <div className="text-center"></div>
-        {messages.length == 0 && !image && (
+        {messages.length == 0 && !image && !audio && (
           <EmptyState setPrompt={setAndSubmitPrompt} setOpen={setOpen} />
         )}
 
@@ -220,11 +287,17 @@ export default function HomePage() {
           </div>
         )}
 
+        {audio && (
+          <div>
+            <audio controls src={audio} className="mt-6 sm:rounded-xl" />
+          </div>
+        )}
+
         <ChatForm
           prompt={input}
           setPrompt={setInput}
           onSubmit={handleSubmit}
-          handleImageUpload={handleImageUpload}
+          handleFileUpload={handleFileUpload}
         />
 
         {error && <div>{error}</div>}
