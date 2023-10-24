@@ -8,7 +8,13 @@ const uploader = Uploader({
 const options = {
   apiKey: "public_kW15biSARCJN7FAz6rANdRg3pNkh",
   maxFileCount: 1,
-  mimeTypes: ["image/jpeg", "image/png"],
+  mimeTypes: [
+    "image/jpeg",
+    "image/png",
+    "audio/mpeg",
+    "audio/wav",
+    "audio/ogg",
+  ],
   showFinishButton: false,
   preview: true,
   editor: {
@@ -32,7 +38,7 @@ const options = {
   },
 };
 
-const ChatForm = ({ prompt, setPrompt, onSubmit, handleImageUpload }) => {
+const ChatForm = ({ prompt, setPrompt, onSubmit, handleFileUpload }) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     onSubmit(prompt);
@@ -54,7 +60,7 @@ const ChatForm = ({ prompt, setPrompt, onSubmit, handleImageUpload }) => {
           <UploadButton
             uploader={uploader}
             options={options}
-            onComplete={(files) => handleImageUpload(files[0])}
+            onComplete={(files) => handleFileUpload(files[0])}
           >
             {({ onClick }) => (
               <button
