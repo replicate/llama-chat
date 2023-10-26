@@ -16,27 +16,27 @@ function approximateTokenCount(text) {
 const VERSIONS = [
   {
     name: "Llama 2 7B",
-    version: "d24902e3fa9b698cc208b5e63136c4e26e828659a9f09827ca6ec5bb83014381",
+    version: "ac944f2e49c55c7e965fc3d93ad9a7d9d947866d6793fb849dd6b4747d0c061c",
     shortened: "7B",
   },
   {
     name: "Llama 2 13B",
-    version: "9dff94b1bed5af738655d4a7cbcdcde2bd503aa85c94334fe1f42af7f3dd5ee3",
+    version: "f4e2de70d66816a838a89eeeb621910adffb0dd0baba3976c96980970978018d",
     shortened: "13B",
   },
   {
     name: "Llama 2 70B",
-    version: "2796ee9483c3fd7aa2e171d38f4ca12251a30609463dcfd4cd76703f22e96cdf",
+    version: "02e509c789964a7ea8736978a43525956ef40397be9033abf9fd2badfe68c9e3",
     shortened: "70B",
   },
   {
     name: "Llava 13B",
-    version: "6bc1c7bb0d2a34e413301fee8f7cc728d2d4e75bfab186aa995f63292bda92fc",
+    version: "2facb4a474a0462c15041b78b1ad70952ea46b5ec6ad29583c0b29dbd4249591",
     shortened: "Llava",
   },
   {
     name: "Salmonn",
-    version: "f49c499450c8aa0692692b69c1af047e7911256a3ba2967277ad465aafe2c05f",
+    version: "ad1d3f9d2bd683628242b68d890bef7f7bd97f738a7c2ccbf1743a594c723d83",
     shortened: "Salmonn",
   },
 ];
