@@ -128,7 +128,7 @@ export default function HomePage() {
           "You uploaded an audio file, so you're now speaking with Salmonn."
         );
       } else if (
-        ["audio/mpeg", "audio/wav", "audio/ogg"].includes(
+        ["image/jpeg", "image/png"].includes(
           file.originalFile.mime
         )
       ) {
