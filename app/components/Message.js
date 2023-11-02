@@ -1,3 +1,7 @@
+import ReactMarkdown from 'react-markdown';
+import { dark } from "react-syntax-highlighter/src/styles/hljs";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+
 const Message = ({ message, isUser }) => {
   let containerClass = "bg-gray-50";
   if (isUser) {
@@ -25,14 +29,30 @@ const Message = ({ message, isUser }) => {
       )}
 
       <div className="flex flex-col text-sm sm:text-base flex-1 gap-y-4 mt-1">
-        {message.split("\n").map(
-          (text, index) =>
-            text.length > 0 && (
-              <span key={index} className="min-w-0">
-                {text}
-              </span>
-            )
-        )}
+        <ReactMarkdown
+          components={{
+            code(props) {
+              const { children, className, node, ...rest } = props
+              const match = /language-(\w+)/.exec(className || '')
+              return match ? (
+                <SyntaxHighlighter
+                  {...rest}
+                  PreTag="div"
+                  language={match[1]}
+                  style={dark}
+                >
+                  {String(children).replace(/\n$/, '')}
+                </SyntaxHighlighter>
+              ) : (
+                <code {...rest} className={className}>
+                  {children}
+                </code>
+              )
+            }
+          }}
+        >
+          {message}
+        </ReactMarkdown>
       </div>
     </div>
   );
