@@ -16,7 +16,7 @@ function approximateTokenCount(text) {
 const VERSIONS = [
   {
     name: "Llama 2 7B",
-    version: "ac944f2e49c55c7e965fc3d93ad9a7d9d947866d6793fb849dd6b4747d0c061c",
+    version: "13c3cdee13ee059ab779f0291d29054dab00a47dad8261375654de5540165fb0",
     shortened: "7B",
   },
   {
@@ -127,11 +127,7 @@ export default function HomePage() {
         toast.success(
           "You uploaded an audio file, so you're now speaking with Salmonn."
         );
-      } else if (
-        ["image/jpeg", "image/png"].includes(
-          file.originalFile.mime
-        )
-      ) {
+      } else if (["image/jpeg", "image/png"].includes(file.originalFile.mime)) {
         setImage(file.fileUrl);
         setSize(VERSIONS[3]);
         toast.success(
