@@ -199,6 +199,15 @@ export default function HomePage() {
   };
 
   useEffect(() => {
+    if (!localStorage.getItem("toastShown")) {
+      toast.success(
+        "We just updated our 7B model — it's super fast. Try it out!"
+      );
+      localStorage.setItem("toastShown", "true");
+    }
+  }, []);
+
+  useEffect(() => {
     if (messages?.length > 0 || completion?.length > 0) {
       bottomRef.current.scrollIntoView({ behavior: "smooth" });
     }
