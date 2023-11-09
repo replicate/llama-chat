@@ -8,10 +8,7 @@ import EmptyState from "./components/EmptyState";
 import { Cog6ToothIcon, CodeBracketIcon } from "@heroicons/react/20/solid";
 import { useCompletion } from "ai/react";
 import { Toaster, toast } from "react-hot-toast";
-
-function approximateTokenCount(text) {
-  return Math.ceil(text.length * 0.4);
-}
+import { countTokens } from "./src/tokenizer.js";
 
 const VERSIONS = [
   {
@@ -177,7 +174,7 @@ export default function HomePage() {
     // Generate initial prompt and calculate tokens
     let prompt = `${generatePrompt(messageHistory)}\n`;
     // Check if we exceed max tokens and truncate the message history if so.
-    while (approximateTokenCount(prompt) > MAX_TOKENS) {
+    while (countTokens(prompt) > MAX_TOKENS) {
       if (messageHistory.length < 3) {
         setError(
           "Your message is too long. Please try again with a shorter message."
@@ -224,8 +221,8 @@ export default function HomePage() {
           {size.shortened == "Llava"
             ? "🌋"
             : size.shortened == "Salmonn"
-            ? "🐟"
-            : "🦙"}{" "}
+              ? "🐟"
+              : "🦙"}{" "}
           <span className="hidden sm:inline-block">Chat with</span>{" "}
           <button
             className="py-2 font-semibold text-gray-500 hover:underline"
