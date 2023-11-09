@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useReducer, useRef, useState } from "react";
 import ChatForm from "./components/ChatForm";
 import Message from "./components/Message";
 import SlideOver from "./components/SlideOver";
@@ -72,6 +72,19 @@ function CTA({ shortenedModelName }) {
   }
 }
 
+const metricsReducer = (state, action) => {
+  switch (action.type) {
+    case 'START':
+      return { startedAt: new Date() };
+    case 'FIRST_MESSAGE':
+      return { ...state, firstMessageAt: new Date() };
+    case 'COMPLETE':
+      return { ...state, completedAt: new Date() };
+    default:
+      throw new Error(`Unsupported action type: ${action.type}`);
+  }
+};
+
 export default function HomePage() {
   const MAX_TOKENS = 4096;
   const bottomRef = useRef(null);
@@ -94,6 +107,14 @@ export default function HomePage() {
   // Salmonn params
   const [audio, setAudio] = useState(null);
 
+
+  const [metrics, dispatch] = useReducer(metricsReducer, {
+    startedAt: null,
+    firstMessageAt: null,
+    completedAt: null,
+  });
+
+
   const { complete, completion, setInput, input } = useCompletion({
     api: "/api",
     body: {
@@ -105,9 +126,17 @@ export default function HomePage() {
       image: image,
       audio: audio,
     },
+
     onError: (error) => {
       setError(error);
     },
+    onResponse: (response) => {
+      setError(null);
+      dispatch({ type: 'FIRST_MESSAGE' });
+    },
+    onFinish: () => {
+      dispatch({ type: 'COMPLETE' });
+    }
   });
 
   const handleFileUpload = (file) => {
@@ -191,6 +220,8 @@ export default function HomePage() {
     }
 
     setMessages(messageHistory);
+
+    dispatch({ type: 'START' });
 
     complete(prompt);
   };
@@ -300,6 +331,8 @@ export default function HomePage() {
           setPrompt={setInput}
           onSubmit={handleSubmit}
           handleFileUpload={handleFileUpload}
+          completion={completion}
+          metrics={metrics}
         />
 
         {error && <div>{error}</div>}
@@ -313,6 +346,7 @@ export default function HomePage() {
             />
           ))}
           <Message message={completion} isUser={false} />
+
           <div ref={bottomRef} />
         </article>
       </main>

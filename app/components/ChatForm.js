@@ -1,6 +1,6 @@
 import { Uploader } from "uploader";
 import { UploadButton } from "react-uploader";
-
+import Metrics from "./Metrics";
 const uploader = Uploader({
   apiKey: "public_kW15biSARCJN7FAz6rANdRg3pNkh",
 });
@@ -38,7 +38,7 @@ const options = {
   },
 };
 
-const ChatForm = ({ prompt, setPrompt, onSubmit, handleFileUpload }) => {
+const ChatForm = ({ prompt, setPrompt, onSubmit, handleFileUpload, metrics, completion }) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     onSubmit(prompt);
@@ -56,6 +56,12 @@ const ChatForm = ({ prompt, setPrompt, onSubmit, handleFileUpload }) => {
   return (
     <footer className="z-10 fixed bottom-0 left-0 right-0 bg-slate-100 border-t-2">
       <div className="container max-w-2xl mx-auto p-5 pb-8">
+        <Metrics
+          startedAt={metrics.startedAt}
+          firstMessageAt={metrics.firstMessageAt}
+          completedAt={metrics.completedAt}
+          completion={completion} />
+
         <form className="w-full flex" onSubmit={handleSubmit}>
           <UploadButton
             uploader={uploader}
