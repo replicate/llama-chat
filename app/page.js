@@ -10,30 +10,30 @@ import { useCompletion } from "ai/react";
 import { Toaster, toast } from "react-hot-toast";
 import { countTokens } from "./src/tokenizer.js";
 
-const VERSIONS = [
+const MODELS = [
   {
+    id: "meta/llama-2-7b-chat",
     name: "Llama 2 7B",
-    version: "13c3cdee13ee059ab779f0291d29054dab00a47dad8261375654de5540165fb0",
     shortened: "7B",
   },
   {
+    id: "meta/llama-2-13b-chat",
     name: "Llama 2 13B",
-    version: "f4e2de70d66816a838a89eeeb621910adffb0dd0baba3976c96980970978018d",
     shortened: "13B",
   },
   {
+    id: "meta/llama-2-70b-chat",
     name: "Llama 2 70B",
-    version: "02e509c789964a7ea8736978a43525956ef40397be9033abf9fd2badfe68c9e3",
     shortened: "70B",
   },
   {
+    id: "yorickvp/llava-13b",
     name: "Llava 13B",
-    version: "2facb4a474a0462c15041b78b1ad70952ea46b5ec6ad29583c0b29dbd4249591",
     shortened: "Llava",
   },
   {
+    id: "nateraw/salmonn",
     name: "Salmonn",
-    version: "ad1d3f9d2bd683628242b68d890bef7f7bd97f738a7c2ccbf1743a594c723d83",
     shortened: "Salmonn",
   },
 ];
@@ -93,7 +93,7 @@ export default function HomePage() {
   const [error, setError] = useState(null);
 
   //   Llama params
-  const [size, setSize] = useState(VERSIONS[2]); // default to 70B
+  const [model, setModel] = useState(MODELS[2]); // default to 70B
   const [systemPrompt, setSystemPrompt] = useState(
     "You are a helpful assistant."
   );
@@ -118,7 +118,7 @@ export default function HomePage() {
   const { complete, completion, setInput, input } = useCompletion({
     api: "/api",
     body: {
-      version: size.version,
+      model: model.id,
       systemPrompt: systemPrompt,
       temperature: parseFloat(temp),
       topP: parseFloat(topP),
@@ -149,13 +149,13 @@ export default function HomePage() {
         )
       ) {
         setAudio(file.fileUrl);
-        setSize(VERSIONS[4]);
+        setModel(MODELS[4]);
         toast.success(
           "You uploaded an audio file, so you're now speaking with Salmonn."
         );
       } else if (["image/jpeg", "image/png"].includes(file.originalFile.mime)) {
         setImage(file.fileUrl);
-        setSize(VERSIONS[3]);
+        setModel(MODELS[3]);
         toast.success(
           "You uploaded an image, so you're now speaking with Llava."
         );
@@ -244,14 +244,14 @@ export default function HomePage() {
   return (
     <>
       <div className="bg-slate-100 border-b-2 text-center p-3">
-        Powered by Replicate. <CTA shortenedModelName={size.shortened} />
+        Powered by Replicate. <CTA shortenedModelName={model.shortened} />
       </div>
       <nav className="grid grid-cols-2 pt-3 pl-6 pr-3 sm:grid-cols-3 sm:pl-0">
         <div className="hidden sm:inline-block"></div>
         <div className="font-semibold text-gray-500 sm:text-center">
-          {size.shortened == "Llava"
+          {model.shortened == "Llava"
             ? "🌋"
-            : size.shortened == "Salmonn"
+            : model.shortened == "Salmonn"
               ? "🐟"
               : "🦙"}{" "}
           <span className="hidden sm:inline-block">Chat with</span>{" "}
@@ -259,9 +259,9 @@ export default function HomePage() {
             className="py-2 font-semibold text-gray-500 hover:underline"
             onClick={() => setOpen(true)}
           >
-            {size.shortened == "Llava" || size.shortened == "Salmonn"
-              ? size.shortened
-              : "Llama 2 " + size.shortened}
+            {model.shortened == "Llava" || model.shortened == "Salmonn"
+              ? model.shortened
+              : "Llama 2 " + model.shortened}
           </button>
         </div>
         <div className="flex justify-end">
@@ -309,9 +309,9 @@ export default function HomePage() {
           setMaxTokens={setMaxTokens}
           topP={topP}
           setTopP={setTopP}
-          versions={VERSIONS}
-          size={size}
-          setSize={setSize}
+          models={MODELS}
+          size={model}
+          setSize={setModel}
         />
 
         {image && (

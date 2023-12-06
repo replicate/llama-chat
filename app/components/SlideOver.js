@@ -17,7 +17,7 @@ export default function SlideOver({
   setTopP,
   maxTokens,
   setMaxTokens,
-  versions,
+  models,
   size,
   setSize,
   handleSubmit,
@@ -108,44 +108,42 @@ export default function SlideOver({
                                       leaveTo="opacity-0"
                                     >
                                       <Listbox.Options className="absolute mt-1 max-h-60 w-full shadow-md overflow-auto border-gray-700 rounded-md bg-white py-1 text-base ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                                        {versions
-                                          ? versions.map(
-                                              (version, versionIdx) => (
-                                                <Listbox.Option
-                                                  key={versionIdx}
-                                                  className={({ active }) =>
-                                                    `relative cursor-default select-none py-2 pl-10 pr-4 ${
-                                                      active
-                                                        ? "bg-gray-100 text-gray-900"
-                                                        : "text-gray-900"
-                                                    }`
-                                                  }
-                                                  value={version}
-                                                >
-                                                  {({ selected }) => (
-                                                    <>
-                                                      <span
-                                                        className={`block truncate ${
-                                                          selected
-                                                            ? "font-medium"
-                                                            : "font-normal"
+                                        {models
+                                          ? models.map(
+                                            (model, modelIdx) => (
+                                              <Listbox.Option
+                                                key={modelIdx}
+                                                className={({ active }) =>
+                                                  `relative cursor-default select-none py-2 pl-10 pr-4 ${active
+                                                    ? "bg-gray-100 text-gray-900"
+                                                    : "text-gray-900"
+                                                  }`
+                                                }
+                                                value={model}
+                                              >
+                                                {({ selected }) => (
+                                                  <>
+                                                    <span
+                                                      className={`block truncate ${selected
+                                                          ? "font-medium"
+                                                          : "font-normal"
                                                         }`}
-                                                      >
-                                                        {version.name}
+                                                    >
+                                                      {model.name}
+                                                    </span>
+                                                    {selected ? (
+                                                      <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-600">
+                                                        <CheckIcon
+                                                          className="h-5 w-5"
+                                                          aria-hidden="true"
+                                                        />
                                                       </span>
-                                                      {selected ? (
-                                                        <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-600">
-                                                          <CheckIcon
-                                                            className="h-5 w-5"
-                                                            aria-hidden="true"
-                                                          />
-                                                        </span>
-                                                      ) : null}
-                                                    </>
-                                                  )}
-                                                </Listbox.Option>
-                                              )
+                                                    ) : null}
+                                                  </>
+                                                )}
+                                              </Listbox.Option>
                                             )
+                                          )
                                           : null}
                                       </Listbox.Options>
                                     </Transition>
