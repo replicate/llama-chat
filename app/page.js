@@ -18,11 +18,7 @@ const generatePrompt = (template, messages) => {
     "content": message.text,
   }));
 
-  console.log(chat);
-  const prompt = template(chat);
-  console.log(prompt);
-
-  return prompt;
+  return template(chat);
 };
 import { countTokens } from "./src/tokenizer.js";
 
@@ -157,7 +153,6 @@ export default function HomePage() {
 
   const handleFileUpload = (file) => {
     if (file) {
-      console.log(file);
       // determine if file is image or audio
       if (
         ["audio/mpeg", "audio/wav", "audio/ogg"].includes(
