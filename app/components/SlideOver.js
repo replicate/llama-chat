@@ -125,8 +125,8 @@ export default function SlideOver({
                                                   <>
                                                     <span
                                                       className={`block truncate ${selected
-                                                          ? "font-medium"
-                                                          : "font-normal"
+                                                        ? "font-medium"
+                                                        : "font-normal"
                                                         }`}
                                                     >
                                                       {model.name}
