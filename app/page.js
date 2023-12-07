@@ -337,7 +337,7 @@ export default function HomePage() {
 
         {error && <div>{error}</div>}
 
-        <article className="pb-24">
+        <article className="pb-36">
           {messages.map((message, index) => (
             <Message
               key={`message-${index}`}
