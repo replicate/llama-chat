@@ -10,16 +10,6 @@ import { useCompletion } from "ai/react";
 import { Toaster, toast } from "react-hot-toast";
 import { LlamaTemplate } from "../src/prompt_template";
 
-const llamaTemplate = LlamaTemplate();
-
-const generatePrompt = (template, messages) => {
-  const chat = messages.map((message) => ({
-    "role": message.isUser ? "user" : "assistant",
-    "content": message.text,
-  }));
-
-  return template(chat);
-};
 import { countTokens } from "./src/tokenizer.js";
 
 const MODELS = [
@@ -49,6 +39,20 @@ const MODELS = [
     shortened: "Salmonn",
   },
 ];
+
+const llamaTemplate = LlamaTemplate();
+
+const generatePrompt = (template, systemPrompt, messages) => {
+  const chat = messages.map((message) => ({
+    "role": message.isUser ? "user" : "assistant",
+    "content": message.text,
+  }));
+
+  return template([{
+    "role": "system",
+    "content": systemPrompt,
+  }, ...chat]);
+};
 
 function CTA({ shortenedModelName }) {
   if (shortenedModelName == "Llava") {
@@ -204,7 +208,7 @@ export default function HomePage() {
     });
 
     // Generate initial prompt and calculate tokens
-    let prompt = `${generatePrompt(llamaTemplate, messageHistory)}\n`;
+    let prompt = `${generatePrompt(llamaTemplate, systemPrompt, messageHistory)}\n`;
     // Check if we exceed max tokens and truncate the message history if so.
     while (countTokens(prompt) > MAX_TOKENS) {
       if (messageHistory.length < 3) {
@@ -219,7 +223,7 @@ export default function HomePage() {
       messageHistory.splice(1, 2);
 
       // Recreate the prompt
-      prompt = `${SNIP}\n${generatePrompt(llamaTemplate, messageHistory)}\n`;
+      prompt = `${SNIP}\n${generatePrompt(llamaTemplate, systemPrompt, messageHistory)}\n`;
     }
 
     setMessages(messageHistory);

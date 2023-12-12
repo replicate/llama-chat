@@ -49,7 +49,7 @@ async function runLlama({
     stream: true,
     input: {
       prompt: `${prompt}`,
-      system_prompt: systemPrompt,
+      prompt_template: "{prompt}",
       max_new_tokens: maxTokens,
       temperature: temperature,
       repetition_penalty: 1,
