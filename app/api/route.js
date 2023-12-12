@@ -1,6 +1,5 @@
 import Replicate from "replicate";
 import { ReplicateStream, StreamingTextResponse } from "ai";
-
 export const runtime = "edge";
 
 const replicate = new Replicate({
@@ -43,9 +42,8 @@ async function runLlama({
 }) {
   console.log("running llama");
 
-  const [owner, name] = model.split("/");
-
-  return await replicate.models.predictions.create(owner, name, {
+  return await replicate.predictions.create({
+    model: model,
     stream: true,
     input: {
       prompt: `${prompt}`,
