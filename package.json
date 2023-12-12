@@ -23,7 +23,8 @@
     "react-dom": "18.2.0",
     "react-hot-toast": "^2.4.1",
     "react-uploader": "^3.43.0",
-    "replicate": "^0.23.0"
+    "readable-stream": "^4.4.2",
+    "replicate": "^0.25.1"
   },
   "devDependencies": {
     "@tailwindcss/forms": "^0.5.7",
