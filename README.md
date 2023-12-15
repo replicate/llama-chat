@@ -1,6 +1,6 @@
-# Llama Chat 🦙
+# Mixtral Chat Ⓜ️
 
-This is a [Next.js](https://nextjs.org/) app that demonstrates how to build a chat UI using the [Llama 2](https://replicate.com/replicate/llama70b-v2-chat) language model and Replicate's [streaming API (private beta)](https://replicate.com/docs/streaming).
+This is a [Next.js](https://nextjs.org/) app that demonstrates how to build a chat UI using the [ Mixtral 8x7b](https://replicate.com/mistralai/mixtral-8x7b-instruct-v0.1?utm_source=project&utm_campaign=mixtralai) language model and Replicate's [streaming API](https://replicate.com/docs/streaming).
 
 Here's a demo:
 
@@ -30,4 +30,3 @@ npm run dev
 Open [http://localhost:3000](http://localhost:3000) with your browser.
 
 For detailed instructions on how to create and use this template, see [replicate.com/docs/get-started/nextjs](https://replicate.com/docs/get-started/nextjs)
-

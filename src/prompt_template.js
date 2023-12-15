@@ -1,28 +1,19 @@
-export const LlamaTemplate = (defaultSystemPrompt = "") => {
-    return function (chat) {
-        let systemPrompt = defaultSystemPrompt;
+export const MistralTemplate = () => {
+  return function (chat) {
+    let parts = ["<s>"];
+    for (let i = 0; i < chat.length; i++) {
+      let turn = chat[i];
 
-        let parts = [];
-        for (let turn of chat) {
-            if (turn.role === "system") {
-                systemPrompt = turn.content;
-                continue;
-            }
+      if (turn.role === "user") {
+        parts.push("[INST] " + turn.content + " [/INST]");
+      }
 
-            if (turn.role === "user") {
-                if (systemPrompt !== "") {
-                    parts.push("<s>[INST] <<SYS>>\n" + systemPrompt + "\n<</SYS>>\n\n" + turn.content + " [/INST]");
-                    systemPrompt = "";
-                } else {
-                    parts.push("<s>[INST] " + turn.content + " [/INST]");
-                }
-            }
+      if (turn.role === "assistant") {
+        parts.push(turn.content);
+        parts.push("</s> ");
+      }
+    }
 
-            if (turn.role === "assistant") {
-                parts.push(" " + turn.content + " </s>");
-            }
-        }
-
-        return parts.join("");
-    };
+    return parts.join("");
+  };
 };
