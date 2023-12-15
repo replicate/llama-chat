@@ -27,7 +27,7 @@ export default function Metrics({ startedAt, firstMessageAt, completedAt, comple
             </>}
             {<>
                 <dt title="Run time" className="text-gray-500" style={{ gridArea: 'k4' }}>sec</dt>
-                <dd className="text-right pr-4" style={{ gridArea: 'v4' }}>{Math.max(runningDuration, 0).toFixed(2)}</dd>
+                <dd className="text-right pr-4" style={{ gridArea: 'v4' }}> {runningDuration ? runningDuration.toFixed(2) : "—"}</dd>
             </>}
         </dl>
     );
