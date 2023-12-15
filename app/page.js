@@ -8,7 +8,7 @@ import EmptyState from "./components/EmptyState";
 import { Cog6ToothIcon, CodeBracketIcon } from "@heroicons/react/20/solid";
 import { useCompletion } from "ai/react";
 import { Toaster, toast } from "react-hot-toast";
-import { LlamaTemplate } from "../src/prompt_template";
+import { MistralTemplate } from "../src/prompt_template";
 
 import { countTokens } from "./src/tokenizer.js";
 
@@ -20,7 +20,7 @@ const MODELS = [
   },
 ];
 
-const llamaTemplate = LlamaTemplate();
+const mistralTemplate = MistralTemplate();
 
 const generatePrompt = (template, messages) => {
   const chat = messages.map((message) => ({
@@ -121,7 +121,7 @@ export default function HomePage() {
     });
 
     // Generate initial prompt and calculate tokens
-    let prompt = `${generatePrompt(llamaTemplate, messageHistory)}\n`;
+    let prompt = `${generatePrompt(mistralTemplate, messageHistory)}\n`;
     // Check if we exceed max tokens and truncate the message history if so.
     while (countTokens(prompt) > MAX_TOKENS) {
       if (messageHistory.length < 3) {
@@ -136,7 +136,7 @@ export default function HomePage() {
       messageHistory.splice(1, 2);
 
       // Recreate the prompt
-      prompt = `${SNIP}\n${generatePrompt(llamaTemplate, messageHistory)}\n`;
+      prompt = `${SNIP}\n${generatePrompt(mistralTemplate, messageHistory)}\n`;
     }
 
     setMessages(messageHistory);
