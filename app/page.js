@@ -243,8 +243,6 @@ export default function HomePage() {
     complete(prompt);
   };
 
-  useEffect(() => {}, []);
-
   useEffect(() => {
     if (messages?.length > 0 || completion?.length > 0) {
       bottomRef.current.scrollIntoView({ behavior: "smooth" });
