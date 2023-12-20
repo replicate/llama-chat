@@ -12,7 +12,7 @@
   "dependencies": {
     "@bytescale/upload-widget-react": "^4.10.0",
     "@headlessui/react": "^1.7.17",
-    "@heroicons/react": "^2.0.18",
+    "@heroicons/react": "^2.1.1",
     "@vercel/analytics": "^1.1.1",
     "ai": "^2.2.12",
     "eslint": "8.49.0",
