@@ -5,6 +5,7 @@ import ChatForm from "./components/ChatForm";
 import Message from "./components/Message";
 import SlideOver from "./components/SlideOver";
 import EmptyState from "./components/EmptyState";
+import QueuedSpinner from "./components/QueuedSpinner";
 import { Cog6ToothIcon, CodeBracketIcon } from "@heroicons/react/20/solid";
 import { useCompletion } from "ai/react";
 import { Toaster, toast } from "react-hot-toast";
@@ -110,6 +111,7 @@ export default function HomePage() {
   const [messages, setMessages] = useState([]);
   const [open, setOpen] = useState(false);
   const [error, setError] = useState(null);
+  const [starting, setStarting] = useState(false);
 
   //   Llama params
   const [model, setModel] = useState(MODELS[2]); // default to 70B
@@ -148,8 +150,8 @@ export default function HomePage() {
       setError(error);
     },
     onResponse: (response) => {
+      setStarting(false);
       setError(null);
-      console.log(response);
       dispatch({ type: "FIRST_MESSAGE" });
     },
     onFinish: () => {
@@ -195,6 +197,7 @@ export default function HomePage() {
   };
 
   const handleSubmit = async (userMessage) => {
+    setStarting(true);
     const SNIP = "<!-- snip -->";
 
     const messageHistory = [...messages];
@@ -354,6 +357,8 @@ export default function HomePage() {
             />
           ))}
           <Message message={completion} isUser={false} />
+
+          {starting && <QueuedSpinner />}
 
           <div ref={bottomRef} />
         </article>
