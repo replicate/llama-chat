@@ -44,14 +44,17 @@ const llamaTemplate = LlamaTemplate();
 
 const generatePrompt = (template, systemPrompt, messages) => {
   const chat = messages.map((message) => ({
-    "role": message.isUser ? "user" : "assistant",
-    "content": message.text,
+    role: message.isUser ? "user" : "assistant",
+    content: message.text,
   }));
 
-  return template([{
-    "role": "system",
-    "content": systemPrompt,
-  }, ...chat]);
+  return template([
+    {
+      role: "system",
+      content: systemPrompt,
+    },
+    ...chat,
+  ]);
 };
 
 function CTA({ shortenedModelName }) {
@@ -90,11 +93,11 @@ function CTA({ shortenedModelName }) {
 
 const metricsReducer = (state, action) => {
   switch (action.type) {
-    case 'START':
+    case "START":
       return { startedAt: new Date() };
-    case 'FIRST_MESSAGE':
+    case "FIRST_MESSAGE":
       return { ...state, firstMessageAt: new Date() };
-    case 'COMPLETE':
+    case "COMPLETE":
       return { ...state, completedAt: new Date() };
     default:
       throw new Error(`Unsupported action type: ${action.type}`);
@@ -123,13 +126,11 @@ export default function HomePage() {
   // Salmonn params
   const [audio, setAudio] = useState(null);
 
-
   const [metrics, dispatch] = useReducer(metricsReducer, {
     startedAt: null,
     firstMessageAt: null,
     completedAt: null,
   });
-
 
   const { complete, completion, setInput, input } = useCompletion({
     api: "/api",
@@ -148,11 +149,12 @@ export default function HomePage() {
     },
     onResponse: (response) => {
       setError(null);
-      dispatch({ type: 'FIRST_MESSAGE' });
+      console.log(response);
+      dispatch({ type: "FIRST_MESSAGE" });
     },
     onFinish: () => {
-      dispatch({ type: 'COMPLETE' });
-    }
+      dispatch({ type: "COMPLETE" });
+    },
   });
 
   const handleFileUpload = (file) => {
@@ -208,7 +210,11 @@ export default function HomePage() {
     });
 
     // Generate initial prompt and calculate tokens
-    let prompt = `${generatePrompt(llamaTemplate, systemPrompt, messageHistory)}\n`;
+    let prompt = `${generatePrompt(
+      llamaTemplate,
+      systemPrompt,
+      messageHistory
+    )}\n`;
     // Check if we exceed max tokens and truncate the message history if so.
     while (countTokens(prompt) > MAX_TOKENS) {
       if (messageHistory.length < 3) {
@@ -223,12 +229,16 @@ export default function HomePage() {
       messageHistory.splice(1, 2);
 
       // Recreate the prompt
-      prompt = `${SNIP}\n${generatePrompt(llamaTemplate, systemPrompt, messageHistory)}\n`;
+      prompt = `${SNIP}\n${generatePrompt(
+        llamaTemplate,
+        systemPrompt,
+        messageHistory
+      )}\n`;
     }
 
     setMessages(messageHistory);
 
-    dispatch({ type: 'START' });
+    dispatch({ type: "START" });
 
     complete(prompt);
   };
@@ -259,8 +269,8 @@ export default function HomePage() {
           {model.shortened == "Llava"
             ? "🌋"
             : model.shortened == "Salmonn"
-              ? "🐟"
-              : "🦙"}{" "}
+            ? "🐟"
+            : "🦙"}{" "}
           <span className="hidden sm:inline-block">Chat with</span>{" "}
           <button
             className="py-2 font-semibold text-gray-500 hover:underline"
