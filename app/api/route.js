@@ -22,11 +22,14 @@ const VERSIONS = {
 export async function POST(req) {
   const params = await req.json();
 
-  const response = params.image
-    ? await runLlava(params)
-    : params.audio
-    ? await runSalmonn(params)
-    : await runLlama(params);
+  let response;
+  if (params.image) {
+    response = await runLlava(params);
+  } else if (params.audio) {
+    response = await runSalmonn(params);
+  } else {
+    response = await runLlama({ ...params, model: "meta/llama-2-70b-chat" });
+  }
 
   // Convert the response into a friendly text-stream
   const stream = await ReplicateStream(response);
