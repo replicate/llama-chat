@@ -71,7 +71,7 @@ async function runLlava({ prompt, maxTokens, temperature, topP, image }) {
       max_tokens: maxTokens,
       image: image,
     },
-    version: models["yorickvp/llava-13b"],
+    version: VERSIONS["yorickvp/llava-13b"],
   });
 }
 
@@ -87,6 +87,6 @@ async function runSalmonn({ prompt, maxTokens, temperature, topP, audio }) {
       max_length: maxTokens,
       wav_path: audio,
     },
-    version: models["nateraw/salmonn"],
+    version: VERSIONS["nateraw/salmonn"],
   });
 }
