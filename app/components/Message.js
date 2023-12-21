@@ -13,7 +13,9 @@ const Message = ({ message, isUser }) => {
   }
 
   return (
-    <div className={`flex gap-x-4 rounded-md ${containerClass} py-5 px-5`}>
+    <div
+      className={`flex gap-x-4 rounded-md ${containerClass} py-5 px-5 mb-12`}
+    >
       {isUser ? (
         <span className="text-xl sm:text-2xl" title="user">
           🥸
