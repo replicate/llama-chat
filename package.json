@@ -24,7 +24,7 @@
     "react-dom": "18.2.0",
     "react-hot-toast": "^2.4.1",
     "react-uploader": "^3.43.0",
-    "readable-stream": "^4.4.2",
+    "readable-stream": "^4.5.2",
     "replicate": "^0.25.1"
   },
   "devDependencies": {
