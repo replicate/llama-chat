@@ -6,6 +6,7 @@ import Message from "./components/Message";
 import SlideOver from "./components/SlideOver";
 import EmptyState from "./components/EmptyState";
 import QueuedSpinner from "./components/QueuedSpinner";
+import CallToAction from "./components/CallToAction";
 import { Cog6ToothIcon, CodeBracketIcon } from "@heroicons/react/20/solid";
 import { useCompletion } from "ai/react";
 import { Toaster, toast } from "react-hot-toast";
@@ -57,40 +58,6 @@ const generatePrompt = (template, systemPrompt, messages) => {
     ...chat,
   ]);
 };
-
-function CTA({ shortenedModelName }) {
-  if (shortenedModelName == "Llava") {
-    return (
-      <a
-        href="https://replicate.com/blog/run-llama-2-with-an-api?utm_source=project&utm_campaign=llama2ai"
-        target="_blank"
-        className="underline"
-      >
-        Run and fine-tune Llava in the cloud.
-      </a>
-    );
-  } else if (shortenedModelName == "Salmonn") {
-    return (
-      <a
-        href="https://replicate.com/blog/run-llama-2-with-an-api?utm_source=project&utm_campaign=llama2ai"
-        target="_blank"
-        className="underline"
-      >
-        Run and fine-tune Salmonn in the cloud.
-      </a>
-    );
-  } else {
-    return (
-      <a
-        href="https://replicate.com/blog/run-llama-2-with-an-api?utm_source=project&utm_campaign=llama2ai"
-        target="_blank"
-        className="underline"
-      >
-        Run and fine-tune Llama 2 in the cloud.
-      </a>
-    );
-  }
-}
 
 const metricsReducer = (state, action) => {
   switch (action.type) {
@@ -254,10 +221,8 @@ export default function HomePage() {
 
   return (
     <>
-      <div className="bg-slate-100 border-b-2 text-center p-3">
-        This open-source demo is powered by Replicate. <CTA shortenedModelName={model.shortened} />
-      </div>
-      <nav className="grid grid-cols-2 pt-3 pl-6 pr-3 sm:grid-cols-3 sm:pl-0">
+      <CallToAction />
+      <nav className="grid grid-cols-2 pt-3 pl-6 pr-3 sm:grid-cols-3 sm:pl-0 ">
         <div className="hidden sm:inline-block"></div>
         <div className="font-semibold text-gray-500 sm:text-center">
           {model.shortened == "Llava"
