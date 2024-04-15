@@ -62,7 +62,7 @@ const ChatForm = ({
 
   return (
     <footer className="z-10 fixed bottom-0 left-0 right-0 bg-slate-100 border-t-2">
-      <div className="container max-w-2xl mx-auto px-5 pb-8">
+      <div className="container max-w-2xl mx-auto px-5 py-7">
         <Metrics
           startedAt={metrics.startedAt}
           firstMessageAt={metrics.firstMessageAt}
