@@ -1,5 +1,4 @@
-import CTAGooBG from '../../public/cta-goo-bg.webp';
-
+import CTAGooBG from "../../public/cta-goo-bg.webp";
 
 export default function CallToAction() {
   return (
@@ -16,7 +15,28 @@ export default function CallToAction() {
         Run AI with an API.
       </h1>
       <p className="text-white max-w-lg mx-auto">
-        Replicate lets you build apps like this using open-source models like <a className="underline" href="https://replicate.com/meta/llama-2-70b-chat?utm_source=project&utm_campaign=llama2ai">Llama</a>, <a className="underline" href="https://replicate.com/yorickvp/llava-13b?utm_source=project&utm_campaign=llama2ai">Llava</a>, and <a className="underline" href="https://replicate.com/nateraw/salmonn?utm_source=project&utm_campaign=llama2ai">Salmonn</a> with one line of code.
+        Replicate lets you build apps like this using open-source models like{" "}
+        <a
+          className="underline"
+          href="https://replicate.com/meta/llama-2-70b-chat?utm_source=project&utm_campaign=llama2ai"
+        >
+          Llama
+        </a>
+        ,{" "}
+        <a
+          className="underline"
+          href="https://replicate.com/yorickvp/llava-13b?utm_source=project&utm_campaign=llama2ai"
+        >
+          Llava
+        </a>
+        , and{" "}
+        <a
+          className="underline"
+          href="https://replicate.com/nateraw/salmonn?utm_source=project&utm_campaign=llama2ai"
+        >
+          Salmonn
+        </a>{" "}
+        with one line of code.
       </p>
 
       <a

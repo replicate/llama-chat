@@ -71,20 +71,6 @@ const ChatForm = ({
         />
 
         <form className="w-full flex" onSubmit={handleSubmit}>
-          <UploadButton
-            uploader={uploader}
-            options={options}
-            onComplete={(files) => handleFileUpload(files[0])}
-          >
-            {({ onClick }) => (
-              <button
-                className="p-3 border-gray-600 border-2 inline-flex hover:bg-gray-300 rounded-md mr-3"
-                onClick={onClick}
-              >
-                Upload
-              </button>
-            )}
-          </UploadButton>
           <textarea
             autoComplete="off"
             autoFocus

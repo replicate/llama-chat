@@ -7,6 +7,7 @@ import SlideOver from "./components/SlideOver";
 import EmptyState from "./components/EmptyState";
 import QueuedSpinner from "./components/QueuedSpinner";
 import CallToAction from "./components/CallToAction";
+import Dropdown from "./components/Dropdown";
 import { Cog6ToothIcon, CodeBracketIcon } from "@heroicons/react/20/solid";
 import { useCompletion } from "ai/react";
 import { Toaster, toast } from "react-hot-toast";
@@ -16,29 +17,26 @@ import { countTokens } from "./src/tokenizer.js";
 
 const MODELS = [
   {
-    id: "meta/llama-2-7b-chat",
-    name: "Llama 2 7B",
-    shortened: "7B",
+    id: "meta/llama-2-70b-chat",
+    name: "Llama 2 70B",
+    shortened: "70B",
+    emoji: "🦙",
+    description: "The most accurate, powerful Llama.",
   },
   {
     id: "meta/llama-2-13b-chat",
     name: "Llama 2 13B",
     shortened: "13B",
+    emoji: "🦙",
+    description: "Faster and cheaper at the expense of accuracy.",
   },
+
   {
-    id: "meta/llama-2-70b-chat",
-    name: "Llama 2 70B",
-    shortened: "70B",
-  },
-  {
-    id: "yorickvp/llava-13b",
-    name: "Llava 13B",
-    shortened: "Llava",
-  },
-  {
-    id: "nateraw/salmonn",
-    name: "Salmonn",
-    shortened: "Salmonn",
+    id: "meta/llama-2-7b-chat",
+    name: "Llama 2 7B",
+    shortened: "7B",
+    emoji: "🦙",
+    description: "The smallest, fastest chat model.",
   },
 ];
 
@@ -81,7 +79,7 @@ export default function HomePage() {
   const [starting, setStarting] = useState(false);
 
   //   Llama params
-  const [model, setModel] = useState(MODELS[2]); // default to 70B
+  const [model, setModel] = useState(MODELS[0]); // default to 70B
   const [systemPrompt, setSystemPrompt] = useState(
     "You are a helpful assistant."
   );
@@ -222,24 +220,17 @@ export default function HomePage() {
   return (
     <>
       <CallToAction />
-      <nav className="grid grid-cols-2 pt-3 pl-6 pr-3 sm:grid-cols-3 sm:pl-0 ">
-        <div className="hidden sm:inline-block"></div>
-        <div className="font-semibold text-gray-500 sm:text-center">
-          {model.shortened == "Llava"
-            ? "🌋"
-            : model.shortened == "Salmonn"
-            ? "🐟"
-            : "🦙"}{" "}
-          <span className="hidden sm:inline-block">Chat with</span>{" "}
-          <button
-            className="py-2 font-semibold text-gray-500 hover:underline"
-            onClick={() => setOpen(true)}
-          >
-            {model.shortened == "Llava" || model.shortened == "Salmonn"
-              ? model.shortened
-              : "Llama 2 " + model.shortened}
-          </button>
+      <nav className="grid pt-3 pl-3 pr-3 grid-cols-3">
+        <div className="flex">
+          <div className="font-semibold text-gray-500 sm:text-center">
+            <Dropdown
+              models={MODELS}
+              selectedModel={model}
+              setModel={setModel}
+            />
+          </div>
         </div>
+        <div className="hidden sm:inline-block"></div>
         <div className="flex justify-end">
           <a
             className="inline-flex items-center px-3 py-2 mr-3 text-sm font-semibold text-gray-700 bg-white rounded-md shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
@@ -289,18 +280,6 @@ export default function HomePage() {
           size={model}
           setSize={setModel}
         />
-
-        {image && (
-          <div>
-            <img src={image} className="mt-6 sm:rounded-xl" />
-          </div>
-        )}
-
-        {audio && (
-          <div>
-            <audio controls src={audio} className="mt-6 sm:rounded-xl" />
-          </div>
-        )}
 
         <ChatForm
           prompt={input}
