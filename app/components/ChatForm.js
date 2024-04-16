@@ -1,51 +1,6 @@
-import { Uploader } from "uploader";
-import { UploadButton } from "react-uploader";
 import Metrics from "./Metrics";
-const uploader = Uploader({
-  apiKey: "public_kW15biSARCJN7FAz6rANdRg3pNkh",
-});
 
-const options = {
-  apiKey: "public_kW15biSARCJN7FAz6rANdRg3pNkh",
-  maxFileCount: 1,
-  mimeTypes: [
-    "image/jpeg",
-    "image/png",
-    "audio/mpeg",
-    "audio/wav",
-    "audio/ogg",
-  ],
-  showFinishButton: false,
-  preview: true,
-  editor: {
-    images: {
-      preview: false,
-      crop: false,
-    },
-  },
-  styles: {
-    colors: {
-      active: "#1f2937",
-      error: "#d23f4d",
-      primary: "#4b5563",
-    },
-    fontFamilies: {
-      base: "inter, -apple-system, blinkmacsystemfont, Segoe UI, helvetica, arial, sans-serif",
-    },
-    fontSizes: {
-      base: 16,
-    },
-  },
-};
-
-const ChatForm = ({
-  prompt,
-  setPrompt,
-  onSubmit,
-  handleFileUpload,
-  metrics,
-  completion,
-}) => {
+const ChatForm = ({ prompt, setPrompt, onSubmit, metrics, completion }) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     onSubmit(prompt);
