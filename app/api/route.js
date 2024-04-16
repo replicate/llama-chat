@@ -28,7 +28,7 @@ export async function POST(req) {
   } else if (params.audio) {
     response = await runSalmonn(params);
   } else {
-    response = await runLlama({ ...params, model: "meta/llama-2-70b-chat" });
+    response = await runLlama(params);
   }
 
   // Convert the response into a friendly text-stream

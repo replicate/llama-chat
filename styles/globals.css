@@ -16,7 +16,7 @@ input {
 }
 
 .prompt-button {
-    @apply cursor-pointer underline text-gray-500;
+    @apply cursor-pointer underline;
 }
 
 i {
