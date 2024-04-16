@@ -11,6 +11,7 @@ import { Cog6ToothIcon, CodeBracketIcon } from "@heroicons/react/20/solid";
 import { useCompletion } from "ai/react";
 import { Toaster, toast } from "react-hot-toast";
 import { LlamaTemplate } from "../src/prompt_template";
+import TokenForm from "./components/TokenForm";
 
 import { countTokens } from "./src/tokenizer.js";
 
@@ -79,6 +80,8 @@ export default function HomePage() {
   const [open, setOpen] = useState(false);
   const [error, setError] = useState(null);
   const [starting, setStarting] = useState(false);
+  const [tokenFormVisible, setTokenFormVisible] = useState(false);
+  const [replicateApiToken, setReplicateApiToken] = useState(null);
 
   //   Llama params
   const [model, setModel] = useState(MODELS[2]); // default to 70B
@@ -101,9 +104,19 @@ export default function HomePage() {
     completedAt: null,
   });
 
+  const handleTokenSubmit = (e) => {
+    e.preventDefault();
+    const token = e.target[0].value
+    console.log({token});
+    localStorage.setItem("replicate_api_token", token);
+    setReplicateApiToken(token);
+    setTokenFormVisible(false);
+  };
+
   const { complete, completion, setInput, input } = useCompletion({
     api: "/api",
     body: {
+      replicateApiToken,
       model: model.id,
       systemPrompt: systemPrompt,
       temperature: parseFloat(temp),
@@ -161,6 +174,8 @@ export default function HomePage() {
     event.preventDefault();
     setOpen(false);
     setSystemPrompt(event.target.systemPrompt.value);
+    setReplicateApiToken(event.target.replicateApiToken.value);
+    localStorage.setItem("replicate_api_token", event.target.replicateApiToken.value);
   };
 
   const handleSubmit = async (userMessage) => {
@@ -217,14 +232,27 @@ export default function HomePage() {
     if (messages?.length > 0 || completion?.length > 0) {
       bottomRef.current.scrollIntoView({ behavior: "smooth" });
     }
+
+    if (localStorage.getItem("replicate_api_token")) {
+      setReplicateApiToken(localStorage.getItem("replicate_api_token"));
+      setTokenFormVisible(false);
+    } else {
+      setTokenFormVisible(true);
+    }
+
   }, [messages, completion]);
+
+  if (tokenFormVisible) {
+    return <TokenForm handleTokenSubmit={handleTokenSubmit} />;
+  }
 
   return (
     <>
+
       <CallToAction />
       <nav className="grid grid-cols-2 pt-3 pl-6 pr-3 sm:grid-cols-3 sm:pl-0 ">
-        <div className="hidden sm:inline-block"></div>
-        <div className="font-semibold text-gray-500 sm:text-center">
+        <div className="hidden sm:inline-block" />
+        <div className="font-semibold text-gray-900 sm:text-center">
           {model.shortened == "Llava"
             ? "🌋"
             : model.shortened == "Salmonn"
@@ -232,8 +260,9 @@ export default function HomePage() {
             : "🦙"}{" "}
           <span className="hidden sm:inline-block">Chat with</span>{" "}
           <button
-            className="py-2 font-semibold text-gray-500 hover:underline"
+            className="py-2 font-semibold text-gray-900 underline"
             onClick={() => setOpen(true)}
+            type="button"
           >
             {model.shortened == "Llava" || model.shortened == "Salmonn"
               ? model.shortened
@@ -268,7 +297,7 @@ export default function HomePage() {
       <Toaster position="top-left" reverseOrder={false} />
 
       <main className="max-w-2xl pb-5 mx-auto mt-4 sm:px-4">
-        <div className="text-center"></div>
+        <div className="text-center" />
         {messages.length == 0 && !image && !audio && (
           <EmptyState setPrompt={setAndSubmitPrompt} setOpen={setOpen} />
         )}
@@ -278,6 +307,8 @@ export default function HomePage() {
           setOpen={setOpen}
           systemPrompt={systemPrompt}
           setSystemPrompt={setSystemPrompt}
+          replicateApiToken={replicateApiToken}
+          setReplicateApiToken={setReplicateApiToken}
           handleSubmit={handleSettingsSubmit}
           temp={temp}
           setTemp={setTemp}

@@ -4,10 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "REPLICATE_API_TOKEN=test-token next build",
+    "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "REPLICATE_API_TOKEN=test-token npm run lint && npm run build"
+    "test": "npm run lint && npm run build"
   },
   "dependencies": {
     "@bytescale/upload-widget-react": "^4.10.0",
