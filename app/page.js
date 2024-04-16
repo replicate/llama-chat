@@ -260,9 +260,6 @@ export default function HomePage() {
 
       <main className="max-w-2xl pb-5 mx-auto mt-4 sm:px-4">
         <div className="text-center"></div>
-        {messages.length == 0 && !image && !audio && (
-          <EmptyState setPrompt={setAndSubmitPrompt} setOpen={setOpen} />
-        )}
 
         <SlideOver
           open={open}
@@ -293,6 +290,7 @@ export default function HomePage() {
         {error && <div>{error}</div>}
 
         <article className="pb-24">
+          <EmptyState setPrompt={setAndSubmitPrompt} setOpen={setOpen} />
           {messages.map((message, index) => (
             <Message
               key={`message-${index}`}
