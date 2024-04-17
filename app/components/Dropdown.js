@@ -8,6 +8,12 @@ export default function Dropdown({ models, selectedModel, setModel }) {
       <div className="text-xl items-center">
         <Menu.Button className="inline-flex items-center w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
           {selectedModel.name}
+          {selectedModel.new && (
+            <span className="ml-2 inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-800 ring-1 ring-inset ring-blue-600/20">
+              NEW
+            </span>
+          )}
+
           <ChevronDownIcon
             className="-mr-1 h-5 w-5 text-gray-400"
             aria-hidden="true"
@@ -35,7 +41,12 @@ export default function Dropdown({ models, selectedModel, setModel }) {
                   <div className="flex justify-between">
                     <div>
                       <p className={""}>
-                        {model.emoji} {model.name}
+                        {model.emoji} {model.name}{" "}
+                        {model.new && (
+                          <span className="ml-2 inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-800 ring-1 ring-inset ring-blue-600/20">
+                            NEW
+                          </span>
+                        )}
                       </p>
                       <p className="text-xs pt-1 font-light text-gray-500">
                         {model.description}

@@ -24,7 +24,7 @@ export default function CallToAction() {
 
       <a
         className="bg-black text-white text-small inline-block px-5 py-3 flex-none no-underline"
-        href="https://replicate.com/blog/run-llama-2-with-an-api?utm_source=project&utm_campaign=llama2ai"
+        href="https://replicate.com/blog/run-llama-3-with-an-api?utm_source=project&utm_campaign=llama2ai"
       >
         Get started &rarr;
       </a>
