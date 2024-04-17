@@ -26,7 +26,7 @@ const ChatForm = ({ prompt, setPrompt, onSubmit, metrics, completion }) => {
         />
 
         <form className="w-full flex" onSubmit={handleSubmit}>
-          <textarea
+          <input
             autoComplete="off"
             autoFocus
             name="prompt"
@@ -34,7 +34,6 @@ const ChatForm = ({ prompt, setPrompt, onSubmit, metrics, completion }) => {
             placeholder="Send a message"
             required={true}
             value={prompt}
-            rows={1}
             onChange={(e) => setPrompt(e.target.value)}
             onKeyDown={handleKeyDown}
             onInput={(e) => {

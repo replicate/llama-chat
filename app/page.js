@@ -220,18 +220,13 @@ export default function HomePage() {
   return (
     <>
       <CallToAction />
-      <nav className="grid pt-3 pl-3 pr-3 grid-cols-3">
-        <div className="flex">
-          <div className="font-semibold text-gray-500 sm:text-center">
-            <Dropdown
-              models={MODELS}
-              selectedModel={model}
-              setModel={setModel}
-            />
-          </div>
+      <nav className="sm:pt-8 pt-4 px-4 sm:px-12 flex items-center">
+        <div className="text-xl pr-3 font-semibold text-gray-500">Talk to</div>
+        <div className="font-semibold text-gray-500 sm:text-center">
+          <Dropdown models={MODELS} selectedModel={model} setModel={setModel} />
         </div>
-        <div className="hidden sm:inline-block"></div>
-        <div className="flex justify-end">
+        <div className="flex-grow"></div>
+        <div className="justify-end">
           <a
             className="inline-flex items-center px-3 py-2 mr-3 text-sm font-semibold text-gray-700 bg-white rounded-md shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
             href="https://github.com/replicate/chat"
@@ -258,7 +253,7 @@ export default function HomePage() {
 
       <Toaster position="top-left" reverseOrder={false} />
 
-      <main className="max-w-2xl pb-5 mx-auto mt-4 sm:px-4">
+      <main className="max-w-2xl pb-5 mx-auto mt-8 sm:px-4">
         <div className="text-center"></div>
 
         <SlideOver

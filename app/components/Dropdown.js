@@ -4,9 +4,9 @@ import { ChevronDownIcon, CheckIcon } from "@heroicons/react/20/solid";
 
 export default function Dropdown({ models, selectedModel, setModel }) {
   return (
-    <Menu as="div" className="relative inline-block text-left">
-      <div>
-        <Menu.Button className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
+    <Menu as="div" className="relative inline-flex text-left">
+      <div className="text-xl items-center">
+        <Menu.Button className="inline-flex items-center w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
           {selectedModel.name}
           <ChevronDownIcon
             className="-mr-1 h-5 w-5 text-gray-400"
