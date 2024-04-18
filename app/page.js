@@ -11,7 +11,7 @@ import Dropdown from "./components/Dropdown";
 import { Cog6ToothIcon, CodeBracketIcon } from "@heroicons/react/20/solid";
 import { useCompletion } from "ai/react";
 import { Toaster, toast } from "react-hot-toast";
-import { LlamaTemplate } from "../src/prompt_template";
+import { LlamaTemplate, Llama3Template } from "../src/prompt_template";
 
 import { countTokens } from "./src/tokenizer.js";
 
@@ -25,9 +25,9 @@ const MODELS = [
     new: true,
   },
   {
-    id: "meta/llama-3-8x7b-chat",
-    name: "Llama 3 8x7B",
-    shortened: "8x7B",
+    id: "meta/llama-3-8b-chat",
+    name: "Llama 3 8B",
+    shortened: "8B",
     emoji: "🦙",
     description: "The fastest and cheapest Llama.",
     new: true,
@@ -57,6 +57,7 @@ const MODELS = [
 ];
 
 const llamaTemplate = LlamaTemplate();
+const llama3Template = Llama3Template();
 
 const generatePrompt = (template, systemPrompt, messages) => {
   const chat = messages.map((message) => ({
@@ -195,10 +196,13 @@ export default function HomePage() {
 
     // Generate initial prompt and calculate tokens
     let prompt = `${generatePrompt(
-      llamaTemplate,
+      model.name.includes("Llama 3") ? llama3Template : llamaTemplate,
       systemPrompt,
       messageHistory
     )}\n`;
+
+    console.log(prompt);
+
     // Check if we exceed max tokens and truncate the message history if so.
     while (countTokens(prompt) > MAX_TOKENS) {
       if (messageHistory.length < 3) {
