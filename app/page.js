@@ -17,16 +17,16 @@ import { countTokens } from "./src/tokenizer.js";
 
 const MODELS = [
   {
-    id: "meta/llama-3-70b-chat",
-    name: "Llama 3 70B",
+    id: "meta/meta-llama-3-70b-instruct",
+    name: "Meta Llama 3 70B",
     shortened: "70B",
     emoji: "🦙",
     description: "The most accurate, powerful next generation Llama.",
     new: true,
   },
   {
-    id: "meta/llama-3-8b-chat",
-    name: "Llama 3 8B",
+    id: "meta/meta-llama-3-8b-instruct",
+    name: "Meta Llama 3 8B",
     shortened: "8B",
     emoji: "🦙",
     description: "The fastest and cheapest Llama.",
@@ -34,14 +34,14 @@ const MODELS = [
   },
   {
     id: "meta/llama-2-70b-chat",
-    name: "Llama 2 70B",
+    name: "Meta Llama 2 70B",
     shortened: "70B",
     emoji: "🦙",
     description: "The most accurate, powerful Llama 2",
   },
   {
     id: "meta/llama-2-13b-chat",
-    name: "Llama 2 13B",
+    name: "Meta Llama 2 13B",
     shortened: "13B",
     emoji: "🦙",
     description: "Faster and cheaper Llama 2 at the expense of accuracy.",
@@ -49,7 +49,7 @@ const MODELS = [
 
   {
     id: "meta/llama-2-7b-chat",
-    name: "Llama 2 7B",
+    name: "Meta Llama 2 7B",
     shortened: "7B",
     emoji: "🦙",
     description: "The smallest, fastest Llama 2 chat model.",
