@@ -88,7 +88,7 @@ const metricsReducer = (state, action) => {
 };
 
 export default function HomePage() {
-  const MAX_TOKENS = 4096;
+  const MAX_TOKENS = 8192;
   const bottomRef = useRef(null);
   const [messages, setMessages] = useState([]);
   const [open, setOpen] = useState(false);

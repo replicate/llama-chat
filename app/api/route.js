@@ -47,6 +47,7 @@ async function runLlama({
 }) {
   console.log("running llama");
   console.log("model", model);
+  console.log("maxTokens", maxTokens);
 
   return await replicate.predictions.create({
     model: model,
@@ -54,6 +55,9 @@ async function runLlama({
     input: {
       prompt: `${prompt}`,
       max_new_tokens: maxTokens,
+      ...(model.includes("llama3")
+        ? { max_tokens: maxTokens }
+        : { max_new_tokens: maxTokens }),
       temperature: temperature,
       repetition_penalty: 1,
       top_p: topP,
