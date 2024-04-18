@@ -4,7 +4,7 @@ This is a [Next.js](https://nextjs.org/) app that demonstrates how to build a ch
 
 Here's a demo:
 
-https://github.com/replicate/llama-chat/assets/14149230/9843d08f-f6eb-471b-8a2e-0cdbd66a346e
+https://github.com/replicate/llama-chat/assets/14149230/e700b256-dc34-4c4e-b912-8a84ec4bec6a
 
 
 
