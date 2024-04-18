@@ -11,36 +11,53 @@ import Dropdown from "./components/Dropdown";
 import { Cog6ToothIcon, CodeBracketIcon } from "@heroicons/react/20/solid";
 import { useCompletion } from "ai/react";
 import { Toaster, toast } from "react-hot-toast";
-import { LlamaTemplate } from "../src/prompt_template";
+import { LlamaTemplate, Llama3Template } from "../src/prompt_template";
 
 import { countTokens } from "./src/tokenizer.js";
 
 const MODELS = [
   {
-    id: "meta/llama-2-70b-chat",
-    name: "Llama 2 70B",
+    id: "meta/meta-llama-3-70b-instruct",
+    name: "Meta Llama 3 70B",
     shortened: "70B",
     emoji: "🦙",
-    description: "The most accurate, powerful Llama.",
+    description: "The most accurate, powerful next generation Llama.",
+    new: true,
+  },
+  {
+    id: "meta/meta-llama-3-8b-instruct",
+    name: "Meta Llama 3 8B",
+    shortened: "8B",
+    emoji: "🦙",
+    description: "The fastest and cheapest Llama.",
+    new: true,
+  },
+  {
+    id: "meta/llama-2-70b-chat",
+    name: "Meta Llama 2 70B",
+    shortened: "70B",
+    emoji: "🦙",
+    description: "The most accurate, powerful Llama 2",
   },
   {
     id: "meta/llama-2-13b-chat",
-    name: "Llama 2 13B",
+    name: "Meta Llama 2 13B",
     shortened: "13B",
     emoji: "🦙",
-    description: "Faster and cheaper at the expense of accuracy.",
+    description: "Faster and cheaper Llama 2 at the expense of accuracy.",
   },
 
   {
     id: "meta/llama-2-7b-chat",
-    name: "Llama 2 7B",
+    name: "Meta Llama 2 7B",
     shortened: "7B",
     emoji: "🦙",
-    description: "The smallest, fastest chat model.",
+    description: "The smallest, fastest Llama 2 chat model.",
   },
 ];
 
 const llamaTemplate = LlamaTemplate();
+const llama3Template = Llama3Template();
 
 const generatePrompt = (template, systemPrompt, messages) => {
   const chat = messages.map((message) => ({
@@ -179,10 +196,13 @@ export default function HomePage() {
 
     // Generate initial prompt and calculate tokens
     let prompt = `${generatePrompt(
-      llamaTemplate,
+      model.name.includes("Llama 3") ? llama3Template : llamaTemplate,
       systemPrompt,
       messageHistory
     )}\n`;
+
+    console.log(prompt);
+
     // Check if we exceed max tokens and truncate the message history if so.
     while (countTokens(prompt) > MAX_TOKENS) {
       if (messageHistory.length < 3) {
