@@ -4,7 +4,10 @@ This is a [Next.js](https://nextjs.org/) app that demonstrates how to build a ch
 
 Here's a demo:
 
-https://github.com/replicate/llama-chat/assets/14149230/9c6aaef3-4e60-4846-a2d2-f9575e155b70
+https://github.com/replicate/llama-chat/assets/14149230/9843d08f-f6eb-471b-8a2e-0cdbd66a346e
+
+
+
 
 ## Usage
 
