@@ -241,7 +241,7 @@ export default function HomePage() {
     <>
       <CallToAction />
       <nav className="sm:pt-8 pt-4 px-4 sm:px-12 flex items-center">
-        <div className="text-xl pr-3 font-semibold text-gray-500">
+        <div className="pr-3 font-semibold text-gray-500">
           Chat with
         </div>
         <div className="font-semibold text-gray-500 sm:text-center">
