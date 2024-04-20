@@ -3,6 +3,9 @@ import Metrics from "./Metrics";
 const ChatForm = ({ prompt, setPrompt, onSubmit, metrics, completion }) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    if (prompt.length === 0) return;
+
     onSubmit(prompt);
     setPrompt("");
     event.target.rows = 1;
