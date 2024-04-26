@@ -12,6 +12,8 @@ if (!process.env.REPLICATE_API_TOKEN) {
   );
 }
 
+const { TURNSTILE_CHALLENGE_ENDPOINT, TURNSTILE_SECRET_KEY } = process.env;
+
 const VERSIONS = {
   "yorickvp/llava-13b":
     "e272157381e2a3bf12df3a8edd1f38d1dbd736bbb7437277c8b34175f8fce358",
@@ -19,8 +21,24 @@ const VERSIONS = {
     "ad1d3f9d2bd683628242b68d890bef7f7bd97f738a7c2ccbf1743a594c723d83",
 };
 
+async function verifyTurnstile(token) {
+  const response = await fetch(TURNSTILE_CHALLENGE_ENDPOINT, {
+    method: 'POST',
+    body: `secret=${encodeURIComponent(TURNSTILE_SECRET_KEY)}&response=${encodeURIComponent(token)}`,
+    headers: {
+      'content-type': 'application/x-www-form-urlencoded'
+    }
+  });
+  const data = await response.json();
+  return data.success;
+}
+
 export async function POST(req) {
-  const params = await req.json();
+  const { token, ...params } = await req.json();
+
+  if (!await verifyTurnstile(token)) {
+    return new Response('Challenge failed', { status: 403 });
+  }
 
   let response;
   if (params.image) {
