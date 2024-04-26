@@ -96,7 +96,7 @@ export default function HomePage() {
   const [starting, setStarting] = useState(false);
 
   //   Llama params
-  const [model, setModel] = useState(MODELS[0]); // default to 70B
+  const [model, setModel] = useState(MODELS[1]); // default to 8B
   const [systemPrompt, setSystemPrompt] = useState(
     "You are a helpful assistant."
   );
