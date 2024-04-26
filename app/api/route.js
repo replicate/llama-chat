@@ -1,6 +1,8 @@
 import Replicate from "replicate";
 import { ReplicateStream, StreamingTextResponse } from "ai";
 export const runtime = "edge";
+import rateLimitMiddleware from "../middleware/rate-limiter";
+
 
 const replicate = new Replicate({
   auth: process.env.REPLICATE_API_TOKEN,
@@ -19,7 +21,10 @@ const VERSIONS = {
     "ad1d3f9d2bd683628242b68d890bef7f7bd97f738a7c2ccbf1743a594c723d83",
 };
 
-export async function POST(req) {
+const maximumRequestsPerMinute = 5;
+const window = 60 * 1000; // 1 minute
+
+export const POST = rateLimitMiddleware(async (req, res) => {
   const params = await req.json();
 
   let response;
@@ -35,7 +40,7 @@ export async function POST(req) {
   const stream = await ReplicateStream(response);
   // Respond with the stream
   return new StreamingTextResponse(stream);
-}
+}, maximumRequestsPerMinute, window);
 
 async function runLlama({
   model,
