@@ -1,8 +1,15 @@
 import Metrics from "./Metrics";
+import { Turnstile } from '@marsidev/react-turnstile';
 
-const ChatForm = ({ prompt, setPrompt, onSubmit, metrics, completion }) => {
+const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
+
+
+const ChatForm = ({ prompt, setPrompt, onSubmit, metrics, completion, disabled }) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
+    if (disabled) {
+      return;
+    }
     onSubmit(prompt);
     setPrompt("");
     event.target.rows = 1;
@@ -44,6 +51,7 @@ const ChatForm = ({ prompt, setPrompt, onSubmit, metrics, completion }) => {
           <button
             className="bg-gray-600 hover:bg-gray-800 items-center font-semibold text-white rounded-r-md px-5 py-3"
             type="submit"
+            disabled={disabled}
           >
             Chat
           </button>
