@@ -1,10 +1,10 @@
 export default function EmptyState({ setOpen, setPrompt }) {
   return (
-    <div className="flex gap-x-4 rounded-md bg-gray-50 py-5 px-5 mb-12">
-      <span className="text-xl sm:text-2xl" title="AI">
+    <div className="flex gap-x-4 mb-8">
+      <span className="text-xl sm:text-2xl pt-4" title="AI">
         🦙
       </span>
-      <div className="flex flex-col text-sm sm:text-base flex-1 gap-y-4 mt-1">
+      <div className="flex flex-col text-sm sm:text-base flex-1 gap-y-4 mt-1 rounded-lg bg-gray-100 py-5 px-5">
         <p>I&apos;m an open-source chatbot.</p>
         <p>
           I can{" "}

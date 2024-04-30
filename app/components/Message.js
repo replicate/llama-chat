@@ -1,5 +1,5 @@
 const Message = ({ message, isUser }) => {
-  let containerClass = "bg-gray-50";
+  let containerClass = "bg-gray-100";
   if (isUser) {
     containerClass = "";
   }
@@ -14,19 +14,19 @@ const Message = ({ message, isUser }) => {
 
   return (
     <div
-      className={`flex gap-x-4 rounded-md ${containerClass} py-5 px-5 mb-12`}
+      className="flex gap-x-4 mb-8"
     >
       {isUser ? (
-        <span className="text-xl sm:text-2xl" title="user">
+        <span className="text-xl sm:text-2xl pt-4" title="user">
           🥸
         </span>
       ) : (
-        <span className="text-xl sm:text-2xl" title="AI">
+        <span className="text-xl sm:text-2xl pt-4" title="AI">
           🦙
         </span>
       )}
 
-      <div className="flex flex-col text-sm sm:text-base flex-1 gap-y-4 mt-1">
+      <div className={`${containerClass} flex flex-col text-sm sm:text-base flex-1 gap-y-4 mt-1 p-5 rounded-md`}>
         {message.split("\n").map(
           (text, index) =>
             text.length > 0 && (
