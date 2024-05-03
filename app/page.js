@@ -102,6 +102,26 @@ export default function HomePage() {
   const [didPassChallenge, setDidPassChallenge] = useState(false);
   const [turnstileStatus, setTurnstileStatus] = useState("pending"); // 'pending', 'passed', 'failed'
   const [turnstileToken, setTurnstileToken] = useState(null);
+  const [turnstileIdempotencyKey, setTurnstileIdempotencyKey] = useState(() => {
+    // Check if running in a browser environment
+    if (typeof window !== "undefined") {
+      return (
+        sessionStorage.getItem("turnstileIdempotencyKey") || crypto.randomUUID()
+      );
+    }
+    return crypto.randomUUID(); // Fallback if not in browser
+  });
+
+  // Save the idempotency key to session storage whenever it changes
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      sessionStorage.setItem(
+        "turnstileIdempotencyKey",
+        turnstileIdempotencyKey
+      );
+    }
+  }, [turnstileIdempotencyKey]);
+
   const turnstileRef = useRef(null);
 
   const handleTurnstileSuccess = () => {
@@ -155,6 +175,7 @@ export default function HomePage() {
       image: image,
       audio: audio,
       token: turnstileToken,
+      idempotencyKey: turnstileIdempotencyKey,
     },
     onError: (e) => {
       const errorText = e.toString();
