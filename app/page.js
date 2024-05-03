@@ -101,11 +101,12 @@ export default function HomePage() {
   // Cloudflare Turnstile
   const [didPassChallenge, setDidPassChallenge] = useState(false);
   const [turnstileStatus, setTurnstileStatus] = useState("pending"); // 'pending', 'passed', 'failed'
-
+  const [turnstileToken, setTurnstileToken] = useState(null);
   const turnstileRef = useRef(null);
 
   const handleTurnstileSuccess = () => {
     setTurnstileStatus("passed");
+    setTurnstileToken(turnstileRef.current.getResponse());
     setDidPassChallenge(true);
   };
 
@@ -153,9 +154,11 @@ export default function HomePage() {
       maxTokens: parseInt(maxTokens),
       image: image,
       audio: audio,
-      token: turnstileRef?.current?.getResponse(),
+      token: turnstileToken,
     },
     onError: (e) => {
+      const errorText = e.toString();
+      console.error(`Error converted to text: ${errorText}`);
       setError(e);
     },
     onResponse: (response) => {
@@ -285,9 +288,7 @@ export default function HomePage() {
 
       <CallToAction />
       <nav className="sm:pt-8 pt-4 px-4 sm:px-12 flex items-center">
-        <div className="pr-3 font-semibold text-gray-500">
-          Chat with
-        </div>
+        <div className="pr-3 font-semibold text-gray-500">Chat with</div>
         <div className="font-semibold text-gray-500 sm:text-center">
           <Dropdown models={MODELS} selectedModel={model} setModel={setModel} />
         </div>
@@ -349,7 +350,7 @@ export default function HomePage() {
           disabled={!didPassChallenge}
         />
 
-        {error && <div>{error}</div>}
+        {error && <div className="text-red-500">{error.toString()}</div>}
 
         <article className="pb-24">
           {!didPassChallenge ? (
