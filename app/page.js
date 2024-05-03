@@ -12,7 +12,7 @@ import { Cog6ToothIcon, CodeBracketIcon } from "@heroicons/react/20/solid";
 import { useCompletion } from "ai/react";
 import { Toaster, toast } from "react-hot-toast";
 import { LlamaTemplate, Llama3Template } from "../src/prompt_template";
-import { Turnstile } from '@marsidev/react-turnstile';
+import { Turnstile } from "@marsidev/react-turnstile";
 
 import { countTokens } from "./src/tokenizer.js";
 
@@ -100,7 +100,27 @@ export default function HomePage() {
 
   // Cloudflare Turnstile
   const [didPassChallenge, setDidPassChallenge] = useState(false);
+  const [turnstileStatus, setTurnstileStatus] = useState("pending"); // 'pending', 'passed', 'failed'
+
   const turnstileRef = useRef(null);
+
+  const handleTurnstileSuccess = () => {
+    setTurnstileStatus("passed");
+    setDidPassChallenge(true);
+  };
+
+  const handleTurnstileError = () => {
+    setTurnstileStatus("failed");
+  };
+
+  const handleTurnstileExpire = () => {
+    setTurnstileStatus("expired");
+  };
+
+  const retryTurnstile = () => {
+    setTurnstileStatus("pending");
+    turnstileRef.current?.reset();
+  };
 
   //   Llama params
   const [model, setModel] = useState(MODELS[0]); // default to 70B
@@ -246,21 +266,19 @@ export default function HomePage() {
 
   return (
     <>
-      {!didPassChallenge && (
-        <dialog
-          open
-          className="fixed inset-0 bg-black bg-opacity-75 flex justify-center items-center p-0 m-0 w-full h-full z-50"
-        >
+      {turnstileStatus === "failed" && (
+        <dialog className="fixed inset-0 bg-black bg-opacity-75 flex justify-center items-center p-0 m-0 w-full h-full z-50">
           <div className="bg-white rounded-lg shadow-xl p-6 m-auto">
-            <Turnstile
-              id='turnstile-widget'
-              ref={turnstileRef}
-              options={{
-                theme: "light"
-              }}
-              siteKey={TURNSTILE_SITE_KEY}
-              onSuccess={() => setDidPassChallenge(true)}
-            />
+            <p>
+              Uh oh, we had trouble figuring out if you're human... Please try
+              again.
+            </p>
+            <button
+              className="bg-black mt-2 hover:bg-gray-800 text-white rounded-md inline-block px-5 py-3"
+              onClick={() => retryTurnstile()}
+            >
+              Retry
+            </button>
           </div>
         </dialog>
       )}
@@ -334,7 +352,25 @@ export default function HomePage() {
         {error && <div>{error}</div>}
 
         <article className="pb-24">
-          <EmptyState setPrompt={setAndSubmitPrompt} setOpen={setOpen} />
+          {!didPassChallenge ? (
+            <div className="my-12">
+              <p className="mb-2 animate-pulse">Checking if you are human...</p>
+              <Turnstile
+                id="turnstile-widget"
+                ref={turnstileRef}
+                options={{
+                  theme: "light",
+                }}
+                siteKey={TURNSTILE_SITE_KEY}
+                onSuccess={handleTurnstileSuccess}
+                onError={handleTurnstileError}
+                onExpire={handleTurnstileExpire}
+              />
+            </div>
+          ) : (
+            <EmptyState setPrompt={setAndSubmitPrompt} setOpen={setOpen} />
+          )}
+
           {messages.map((message, index) => (
             <Message
               key={`message-${index}`}
