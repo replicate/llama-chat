@@ -23,11 +23,13 @@ const VERSIONS = {
 
 async function verifyTurnstile(token) {
   const response = await fetch(TURNSTILE_CHALLENGE_ENDPOINT, {
-    method: 'POST',
-    body: `secret=${encodeURIComponent(TURNSTILE_SECRET_KEY)}&response=${encodeURIComponent(token)}`,
+    method: "POST",
+    body: `secret=${encodeURIComponent(
+      TURNSTILE_SECRET_KEY
+    )}&response=${encodeURIComponent(token)}`,
     headers: {
-      'content-type': 'application/x-www-form-urlencoded'
-    }
+      "content-type": "application/x-www-form-urlencoded",
+    },
   });
   const data = await response.json();
   return data.success;
@@ -36,8 +38,8 @@ async function verifyTurnstile(token) {
 export async function POST(req) {
   const { token, ...params } = await req.json();
 
-  if (!await verifyTurnstile(token)) {
-    return new Response('Challenge failed', { status: 403 });
+  if (!(await verifyTurnstile(token))) {
+    return new Response("Challenge failed — are you a human?", { status: 403 });
   }
 
   let response;
