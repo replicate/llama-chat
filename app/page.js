@@ -270,8 +270,8 @@ export default function HomePage() {
         <dialog className="fixed inset-0 bg-black bg-opacity-75 flex justify-center items-center p-0 m-0 w-full h-full z-50">
           <div className="bg-white rounded-lg shadow-xl p-6 m-auto">
             <p>
-              Uh oh, we had trouble figuring out if you're human... Please try
-              again.
+              Uh oh, we had trouble figuring out if you&apos;re human... Please
+              try again.
             </p>
             <button
               className="bg-black mt-2 hover:bg-gray-800 text-white rounded-md inline-block px-5 py-3"
