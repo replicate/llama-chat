@@ -20,11 +20,19 @@ const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
 
 const MODELS = [
   {
+    id: "meta/meta-llama-3.1-405B-instruct",
+    name: "Meta Llama 3.1 405B",
+    shortened: "405B",
+    emoji: "🦙",
+    description: "The most accurate, powerful next generation Llama.",
+    new: true,
+  },
+  {
     id: "meta/meta-llama-3-70b-instruct",
     name: "Meta Llama 3 70B",
     shortened: "70B",
     emoji: "🦙",
-    description: "The most accurate, powerful next generation Llama.",
+    description: "The strong, flexible medium-size Llama.",
     new: true,
   },
   {
@@ -49,7 +57,6 @@ const MODELS = [
     emoji: "🦙",
     description: "Faster and cheaper Llama 2 at the expense of accuracy.",
   },
-
   {
     id: "meta/llama-2-7b-chat",
     name: "Meta Llama 2 7B",
@@ -144,7 +151,7 @@ export default function HomePage() {
   };
 
   //   Llama params
-  const [model, setModel] = useState(MODELS[1]); // default to 8B
+  const [model, setModel] = useState(MODELS[0]); // default to 405B
   const [systemPrompt, setSystemPrompt] = useState(
     "You are a helpful assistant."
   );
