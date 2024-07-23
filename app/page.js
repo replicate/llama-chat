@@ -20,7 +20,7 @@ const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
 
 const MODELS = [
   {
-    id: "meta/meta-llama-3.1-405B-instruct",
+    id: "meta/meta-llama-3.1-405b-instruct",
     name: "Meta Llama 3.1 405B",
     shortened: "405B",
     emoji: "🦙",
