@@ -5,7 +5,7 @@ export const metadata = {
   title: "Chat with Meta Llama 3.1 on Replicate",
   openGraph: {
     title: "Chat with Meta Llama 3.1 on Replicate",
-    description: "Llama 3 is the latest language model from Meta.",
+    description: "Llama 3.1 is the latest language model from Meta.",
   },
 };
 
