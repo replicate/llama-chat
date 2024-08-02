@@ -11,6 +11,8 @@ export default function SlideOver({
   setOpen,
   systemPrompt,
   setSystemPrompt,
+  replicateApiToken,
+  setReplicateApiToken,
   temp,
   setTemp,
   topP,
@@ -181,6 +183,36 @@ export default function SlideOver({
                               </div>
                             </div>
                           </div>
+
+                          <div className="space-y-6 pb-5 pt-6">
+                            <div>
+                              <label
+                                htmlFor="description"
+                                className="block font-bold text-sm leading-6 text-gray-900"
+                              >
+                                Replicate API token
+                              </label>
+                              <p
+                                id="system-prompt-description"
+                                className="mt-2 text-xs text-gray-500"
+                              >
+                                Your personal key for making API requests. Keep this secret!
+                              </p>
+                              <div className="mt-3">
+                                <input
+                                  id="replicateApiToken"
+                                  name="replicateApiToken"
+                                  type="password"
+                                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-600 sm:text-sm sm:leading-6"
+                                  value={replicateApiToken}
+                                  onChange={(e) =>
+                                    setReplicateApiToken(e.target.value)
+                                  }
+                                />
+                              </div>
+                            </div>
+                          </div>
+
                           <div className="space-y-6 pb-5 pt-6">
                             <div>
                               <label

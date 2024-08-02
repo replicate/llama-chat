@@ -12,6 +12,7 @@ import { Cog6ToothIcon, CodeBracketIcon } from "@heroicons/react/20/solid";
 import { useCompletion } from "ai/react";
 import { Toaster, toast } from "react-hot-toast";
 import { LlamaTemplate, Llama3Template } from "../src/prompt_template";
+import TokenForm from "./components/TokenForm";
 
 import { countTokens } from "./src/tokenizer.js";
 
@@ -101,6 +102,17 @@ export default function HomePage() {
   const [open, setOpen] = useState(false);
   const [error, setError] = useState(null);
   const [starting, setStarting] = useState(false);
+  const [tokenFormVisible, setTokenFormVisible] = useState(false);
+  const [replicateApiToken, setReplicateApiToken] = useState(null);
+
+  const handleTokenSubmit = (e) => {
+    e.preventDefault();
+    const token = e.target[0].value
+    console.log({token});
+    localStorage.setItem("replicate_api_token", token);
+    setReplicateApiToken(token);
+    setTokenFormVisible(false);
+  };
 
   //   Llama params
   const [model, setModel] = useState(MODELS[0]); // default to 405B
@@ -126,6 +138,7 @@ export default function HomePage() {
   const { complete, completion, setInput, input } = useCompletion({
     api: "/api",
     body: {
+      replicateApiToken,
       model: model.id,
       systemPrompt: systemPrompt,
       temperature: parseFloat(temp),
@@ -184,6 +197,8 @@ export default function HomePage() {
     event.preventDefault();
     setOpen(false);
     setSystemPrompt(event.target.systemPrompt.value);
+    setReplicateApiToken(event.target.replicateApiToken.value);
+    localStorage.setItem("replicate_api_token", event.target.replicateApiToken.value);
   };
 
   const handleSubmit = async (userMessage) => {
@@ -243,7 +258,18 @@ export default function HomePage() {
     if (messages?.length > 0 || completion?.length > 0) {
       bottomRef.current.scrollIntoView({ behavior: "smooth" });
     }
+
+    if (localStorage.getItem("replicate_api_token")) {
+      setReplicateApiToken(localStorage.getItem("replicate_api_token"));
+      setTokenFormVisible(false);
+    } else {
+      setTokenFormVisible(true);
+    }
   }, [messages, completion]);
+
+  if (tokenFormVisible) {
+    return <TokenForm handleTokenSubmit={handleTokenSubmit} />;
+  }
 
   return (
     <>
@@ -289,6 +315,8 @@ export default function HomePage() {
           setOpen={setOpen}
           systemPrompt={systemPrompt}
           setSystemPrompt={setSystemPrompt}
+          replicateApiToken={replicateApiToken}
+          setReplicateApiToken={setReplicateApiToken}
           handleSubmit={handleSettingsSubmit}
           temp={temp}
           setTemp={setTemp}

@@ -2,16 +2,6 @@ import Replicate from "replicate";
 import { ReplicateStream, StreamingTextResponse } from "ai";
 export const runtime = "edge";
 
-const replicate = new Replicate({
-  auth: process.env.REPLICATE_API_TOKEN,
-});
-
-if (!process.env.REPLICATE_API_TOKEN) {
-  throw new Error(
-    "The REPLICATE_API_TOKEN environment variable is not set. See README.md for instructions on how to set it."
-  );
-}
-
 const VERSIONS = {
   "yorickvp/llava-13b":
     "e272157381e2a3bf12df3a8edd1f38d1dbd736bbb7437277c8b34175f8fce358",
@@ -22,6 +12,11 @@ const VERSIONS = {
 export async function POST(req) {
   const params = await req.json();
   const ip = req.headers.get("x-real-ip") || req.headers.get("x-forwarded-for");
+
+
+  params.replicateClient = new Replicate({
+    auth: params.replicateApiToken,
+  });
 
   if (!ip) {
     console.error("IP address is null");
@@ -44,6 +39,7 @@ export async function POST(req) {
 }
 
 async function runLlama({
+  replicateClient,
   model,
   prompt,
   systemPrompt,
@@ -55,7 +51,9 @@ async function runLlama({
   console.log("model", model);
   console.log("maxTokens", maxTokens);
 
-  return await replicate.predictions.create({
+
+
+  return await replicateClient.predictions.create({
     model: model,
     stream: true,
     input: {
@@ -71,10 +69,10 @@ async function runLlama({
   });
 }
 
-async function runLlava({ prompt, maxTokens, temperature, topP, image }) {
+async function runLlava({ replicateClient, prompt, maxTokens, temperature, topP, image }) {
   console.log("running llava");
 
-  return await replicate.predictions.create({
+  return await replicateClient.predictions.create({
     stream: true,
     input: {
       prompt: `${prompt}`,
@@ -87,7 +85,7 @@ async function runLlava({ prompt, maxTokens, temperature, topP, image }) {
   });
 }
 
-async function runSalmonn({ prompt, maxTokens, temperature, topP, audio }) {
+async function runSalmonn({ replicateClient, prompt, maxTokens, temperature, topP, audio }) {
   console.log("running salmonn");
 
   return await replicate.predictions.create({
