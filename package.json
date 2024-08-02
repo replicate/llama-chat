@@ -12,7 +12,6 @@
   "dependencies": {
     "@headlessui/react": "^1.7.17",
     "@heroicons/react": "^2.0.18",
-    "@marsidev/react-turnstile": "^0.5.4",
     "@vercel/analytics": "^1.1.1",
     "ai": "^2.2.12",
     "eslint": "8.49.0",

@@ -12,8 +12,6 @@ if (!process.env.REPLICATE_API_TOKEN) {
   );
 }
 
-const { TURNSTILE_CHALLENGE_ENDPOINT, TURNSTILE_SECRET_KEY } = process.env;
-
 const VERSIONS = {
   "yorickvp/llava-13b":
     "e272157381e2a3bf12df3a8edd1f38d1dbd736bbb7437277c8b34175f8fce358",
@@ -21,36 +19,13 @@ const VERSIONS = {
     "ad1d3f9d2bd683628242b68d890bef7f7bd97f738a7c2ccbf1743a594c723d83",
 };
 
-async function verifyTurnstile(token, ip, idempotencyKey) {
-  const formData = new URLSearchParams();
-  formData.append("secret", TURNSTILE_SECRET_KEY);
-  formData.append("response", token);
-  formData.append("remoteip", ip);
-  formData.append("idempotency_key", idempotencyKey);
-
-  const result = await fetch(TURNSTILE_CHALLENGE_ENDPOINT, {
-    method: "POST",
-    body: formData,
-    headers: {
-      "content-type": "application/x-www-form-urlencoded",
-    },
-  });
-  const data = await result.json();
-
-  return data.success;
-}
-
 export async function POST(req) {
-  const { token, idempotencyKey, ...params } = await req.json();
+  const params = await req.json();
   const ip = req.headers.get("x-real-ip") || req.headers.get("x-forwarded-for");
 
   if (!ip) {
     console.error("IP address is null");
     return new Response("IP address could not be retrieved", { status: 500 });
-  }
-
-  if (!(await verifyTurnstile(token, ip, idempotencyKey))) {
-    return new Response("Challenge failed — are you a human?", { status: 403 });
   }
 
   let response;
