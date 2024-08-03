@@ -4,15 +4,14 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "REPLICATE_API_TOKEN=test-token next build",
+    "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "REPLICATE_API_TOKEN=test-token npm run lint && npm run build"
+    "test": "npm run lint && npm run build"
   },
   "dependencies": {
     "@headlessui/react": "^1.7.17",
     "@heroicons/react": "^2.0.18",
-    "@marsidev/react-turnstile": "^0.5.4",
     "@vercel/analytics": "^1.1.1",
     "ai": "^2.2.12",
     "eslint": "8.49.0",
@@ -24,7 +23,7 @@
     "react-dom": "18.2.0",
     "react-hot-toast": "^2.4.1",
     "readable-stream": "^4.4.2",
-    "replicate": "^0.25.1"
+    "replicate": "^0.32.0"
   },
   "devDependencies": {
     "@tailwindcss/forms": "^0.5.7",

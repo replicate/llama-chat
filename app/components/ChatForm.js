@@ -1,8 +1,4 @@
 import Metrics from "./Metrics";
-import { Turnstile } from '@marsidev/react-turnstile';
-
-const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
-
 
 const ChatForm = ({ prompt, setPrompt, onSubmit, metrics, completion, disabled }) => {
   const handleSubmit = async (event) => {

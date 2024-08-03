@@ -2,18 +2,6 @@ import Replicate from "replicate";
 import { ReplicateStream, StreamingTextResponse } from "ai";
 export const runtime = "edge";
 
-const replicate = new Replicate({
-  auth: process.env.REPLICATE_API_TOKEN,
-});
-
-if (!process.env.REPLICATE_API_TOKEN) {
-  throw new Error(
-    "The REPLICATE_API_TOKEN environment variable is not set. See README.md for instructions on how to set it."
-  );
-}
-
-const { TURNSTILE_CHALLENGE_ENDPOINT, TURNSTILE_SECRET_KEY } = process.env;
-
 const VERSIONS = {
   "yorickvp/llava-13b":
     "e272157381e2a3bf12df3a8edd1f38d1dbd736bbb7437277c8b34175f8fce358",
@@ -21,36 +9,18 @@ const VERSIONS = {
     "ad1d3f9d2bd683628242b68d890bef7f7bd97f738a7c2ccbf1743a594c723d83",
 };
 
-async function verifyTurnstile(token, ip, idempotencyKey) {
-  const formData = new URLSearchParams();
-  formData.append("secret", TURNSTILE_SECRET_KEY);
-  formData.append("response", token);
-  formData.append("remoteip", ip);
-  formData.append("idempotency_key", idempotencyKey);
-
-  const result = await fetch(TURNSTILE_CHALLENGE_ENDPOINT, {
-    method: "POST",
-    body: formData,
-    headers: {
-      "content-type": "application/x-www-form-urlencoded",
-    },
-  });
-  const data = await result.json();
-
-  return data.success;
-}
-
 export async function POST(req) {
-  const { token, idempotencyKey, ...params } = await req.json();
+  const params = await req.json();
   const ip = req.headers.get("x-real-ip") || req.headers.get("x-forwarded-for");
+
+
+  params.replicateClient = new Replicate({
+    auth: params.replicateApiToken,
+  });
 
   if (!ip) {
     console.error("IP address is null");
     return new Response("IP address could not be retrieved", { status: 500 });
-  }
-
-  if (!(await verifyTurnstile(token, ip, idempotencyKey))) {
-    return new Response("Challenge failed — are you a human?", { status: 403 });
   }
 
   let response;
@@ -69,6 +39,7 @@ export async function POST(req) {
 }
 
 async function runLlama({
+  replicateClient,
   model,
   prompt,
   systemPrompt,
@@ -80,7 +51,9 @@ async function runLlama({
   console.log("model", model);
   console.log("maxTokens", maxTokens);
 
-  return await replicate.predictions.create({
+
+
+  return await replicateClient.predictions.create({
     model: model,
     stream: true,
     input: {
@@ -96,10 +69,10 @@ async function runLlama({
   });
 }
 
-async function runLlava({ prompt, maxTokens, temperature, topP, image }) {
+async function runLlava({ replicateClient, prompt, maxTokens, temperature, topP, image }) {
   console.log("running llava");
 
-  return await replicate.predictions.create({
+  return await replicateClient.predictions.create({
     stream: true,
     input: {
       prompt: `${prompt}`,
@@ -112,7 +85,7 @@ async function runLlava({ prompt, maxTokens, temperature, topP, image }) {
   });
 }
 
-async function runSalmonn({ prompt, maxTokens, temperature, topP, audio }) {
+async function runSalmonn({ replicateClient, prompt, maxTokens, temperature, topP, audio }) {
   console.log("running salmonn");
 
   return await replicate.predictions.create({

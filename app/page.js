@@ -12,11 +12,9 @@ import { Cog6ToothIcon, CodeBracketIcon } from "@heroicons/react/20/solid";
 import { useCompletion } from "ai/react";
 import { Toaster, toast } from "react-hot-toast";
 import { LlamaTemplate, Llama3Template } from "../src/prompt_template";
-import { Turnstile } from "@marsidev/react-turnstile";
+import TokenForm from "./components/TokenForm";
 
 import { countTokens } from "./src/tokenizer.js";
-
-const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
 
 const MODELS = [
   {
@@ -104,50 +102,16 @@ export default function HomePage() {
   const [open, setOpen] = useState(false);
   const [error, setError] = useState(null);
   const [starting, setStarting] = useState(false);
+  const [tokenFormVisible, setTokenFormVisible] = useState(false);
+  const [replicateApiToken, setReplicateApiToken] = useState(null);
 
-  // Cloudflare Turnstile
-  const [didPassChallenge, setDidPassChallenge] = useState(false);
-  const [turnstileStatus, setTurnstileStatus] = useState("pending"); // 'pending', 'passed', 'failed'
-  const [turnstileToken, setTurnstileToken] = useState(null);
-  const [turnstileIdempotencyKey, setTurnstileIdempotencyKey] = useState(() => {
-    // Check if running in a browser environment
-    if (typeof window !== "undefined") {
-      return (
-        sessionStorage.getItem("turnstileIdempotencyKey") || crypto.randomUUID()
-      );
-    }
-    return crypto.randomUUID(); // Fallback if not in browser
-  });
-
-  // Save the idempotency key to session storage whenever it changes
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      sessionStorage.setItem(
-        "turnstileIdempotencyKey",
-        turnstileIdempotencyKey
-      );
-    }
-  }, [turnstileIdempotencyKey]);
-
-  const turnstileRef = useRef(null);
-
-  const handleTurnstileSuccess = () => {
-    setTurnstileStatus("passed");
-    setTurnstileToken(turnstileRef.current.getResponse());
-    setDidPassChallenge(true);
-  };
-
-  const handleTurnstileError = () => {
-    setTurnstileStatus("failed");
-  };
-
-  const handleTurnstileExpire = () => {
-    setTurnstileStatus("expired");
-  };
-
-  const retryTurnstile = () => {
-    setTurnstileStatus("pending");
-    turnstileRef.current?.reset();
+  const handleTokenSubmit = (e) => {
+    e.preventDefault();
+    const token = e.target[0].value
+    console.log({token});
+    localStorage.setItem("replicate_api_token", token);
+    setReplicateApiToken(token);
+    setTokenFormVisible(false);
   };
 
   //   Llama params
@@ -174,6 +138,7 @@ export default function HomePage() {
   const { complete, completion, setInput, input } = useCompletion({
     api: "/api",
     body: {
+      replicateApiToken,
       model: model.id,
       systemPrompt: systemPrompt,
       temperature: parseFloat(temp),
@@ -181,8 +146,6 @@ export default function HomePage() {
       maxTokens: parseInt(maxTokens),
       image: image,
       audio: audio,
-      token: turnstileToken,
-      idempotencyKey: turnstileIdempotencyKey,
     },
     onError: (e) => {
       const errorText = e.toString();
@@ -234,6 +197,8 @@ export default function HomePage() {
     event.preventDefault();
     setOpen(false);
     setSystemPrompt(event.target.systemPrompt.value);
+    setReplicateApiToken(event.target.replicateApiToken.value);
+    localStorage.setItem("replicate_api_token", event.target.replicateApiToken.value);
   };
 
   const handleSubmit = async (userMessage) => {
@@ -293,27 +258,21 @@ export default function HomePage() {
     if (messages?.length > 0 || completion?.length > 0) {
       bottomRef.current.scrollIntoView({ behavior: "smooth" });
     }
+
+    if (localStorage.getItem("replicate_api_token")) {
+      setReplicateApiToken(localStorage.getItem("replicate_api_token"));
+      setTokenFormVisible(false);
+    } else {
+      setTokenFormVisible(true);
+    }
   }, [messages, completion]);
+
+  if (tokenFormVisible) {
+    return <TokenForm handleTokenSubmit={handleTokenSubmit} />;
+  }
 
   return (
     <>
-      {turnstileStatus === "failed" && (
-        <dialog className="fixed inset-0 bg-black bg-opacity-75 flex justify-center items-center p-0 m-0 w-full h-full z-50">
-          <div className="bg-white rounded-lg shadow-xl p-6 m-auto">
-            <p>
-              Uh oh, we had trouble figuring out if you&apos;re human... Please
-              try again.
-            </p>
-            <button
-              className="bg-black mt-2 hover:bg-gray-800 text-white rounded-md inline-block px-5 py-3"
-              onClick={() => retryTurnstile()}
-            >
-              Retry
-            </button>
-          </div>
-        </dialog>
-      )}
-
       <CallToAction />
       <nav className="sm:pt-8 pt-4 px-4 sm:px-12 flex items-center">
         <div className="pr-3 font-semibold text-gray-500">Chat with</div>
@@ -356,6 +315,8 @@ export default function HomePage() {
           setOpen={setOpen}
           systemPrompt={systemPrompt}
           setSystemPrompt={setSystemPrompt}
+          replicateApiToken={replicateApiToken}
+          setReplicateApiToken={setReplicateApiToken}
           handleSubmit={handleSettingsSubmit}
           temp={temp}
           setTemp={setTemp}
@@ -375,30 +336,12 @@ export default function HomePage() {
           handleFileUpload={handleFileUpload}
           completion={completion}
           metrics={metrics}
-          disabled={!didPassChallenge}
         />
 
         {error && <div className="text-red-500">{error.toString()}</div>}
 
         <article className="pb-24">
-          {!didPassChallenge ? (
-            <div className="my-12">
-              <p className="mb-2 animate-pulse">Checking if you are human...</p>
-              <Turnstile
-                id="turnstile-widget"
-                ref={turnstileRef}
-                options={{
-                  theme: "light",
-                }}
-                siteKey={TURNSTILE_SITE_KEY}
-                onSuccess={handleTurnstileSuccess}
-                onError={handleTurnstileError}
-                onExpire={handleTurnstileExpire}
-              />
-            </div>
-          ) : (
-            <EmptyState setPrompt={setAndSubmitPrompt} setOpen={setOpen} />
-          )}
+          <EmptyState setPrompt={setAndSubmitPrompt} setOpen={setOpen} />
 
           {messages.map((message, index) => (
             <Message
