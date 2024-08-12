@@ -16,6 +16,7 @@ export async function POST(req) {
 
   params.replicateClient = new Replicate({
     auth: params.replicateApiToken,
+    userAgent: "llama-chat",
   });
 
   if (!ip) {
